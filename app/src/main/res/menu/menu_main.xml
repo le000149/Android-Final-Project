@@ -1,0 +1,28 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sunrise_sunset"
+        android:icon="@drawable/routine"
+        android:title="@string/sunrise_sunset"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/recipe"
+        android:icon="@drawable/restaurant"
+        android:title="@string/recipe_search"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/dictionary"
+        android:icon="@drawable/dictionary"
+        android:title="@string/dictionary"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/song_search"
+        android:icon="@drawable/music_note"
+        android:title="@string/song_search"
+        app:showAsAction="always" />
+
+</menu>

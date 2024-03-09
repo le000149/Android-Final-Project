@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="sunrise_sunset">Sunrise Sunset</string>
+    <string name="recipe_search">Recipe Search</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="song_search">Song Search</string>
+    <string name="welcome">Welcome to CST2355 FinalProject</string>
 </resources>
