@@ -8,16 +8,17 @@
 
     <EditText
         android:layout_marginLeft="8dp"
-        android:id="@+id/edit_text_search"
+        android:id="@+id/search_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Enter a word to search"
-        app:layout_constraintBaseline_toBaselineOf="@id/search"
-        app:layout_constraintEnd_toStartOf="@id/search"
+        android:maxLines="1"
+        app:layout_constraintBaseline_toBaselineOf="@id/search_button"
+        app:layout_constraintEnd_toStartOf="@id/search_button"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/search"
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -30,6 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_search" />
+        app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

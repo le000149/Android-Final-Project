@@ -8,15 +8,32 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import org.algonquin.cst2355.finalproject.R;
+import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryBinding;
 
 public class DictionaryActivity extends AppCompatActivity {
+
+    private ActivityDictionaryBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dictionary);
+        binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        binding.searchButton.setOnClickListener(v -> {
+            String word = binding.searchEditText.getText().toString();
+            if (word.isEmpty()) {
+                Toast.makeText(this, "Please enter a word to search", Toast.LENGTH_SHORT).show();
+            } else {
+                //search for the word
+                DictionaryResultActivity.launch(this, word);
+            }
+        });
     }
 
     @Override
