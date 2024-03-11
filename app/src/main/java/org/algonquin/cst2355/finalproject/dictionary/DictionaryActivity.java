@@ -23,6 +23,7 @@ import android.widget.Toast;
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryBinding;
+import org.algonquin.cst2355.finalproject.dictionary.model.Definition;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -81,7 +82,7 @@ public class DictionaryActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
+                List<Definition> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -115,9 +116,9 @@ public class DictionaryActivity extends AppCompatActivity {
 
     public static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
 
-        private final List<String> definitions;
+        private final List<Definition> definitions;
 
-        public DefinitionAdapter(List<String> definitions) {
+        public DefinitionAdapter(List<Definition> definitions) {
             this.definitions = definitions;
         }
 
@@ -130,7 +131,7 @@ public class DictionaryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(DefinitionViewHolder holder, int position) {
-            String definition = definitions.get(position);
+            Definition definition = definitions.get(position);
             holder.bind(definition);
         }
 
@@ -141,19 +142,22 @@ public class DictionaryActivity extends AppCompatActivity {
 
         static class DefinitionViewHolder extends RecyclerView.ViewHolder {
 
+            TextView wordTextView;
             TextView definitionTextView;
 
             public DefinitionViewHolder(View itemView) {
                 super(itemView);
-                definitionTextView = itemView.findViewById(R.id.wordTextView);
+                wordTextView = itemView.findViewById(R.id.word_text_view);
+                definitionTextView = itemView.findViewById(R.id.definition_text_view);
             }
 
-            public void bind(String definition) {
-                definitionTextView.setText(definition);
-                definitionTextView.setOnClickListener(new View.OnClickListener() {
+            public void bind(Definition definition) {
+                wordTextView.setText(definition.getWord());
+                definitionTextView.setText(definition.getDefinition());
+                itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DictionaryResultActivity.launch(v.getContext(), definition, false);
+                        DictionaryResultActivity.launch(v.getContext(), definition.getWord(), false);
                     }
                 });
             }

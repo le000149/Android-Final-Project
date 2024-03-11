@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryResultBinding;
+import org.algonquin.cst2355.finalproject.dictionary.model.Definition;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
     private List<Definition> definitions;
     private String word;
-    private boolean definitionSaved = true;
+    private boolean definitionSaved = false;
 
     public static void launch(Context context, String word, boolean onlineSearch) {
         Intent intent = new Intent(context, DictionaryResultActivity.class);
@@ -66,7 +67,14 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
         word = getIntent().getStringExtra(WORD);
         binding.toolbar.setTitle(word);
-        searchDefinitionOnline(word);
+
+        boolean onlineSearch = getIntent().getBooleanExtra(ONLINE_SEARCH, false);
+        updateSaveOrDeleteIcon();
+        if (onlineSearch) {
+            searchDefinitionOnline(word);
+        } else {
+            searchDefinitionFromDataBase(word);
+        }
     }
 
     @Override
@@ -102,12 +110,14 @@ public class DictionaryResultActivity extends AppCompatActivity {
             @Override
             public void run() {
                 definitionSaved = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word).size() > 0;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        invalidateOptionsMenu();
-                    }
-                });
+                if (definitionSaved) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            invalidateOptionsMenu();
+                        }
+                    });
+                }
             }
         });
     }
@@ -169,7 +179,6 @@ public class DictionaryResultActivity extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
-
     private void searchDefinitionFromDataBase(String word) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -201,7 +210,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
         @NonNull
         @Override
         public WordDefinitionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_word_definition, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_definition, parent, false);
             return new WordDefinitionViewHolder(view);
         }
 
@@ -223,7 +232,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
         public WordDefinitionViewHolder(@NonNull View itemView) {
             super(itemView);
-            wordTextView = itemView.findViewById(R.id.wordTextView);
+            wordTextView = itemView.findViewById(R.id.definitin_text_view);
         }
 
         public void bind(Definition definition) {
