@@ -51,7 +51,7 @@ public class DictionaryActivity extends AppCompatActivity {
                 //save the word to shared preferences
                 sharedPreferences.edit().putString(SP_KEY_LAST_SEARCH_WORD, word).apply();
                 //search for the word
-                DictionaryResultActivity.launch(this, word);
+                DictionaryResultActivity.launch(this, word, true);
             }
         });
 
@@ -131,6 +131,12 @@ public class DictionaryActivity extends AppCompatActivity {
 
             public void bind(String definition) {
                 definitionTextView.setText(definition);
+                definitionTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DictionaryResultActivity.launch(v.getContext(), definition, false);
+                    }
+                });
             }
         }
     }

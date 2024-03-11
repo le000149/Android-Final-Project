@@ -1,6 +1,6 @@
 package org.algonquin.cst2355.finalproject.dictionary;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,24 +39,27 @@ import java.util.concurrent.Executors;
 
 public class DictionaryResultActivity extends AppCompatActivity {
     public static final String WORD = "word";
+    public static final String ONLINE_SEARCH = "online_search";
     private static final String TAG = "DictionaryResult";
 
     ActivityDictionaryResultBinding binding;
 
-    private ArrayList<Definition> definitions;
+    private List<Definition> definitions;
     private String word;
     private boolean definitionSaved = true;
 
-    public static void launch(Activity activity, String word) {
-        Intent intent = new Intent(activity, DictionaryResultActivity.class);
+    public static void launch(Context context, String word, boolean onlineSearch) {
+        Intent intent = new Intent(context, DictionaryResultActivity.class);
         intent.putExtra(WORD, word);
-        activity.startActivity(intent);
+        intent.putExtra(ONLINE_SEARCH, onlineSearch);
+        context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
+
         binding = ActivityDictionaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -69,6 +72,8 @@ public class DictionaryResultActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dictionary_result, menu);
+        MenuItem item = menu.findItem(R.id.save_or_delete_definition);
+        item.setIcon(definitionSaved ? R.drawable.delete : R.drawable.bookmark_add);
         return true;
     }
 
@@ -92,6 +97,21 @@ public class DictionaryResultActivity extends AppCompatActivity {
         return true;
     }
 
+    private void updateSaveOrDeleteIcon() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                definitionSaved = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word).size() > 0;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        invalidateOptionsMenu();
+                    }
+                });
+            }
+        });
+    }
+
     private void deleteDefinitions(String word) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -101,7 +121,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
         });
     }
 
-    private void saveDefinitions(ArrayList<Definition> definitions) {
+    private void saveDefinitions(List<Definition> definitions) {
         Log.d(TAG, "saveDefinitions: ");
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -147,6 +167,22 @@ public class DictionaryResultActivity extends AppCompatActivity {
         });
 
         queue.add(jsonArrayRequest);
+    }
+
+
+    private void searchDefinitionFromDataBase(String word) {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                definitions = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateRecyclerView(definitions);
+                    }
+                });
+            }
+        });
     }
 
     private void updateRecyclerView(List<Definition> wordDefinitions) {
