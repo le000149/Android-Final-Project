@@ -9,12 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/definition_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/word_text_view"
-        />
+        android:padding="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
