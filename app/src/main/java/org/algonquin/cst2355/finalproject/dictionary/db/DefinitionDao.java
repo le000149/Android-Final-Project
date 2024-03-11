@@ -18,7 +18,7 @@ public interface DefinitionDao {
     List<Definition> getDefinitions(String word);
 
     @Insert
-    void insertAll(Definition... definitions);
+    void saveDefinitions(List<Definition> definitions);
 
     @Query("delete from Definition where word = :word")
     void deleteDefinition(String word);
