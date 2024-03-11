@@ -3,17 +3,26 @@ package org.algonquin.cst2355.finalproject.dictionary;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryBinding;
+
+import java.util.List;
+import java.util.concurrent.Executors;
 
 public class DictionaryActivity extends AppCompatActivity {
 
@@ -45,6 +54,24 @@ public class DictionaryActivity extends AppCompatActivity {
                 DictionaryResultActivity.launch(this, word);
             }
         });
+
+        showSavedWords();
+    }
+
+    private void showSavedWords() {
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.savedWordRecyclerView.setAdapter(new DefinitionAdapter(words));
+                        binding.savedWordRecyclerView.setLayoutManager(new LinearLayoutManager(DictionaryActivity.this));
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -66,5 +93,47 @@ public class DictionaryActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
+
+        private final List<String> definitions;
+
+        public DefinitionAdapter(List<String> definitions) {
+            this.definitions = definitions;
+        }
+
+        @NonNull
+        @Override
+        public DefinitionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_word, parent, false);
+            return new DefinitionViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(DefinitionViewHolder holder, int position) {
+            String definition = definitions.get(position);
+            holder.bind(definition);
+        }
+
+        @Override
+        public int getItemCount() {
+            return definitions.size();
+        }
+
+        static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+
+            TextView definitionTextView;
+
+            public DefinitionViewHolder(View itemView) {
+                super(itemView);
+                definitionTextView = itemView.findViewById(R.id.wordTextView);
+            }
+
+            public void bind(String definition) {
+                definitionTextView.setText(definition);
+            }
+        }
+    }
+
 
 }
