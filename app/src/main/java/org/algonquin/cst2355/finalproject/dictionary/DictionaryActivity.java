@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ public class DictionaryActivity extends AppCompatActivity {
 
     public static final String SP_KEY_LAST_SEARCH_WORD = "last_search_word";
     public static final String SP_NAME = "dict";
+    private static final String TAG = "DictionaryActivity";
 
     private ActivityDictionaryBinding binding;
 
@@ -55,6 +57,13 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         });
 
+        showSavedWords();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
         showSavedWords();
     }
 
