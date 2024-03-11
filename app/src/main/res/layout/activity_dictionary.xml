@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:hint="Enter a word to search"
-        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@id/search_button"
         app:layout_constraintEnd_toStartOf="@id/search_button"
         app:layout_constraintStart_toStartOf="parent" />
