@@ -1,11 +1,5 @@
 package org.algonquin.cst2355.finalproject.dictionary;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,20 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryResultBinding;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,18 +57,32 @@ public class DictionaryResultActivity extends AppCompatActivity {
         searchForTerm(word);
     }
 
-    private void searchForTerm(String term) {
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + term;
+    private void searchForTerm(String word) {
+        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
 
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Word>>() {
-                }.getType();
-                List<Word> words = gson.fromJson(response.toString(), listType);
-                updateRecyclerView(words);
+                try {
+                    ArrayList<Definition> definitions = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject wordObject = response.getJSONObject(i);
+                        JSONArray meaningsArray = wordObject.getJSONArray("meanings");
+                        for (int j = 0; j < meaningsArray.length(); j++) {
+                            JSONObject meaningsObject = meaningsArray.getJSONObject(j);
+                            JSONArray definitionsArray = meaningsObject.getJSONArray("definitions");
+                            for (int k = 0; k < definitionsArray.length(); k++) {
+                                JSONObject definitionObject = definitionsArray.getJSONObject(k);
+                                String definition = definitionObject.getString("definition");
+                                definitions.add(new Definition(word, definition));
+                            }
+                        }
+                    }
+                    updateRecyclerView(definitions);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -81,24 +94,17 @@ public class DictionaryResultActivity extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
-    private void updateRecyclerView(List<Word> words) {
-        WordDefinitionAdapter adapter = new WordDefinitionAdapter(words);
+    private void updateRecyclerView(List<Definition> wordDefinitions) {
+        WordDefinitionAdapter adapter = new WordDefinitionAdapter(wordDefinitions);
         binding.definitionRecyclerView.setAdapter(adapter);
         binding.definitionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     static class WordDefinitionAdapter extends RecyclerView.Adapter<WordDefinitionViewHolder> {
-        private final List<Word> words;
-        private final List<Word.Definition> definitions;
+        private final List<Definition> definitions;
 
-        public WordDefinitionAdapter(List<Word> words) {
-            this.words = words;
-            definitions = new ArrayList<>();
-            for (Word definition : words) {
-                for (Word.Meaning meaning : definition.getMeanings()) {
-                    definitions.addAll(meaning.getDefinitions());
-                }
-            }
+        public WordDefinitionAdapter(List<Definition> definitions) {
+            this.definitions = definitions;
         }
 
         @NonNull
@@ -110,7 +116,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull WordDefinitionViewHolder holder, int position) {
-            Word.Definition definition = definitions.get(position);
+            Definition definition = definitions.get(position);
             holder.bind(definition);
         }
 
@@ -129,8 +135,8 @@ public class DictionaryResultActivity extends AppCompatActivity {
             wordTextView = itemView.findViewById(R.id.wordTextView);
         }
 
-        public void bind(Word.Definition meaning) {
-            wordTextView.setText(meaning.getDefinition());
+        public void bind(Definition definition) {
+            wordTextView.setText(definition.getDefinition());
         }
     }
 
