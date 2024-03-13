@@ -58,13 +58,11 @@ public class DictionaryResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
         binding = ActivityDictionaryResultBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
+
         word = getIntent().getStringExtra(WORD);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(word);
-        }
+        binding.toolbar.setTitle(word);
         searchDefinitionOnline(word);
     }
 
