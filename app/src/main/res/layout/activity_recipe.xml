@@ -6,4 +6,87 @@
     android:layout_height="match_parent"
     tools:context=".recipe.RecipeActivity">
 
+    <EditText
+        android:id="@+id/searchRecipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Search the recipe here.."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:text="Search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchRecipe" />
+
+    <TextView
+        android:id="@+id/StrawberryCheesecake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:paddingTop="8dp"
+        android:text="Strawberry Cake"
+        app:layout_constraintStart_toStartOf="@+id/suggestedSearch"
+        app:layout_constraintTop_toBottomOf="@+id/suggestedSearch" />
+
+    <TextView
+        android:id="@+id/Salad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:paddingTop="8dp"
+        android:text="Salad"
+        app:layout_constraintStart_toStartOf="@+id/Tiramisu"
+        app:layout_constraintTop_toBottomOf="@+id/Tiramisu" />
+
+    <TextView
+        android:id="@+id/Tiramisu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:paddingTop="8dp"
+        android:text="Tiramisu"
+        app:layout_constraintStart_toStartOf="@+id/ChocolateCake"
+        app:layout_constraintTop_toBottomOf="@+id/ChocolateCake" />
+
+    <TextView
+        android:id="@+id/suggestedSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:minHeight="48dp"
+        android:text="You may want to search:"
+        app:layout_constraintStart_toStartOf="@+id/searchButton"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+
+    <TextView
+        android:id="@+id/ChocolateCake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="48dp"
+        android:paddingTop="8dp"
+        android:text="Chocolate Cake"
+        app:layout_constraintStart_toStartOf="@+id/StrawberryCheesecake"
+        app:layout_constraintTop_toBottomOf="@+id/StrawberryCheesecake" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
