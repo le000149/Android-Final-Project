@@ -64,9 +64,11 @@ public class DictionaryResultActivity extends AppCompatActivity {
         binding = ActivityDictionaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         word = getIntent().getStringExtra(WORD);
-        binding.toolbar.setTitle(word);
+        getSupportActionBar().setTitle(word);
 
         boolean onlineSearch = getIntent().getBooleanExtra(ONLINE_SEARCH, false);
         updateSaveOrDeleteIcon();
@@ -101,7 +103,14 @@ public class DictionaryResultActivity extends AppCompatActivity {
                     Toast.makeText(this, "Definition saved", Toast.LENGTH_SHORT).show();
                 }
             }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        getOnBackPressedDispatcher().onBackPressed();
         return true;
     }
 

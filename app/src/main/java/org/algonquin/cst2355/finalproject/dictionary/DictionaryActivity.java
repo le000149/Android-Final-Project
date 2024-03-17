@@ -42,6 +42,8 @@ public class DictionaryActivity extends AppCompatActivity {
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //show the last searched word
         SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -110,8 +112,15 @@ public class DictionaryActivity extends AppCompatActivity {
                     .setMessage("This is a dictionary app. You can search for a word and get its definition.")
                     .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
     }
 
     public static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
