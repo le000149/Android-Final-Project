@@ -8,18 +8,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryBinding;
+import org.algonquin.cst2355.finalproject.dictionary.model.Definition;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -28,6 +32,7 @@ public class DictionaryActivity extends AppCompatActivity {
 
     public static final String SP_KEY_LAST_SEARCH_WORD = "last_search_word";
     public static final String SP_NAME = "dict";
+    private static final String TAG = "DictionaryActivity";
 
     private ActivityDictionaryBinding binding;
 
@@ -37,10 +42,20 @@ public class DictionaryActivity extends AppCompatActivity {
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //show the last searched word
         SharedPreferences sharedPreferences = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         binding.searchEditText.setText(sharedPreferences.getString(SP_KEY_LAST_SEARCH_WORD, ""));
+        binding.searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            Log.d(TAG, "onCreate: " + actionId + " " + event);
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                binding.searchButton.performClick();
+            }
+            return true;
+        });
 
         //add click listener to search button
         binding.searchButton.setOnClickListener(v -> {
@@ -51,10 +66,17 @@ public class DictionaryActivity extends AppCompatActivity {
                 //save the word to shared preferences
                 sharedPreferences.edit().putString(SP_KEY_LAST_SEARCH_WORD, word).apply();
                 //search for the word
-                DictionaryResultActivity.launch(this, word);
+                DictionaryResultActivity.launch(this, word, true);
             }
         });
 
+        showSavedWords();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
         showSavedWords();
     }
 
@@ -62,7 +84,7 @@ public class DictionaryActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
+                List<Definition> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -90,15 +112,22 @@ public class DictionaryActivity extends AppCompatActivity {
                     .setMessage("This is a dictionary app. You can search for a word and get its definition.")
                     .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        getOnBackPressedDispatcher().onBackPressed();
+        return true;
+    }
+
     public static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
 
-        private final List<String> definitions;
+        private final List<Definition> definitions;
 
-        public DefinitionAdapter(List<String> definitions) {
+        public DefinitionAdapter(List<Definition> definitions) {
             this.definitions = definitions;
         }
 
@@ -111,7 +140,7 @@ public class DictionaryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(DefinitionViewHolder holder, int position) {
-            String definition = definitions.get(position);
+            Definition definition = definitions.get(position);
             holder.bind(definition);
         }
 
@@ -122,15 +151,24 @@ public class DictionaryActivity extends AppCompatActivity {
 
         static class DefinitionViewHolder extends RecyclerView.ViewHolder {
 
+            TextView wordTextView;
             TextView definitionTextView;
 
             public DefinitionViewHolder(View itemView) {
                 super(itemView);
-                definitionTextView = itemView.findViewById(R.id.wordTextView);
+                wordTextView = itemView.findViewById(R.id.word_text_view);
+                definitionTextView = itemView.findViewById(R.id.definition_text_view);
             }
 
-            public void bind(String definition) {
-                definitionTextView.setText(definition);
+            public void bind(Definition definition) {
+                wordTextView.setText(definition.getWord());
+                definitionTextView.setText(definition.getDefinition());
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DictionaryResultActivity.launch(v.getContext(), definition.getWord(), false);
+                    }
+                });
             }
         }
     }
