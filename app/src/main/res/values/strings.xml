@@ -7,4 +7,16 @@
     <string name="welcome">Welcome to CST2355 FinalProject</string>
     <string name="help">Help</string>
     <string name="ok">OK</string>
+    <string name="delete_definition">Delete saved definition \"%s\" ?</string>
+    <string name="enter_word_to_search">Please enter the word to search</string>
+    <string name="dict_help">This is a dictionary app. You can search for a word and get its definition.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="definition_deleted">Definition deleted</string>
+    <string name="definition_saved">Definition saved</string>
+    <string name="undo">Undo</string>
+    <string name="enter_a_word_to_search">Enter a word to search</string>
+    <string name="search">Search</string>
+    <string name="search_failed">Search failed %s</string>
+    <string name="add_to_bookmarks">Add to bookmarks</string>
 </resources>
