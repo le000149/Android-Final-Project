@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/search_hint" <!-- Use the string resource for hint -->
+    android:inputType="text"
+    android:imeOptions="actionDone"/>
 
     <Button
-        android:id="@+id/buttonApp1"
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App 1" />
+        android:layout_below="@id/search_edit_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/search_button_text"/> <!-- Use the string resource for button text -->
 
-    <Button
-        android:id="@+id/buttonApp2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="App 2" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_button"
+        android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/buttonApp3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="App 3" />
-
-    <Button
-        android:id="@+id/buttonApp4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="App 4" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -6,37 +6,61 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-    public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
+    private EditText searchEditText;
+    private Button searchButton;
+    private RecyclerView recyclerView;
+    private RecipeAdapter recipeAdapter;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            Button buttonApp1 = findViewById(R.id.buttonApp1);
-            Button buttonApp2 = findViewById(R.id.buttonApp2);
-            Button buttonApp3 = findViewById(R.id.buttonApp3);
-            Button buttonApp4 = findViewById(R.id.buttonApp4);
+        searchEditText = findViewById(R.id.search_edit_text);
+        searchButton = findViewById(R.id.search_button);
+        recyclerView = findViewById(R.id.recycler_view);
 
-            buttonApp1.setOnClickListener(v -> launchApp("com.example.app1"));
-            buttonApp2.setOnClickListener(v -> launchApp("com.example.app2"));
-            buttonApp3.setOnClickListener(v -> launchApp("com.example.app3"));
-            buttonApp4.setOnClickListener(v -> launchApp("com.example.app4"));
-        }
+        // Initialize RecyclerView and Adapter
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recipeAdapter = new RecipeAdapter(new ArrayList<>(), new RecipeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Recipe recipe) {
+                // Handle item click
+                showRecipeDetails(recipe);
+            }
+        });
+        recyclerView.setAdapter(recipeAdapter);
 
-        private void launchApp(String packageName) {
-            Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
-            if (intent != null) {
-                startActivity(intent);
-            } else {
+        // Load saved search term from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String savedSearchTerm = sharedPreferences.getString("searchTerm", "");
+        searchEditText.setText(savedSearchTerm);
 
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchTerm = searchEditText.getText().toString().trim();
+                if (!searchTerm.isEmpty()) {
+                    // Save search term to SharedPreferences
+                    sharedPreferences.edit().putString("searchTerm", searchTerm).apply();
+                    // Perform search operation
+                    performSearch(searchTerm);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please enter a search term", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
+        });
     }
 
+    private void performSearch(String searchTerm) {
+        // Call API and handle response to update RecyclerView
+        // You need to implement this method using Retrofit, Volley, or any other networking library
+    }
 
+    private void showRecipeDetails(Recipe recipe) {
+        Intent intent = new Intent(MainActivity.this, RecipeDetailsActivity.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
+    }
+}
