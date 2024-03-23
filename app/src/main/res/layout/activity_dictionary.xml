@@ -22,11 +22,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:hint="Enter a word to search"
+        android:hint="@string/enter_a_word_to_search"
         android:singleLine="true"
         app:layout_constraintBaseline_toBaselineOf="@id/search_button"
         app:layout_constraintEnd_toStartOf="@id/search_button"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:autofillHints="no"
+        />
 
     <Button
         android:id="@+id/search_button"
@@ -34,12 +36,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
-        android:text="Search"
+        android:text="@string/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/saved_word_recycler_view"
+        android:id="@+id/saved_definition_recycler_view"
         android:paddingVertical="8dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
