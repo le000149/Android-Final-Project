@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryBinding;
@@ -33,8 +36,10 @@ public class DictionaryActivity extends AppCompatActivity {
     public static final String SP_KEY_LAST_SEARCH_WORD = "last_search_word";
     public static final String SP_NAME = "dict";
     private static final String TAG = "DictionaryActivity";
-
+    private List<Definition> definitions;
     private ActivityDictionaryBinding binding;
+    private List<Definition> deletedDefinitions;
+    private DefinitionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +89,12 @@ public class DictionaryActivity extends AppCompatActivity {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                List<Definition> words = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
+                definitions = MainApplication.getDictionaryDB().DefinitionDao().getAllDefinitionDistinct();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        binding.savedWordRecyclerView.setAdapter(new DefinitionAdapter(words));
+                        adapter = new DefinitionAdapter();
+                        binding.savedWordRecyclerView.setAdapter(adapter);
                         binding.savedWordRecyclerView.setLayoutManager(new LinearLayoutManager(DictionaryActivity.this));
                     }
                 });
@@ -123,12 +129,56 @@ public class DictionaryActivity extends AppCompatActivity {
         return true;
     }
 
-    public static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
+    private void askDelDefinition(Definition definition, int position) {
+        new AlertDialog.Builder(DictionaryActivity.this)
+                .setTitle("Delete " + definition.getWord() + " ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        delDefinition(definition, position);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-        private final List<Definition> definitions;
+                    }
+                })
+                .show();
+    }
 
-        public DefinitionAdapter(List<Definition> definitions) {
-            this.definitions = definitions;
+    private void delDefinition(Definition definition, int position) {
+        definitions.remove(position);
+        adapter.notifyItemRemoved(position);
+        Snackbar.make(binding.savedWordRecyclerView, "Item deleted", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deletedDefinitions != null && deletedDefinitions.get(0) != null) {
+                    definitions.add(position, deletedDefinitions.get(0));
+                    adapter.notifyItemInserted(position);
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (deletedDefinitions != null) {
+                                MainApplication.getDictionaryDB().DefinitionDao().saveDefinitions(deletedDefinitions);
+                            }
+                        }
+                    });
+                }
+            }
+        }).show();
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                deletedDefinitions = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(definition.getWord());
+                MainApplication.getDictionaryDB().DefinitionDao().deleteDefinition(definition.getWord());
+            }
+        });
+    }
+
+    public class DefinitionAdapter extends RecyclerView.Adapter<DefinitionAdapter.DefinitionViewHolder> {
+
+        public DefinitionAdapter() {
         }
 
         @NonNull
@@ -141,7 +191,7 @@ public class DictionaryActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(DefinitionViewHolder holder, int position) {
             Definition definition = definitions.get(position);
-            holder.bind(definition);
+            holder.bind(definition, position);
         }
 
         @Override
@@ -149,7 +199,7 @@ public class DictionaryActivity extends AppCompatActivity {
             return definitions.size();
         }
 
-        static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+        class DefinitionViewHolder extends RecyclerView.ViewHolder {
 
             TextView wordTextView;
             TextView definitionTextView;
@@ -160,7 +210,7 @@ public class DictionaryActivity extends AppCompatActivity {
                 definitionTextView = itemView.findViewById(R.id.definition_text_view);
             }
 
-            public void bind(Definition definition) {
+            public void bind(Definition definition, int position) {
                 wordTextView.setText(definition.getWord());
                 definitionTextView.setText(definition.getDefinition());
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +219,15 @@ public class DictionaryActivity extends AppCompatActivity {
                         DictionaryResultActivity.launch(v.getContext(), definition.getWord(), false);
                     }
                 });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        askDelDefinition(definition, position);
+                        return false;
+                    }
+                });
             }
+
         }
     }
 
