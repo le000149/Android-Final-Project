@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/search_hint" <!-- Use the string resource for hint -->
-    android:inputType="text"
-    android:imeOptions="actionDone"/>
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
 
     <Button
         android:id="@+id/search_button"
@@ -21,7 +21,7 @@
         android:layout_below="@id/search_edit_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="@string/search_button_text"/> <!-- Use the string resource for button text -->
+        android:text="@string/search_button_text"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

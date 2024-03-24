@@ -5,6 +5,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.List;
+
 @Dao
 public interface RecipeDao {
     @Insert
@@ -13,6 +15,6 @@ public interface RecipeDao {
     @Delete
     void deleteRecipe(Recipe recipe);
 
-    @Query("SELECT * FROM recipe")
+    @Query("SELECT * FROM recipes")
     List<Recipe> getAllRecipes();
 }
