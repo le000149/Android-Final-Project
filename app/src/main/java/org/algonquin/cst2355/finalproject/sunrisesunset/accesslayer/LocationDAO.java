@@ -20,7 +20,9 @@ public interface LocationDAO {
 
     @Insert
     void saveLocations(Location log);
-
+    @Query("SELECT * FROM Location")
+    List<Location> getAllLocations();
+    @Insert
     void saveLocations(List<Location> locations);
 
     @Query("DELETE FROM Location WHERE latitude = :latitude AND longitude = :longitude")

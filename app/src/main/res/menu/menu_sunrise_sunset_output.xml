@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/delete_sun"
-        android:icon="@drawable/delete"
-        android:title="Save or Delete"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/add_item"
         android:icon="@drawable/bookmark_add"
         android:title="Item"

@@ -79,12 +79,31 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
     }
 
     @Override
-   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-       if (item.getItemId() == R.id.add_item) {
-           lDAO.saveLocations(new Location(latitude, longitude));
-           Toast.makeText(this, "Location saved", Toast.LENGTH_SHORT).show();
-       }
-        return true;
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.add_item) {
+            // Check if the Intent has the extras for LATITUDE and LONGITUDE
+            if(getIntent().hasExtra(LATITUDE) && getIntent().hasExtra(LONGITUDE)) {
+                String lat = getIntent().getStringExtra(LATITUDE);
+                String longi = getIntent().getStringExtra(LONGITUDE);
+
+                // Ensure lDAO is not null
+                if(lDAO != null) {
+                    // Assuming Location constructor takes latitude and longitude as parameters
+                    Location location = new Location(lat, longi);
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        lDAO.saveLocations(location);
+                        // Always make UI changes on the main thread
+                        runOnUiThread(() -> Toast.makeText(this, "Location saved", Toast.LENGTH_SHORT).show());
+                    });
+                } else {
+                    Toast.makeText(this, "Database error", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Latitude or Longitude missing", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void searchSunriseSunsetTimes(String lat,String lng) {

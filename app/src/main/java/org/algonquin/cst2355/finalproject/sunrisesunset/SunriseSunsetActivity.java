@@ -1,5 +1,6 @@
 package org.algonquin.cst2355.finalproject.sunrisesunset;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -97,10 +98,12 @@ public class SunriseSunsetActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
         } else if(item.getItemId() == R.id.lovation_favourite_item){
-
+            Intent intent=new Intent(this,SavedLocationsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public static class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
         private  final List<String> types;

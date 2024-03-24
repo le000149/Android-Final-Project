@@ -68,7 +68,8 @@
         <activity
             android:name=".sunrisesunset.SunriseSunsetResultActivity"
             android:exported="true" />
-
+        <activity android:name=".sunrisesunset.SavedLocationsActivity"
+            android:exported="true"/>
         <activity
             android:name=".dictionary.DictionaryResultActivity"
             android:exported="false" />
