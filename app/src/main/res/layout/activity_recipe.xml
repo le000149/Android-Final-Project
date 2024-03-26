@@ -1,92 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".recipe.RecipeActivity">
+    tools:context=".MainActivity">
+    <!-- activity_main.xml -->
 
-    <EditText
-        android:id="@+id/searchRecipe"
-        android:layout_width="0dp"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/search_hint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchRecipe" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/StrawberryCheesecake"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="48dp"
-        android:paddingTop="8dp"
-        android:text="@string/strawberry_cake"
-        app:layout_constraintStart_toStartOf="@+id/suggestedSearch"
-        app:layout_constraintTop_toBottomOf="@+id/suggestedSearch" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="22sp"
+                android:layout_margin="15dp"
+                android:text="Recipe search"/>
 
-    <TextView
-        android:id="@+id/Salad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:paddingTop="8dp"
-        android:text="@string/salad"
-        app:layout_constraintStart_toStartOf="@+id/Tiramisu"
-        app:layout_constraintTop_toBottomOf="@+id/Tiramisu" />
+            <ImageView
+                android:id="@+id/wd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:src="@mipmap/saved"/>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/Tiramisu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="48dp"
-        android:paddingTop="8dp"
-        android:text="@string/tiramisu"
-        app:layout_constraintStart_toStartOf="@+id/ChocolateCake"
-        app:layout_constraintTop_toBottomOf="@+id/ChocolateCake" />
 
-    <TextView
-        android:id="@+id/suggestedSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:minHeight="48dp"
-        android:text="@string/you_may_want_to"
-        app:layout_constraintStart_toStartOf="@+id/searchButton"
-        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/ChocolateCake"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="48dp"
-        android:paddingTop="8dp"
-        android:text="@string/chocolate_cake"
-        app:layout_constraintStart_toStartOf="@+id/StrawberryCheesecake"
-        app:layout_constraintTop_toBottomOf="@+id/StrawberryCheesecake" />
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColorHint="@color/maintextColor"
+                android:hint="Enter"/>
+            <Button
+                android:id="@+id/btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="search for"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commonRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        >
+
+
+    </LinearLayout>
+</RelativeLayout>
