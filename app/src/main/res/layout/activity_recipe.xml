@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <!-- activity_main.xml -->
+    tools:context=".recipe.RecipeActivity">
+
 
 
     <LinearLayout
@@ -59,12 +59,9 @@
                 android:id="@+id/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="search for"/>
+                android:text="search"/>
 
-
-
-
-        </LinearLayout>
+    </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commonRecycleView"
@@ -82,7 +79,20 @@
         android:layout_centerInParent="true"
         android:visibility="gone"
         >
+        <org.algonquin.cst2355.finalproject.recipe.LoadingView
+            android:id="@+id/line_chart_loading"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            />
+        <TextView
+            android:id="@+id/line_chart_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
+            style="@style/MainTitleStyle"
+            android:gravity="center"
+            android:text="No result."
+            android:visibility="gone"/>
 
     </LinearLayout>
 </RelativeLayout>
