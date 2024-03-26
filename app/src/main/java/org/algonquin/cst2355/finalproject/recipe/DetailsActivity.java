@@ -43,10 +43,10 @@ public class DetailsActivity extends AppCompatActivity {
     private Button mbtn;
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
     private static final String API_KEY = "fbaec43935c24daba666c7b3b6afd0c3";
-    private static final String RECIPE_ID = "511728"; // 这个是可以替换的食谱ID
+    private static final String RECIPE_ID = "511728"; // could replace the id of the recipe
 
-    private MyDBOpenHelper mhelper;//定义数据库帮助类对象
-    private SQLiteDatabase db;//定义一个可以操作的数据库对象
+    private MyDBOpenHelper mhelper;//Define database helper class object
+    private SQLiteDatabase db;//Define a database object for operation
 
     private String url;
     private String Image,Title;
@@ -56,8 +56,8 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        mhelper=new MyDBOpenHelper(DetailsActivity.this);//实例化数据库帮助类
-        db=mhelper.getWritableDatabase();//创建数据库，获取数据库的读写权限
+        mhelper=new MyDBOpenHelper(DetailsActivity.this);//Instantiate database helper class
+        db=mhelper.getWritableDatabase();//Create a database and get read and write permissions for the database
         loadingLinearLayout = findViewById(R.id.line_loading_view);
         mLoadingView =findViewById(R.id.line_chart_loading);
         mNoDataView =findViewById(R.id.line_chart_no_data);
@@ -76,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Snackbar.make(view, "Collection successful!", Snackbar.LENGTH_SHORT).show();
             }
         });
-        //使用Intent对象得到FirstActivity传递来的参数
+        //Get parameters passed by FirstActivity using Intent object
         Intent intent = getIntent();
         id = intent.getIntExtra("ID",0);
         Image = intent.getStringExtra("Image");
@@ -100,17 +100,17 @@ public class DetailsActivity extends AppCompatActivity {
         //        });
         //        mQueue.add(stringRequest_get);
 
-        // 创建请求队列
+        // Create request queue
         loadingLinearLayout.setVisibility(View.VISIBLE);
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-        // 构建查询参数
+        // Build query parameters
         String finalUrl = BASE_URL + id + "/information?apiKey=" + API_KEY;
-        // 创建StringRequest
+        // Create StringRequest
         StringRequest stringRequest = new StringRequest(Request.Method.GET, finalUrl,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //    Log.e("leo", "Response: " + response);
-                // 处理响应数据
+                // Process response data
                 details_model model = JSON.parseObject(response,details_model.class);
                 url= model.getImage();
                 loadingLinearLayout.setVisibility(View.GONE);
