@@ -1,13 +1,15 @@
 package org.algonquin.cst2355.finalproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.algonquin.cst2355.finalproject.dictionary.DictionaryActivity;
 import org.algonquin.cst2355.finalproject.recipe.RecipeActivity;
@@ -20,6 +22,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // find the button
+        Button btnSearchRecipe = findViewById(R.id.RecipeSearch);
+
+        //add a listener
+        btnSearchRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //   RecipeActivity
+                Intent intent = new Intent(MainActivity.this, RecipeActivity.class);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
