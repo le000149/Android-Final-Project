@@ -1,6 +1,6 @@
 package org.algonquin.cst2355.finalproject.dictionary;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,21 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
 import org.algonquin.cst2355.finalproject.databinding.ActivityDictionaryResultBinding;
+import org.algonquin.cst2355.finalproject.dictionary.model.Definition;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,36 +37,55 @@ import java.util.concurrent.Executors;
 
 public class DictionaryResultActivity extends AppCompatActivity {
     public static final String WORD = "word";
+    public static final String ONLINE_SEARCH = "online_search";
+    public static final String BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+    public static final String MEANINGS = "meanings";
+    public static final String DEFINITIONS = "definitions";
+    public static final String DEFINITION = "definition";
     private static final String TAG = "DictionaryResult";
-
     ActivityDictionaryResultBinding binding;
 
-    private ArrayList<Definition> definitions;
+    private List<Definition> definitions;
     private String word;
-    private boolean definitionSaved = true;
+    private boolean definitionSaved = false;
 
-    public static void launch(Activity activity, String word) {
-        Intent intent = new Intent(activity, DictionaryResultActivity.class);
+    public static void launch(Context context, String word, boolean onlineSearch) {
+        Intent intent = new Intent(context, DictionaryResultActivity.class);
         intent.putExtra(WORD, word);
-        activity.startActivity(intent);
+        intent.putExtra(ONLINE_SEARCH, onlineSearch);
+        context.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
+
         binding = ActivityDictionaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         word = getIntent().getStringExtra(WORD);
-        binding.toolbar.setTitle(word);
-        searchDefinitionOnline(word);
+        getSupportActionBar().setTitle(word);
+
+        boolean onlineSearch = getIntent().getBooleanExtra(ONLINE_SEARCH, false);
+        updateSaveOrDeleteIcon();
+        if (onlineSearch) {
+            searchDefinitionOnline(word);
+        } else {
+            searchDefinitionFromDataBase(word);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dictionary_result, menu);
+        MenuItem item = menu.findItem(R.id.save_or_delete_definition);
+        item.setIcon(definitionSaved ? R.drawable.delete : R.drawable.bookmark_add);
         return true;
     }
 
@@ -80,97 +97,105 @@ public class DictionaryResultActivity extends AppCompatActivity {
                     deleteDefinitions(word);
                     definitionSaved = false;
                     item.setIcon(R.drawable.bookmark_add);
-                    Toast.makeText(this, "Definition deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.definition_deleted, Toast.LENGTH_SHORT).show();
                 } else {
                     saveDefinitions(definitions);
                     definitionSaved = true;
                     item.setIcon(R.drawable.delete);
-                    Toast.makeText(this, "Definition saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.definition_saved, Toast.LENGTH_SHORT).show();
                 }
             }
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        getOnBackPressedDispatcher().onBackPressed();
         return true;
     }
 
-    private void deleteDefinitions(String word) {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                MainApplication.getDictionaryDB().DefinitionDao().deleteDefinition(word);
+    private void updateSaveOrDeleteIcon() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            definitionSaved = !MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word).isEmpty();
+            if (definitionSaved) {
+                runOnUiThread(() -> invalidateOptionsMenu());
             }
         });
     }
 
-    private void saveDefinitions(ArrayList<Definition> definitions) {
+    private void deleteDefinitions(String word) {
+        Executors.newSingleThreadExecutor().execute(() -> MainApplication.getDictionaryDB().DefinitionDao().deleteDefinition(word));
+    }
+
+    private void saveDefinitions(List<Definition> definitions) {
         Log.d(TAG, "saveDefinitions: ");
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                MainApplication.getDictionaryDB().DefinitionDao().saveDefinitions(definitions);
-            }
-        });
+        Executors.newSingleThreadExecutor().execute(() -> MainApplication.getDictionaryDB().DefinitionDao().saveDefinitions(definitions));
     }
 
     private void searchDefinitionOnline(String word) {
         Log.d(TAG, "searchForTerm: " + word);
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
+        String url = BASE_URL + word;
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    definitions = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject wordObject = response.getJSONObject(i);
-                        JSONArray meaningsArray = wordObject.getJSONArray("meanings");
-                        for (int j = 0; j < meaningsArray.length(); j++) {
-                            JSONObject meaningsObject = meaningsArray.getJSONObject(j);
-                            JSONArray definitionsArray = meaningsObject.getJSONArray("definitions");
-                            for (int k = 0; k < definitionsArray.length(); k++) {
-                                JSONObject definitionObject = definitionsArray.getJSONObject(k);
-                                String definition = definitionObject.getString("definition");
-                                definitions.add(new Definition(word, definition));
-                            }
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, response -> {
+            try {
+                definitions = new ArrayList<>();
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject wordObject = response.getJSONObject(i);
+                    JSONArray meaningsArray = wordObject.getJSONArray(MEANINGS);
+                    for (int j = 0; j < meaningsArray.length(); j++) {
+                        JSONObject meaningsObject = meaningsArray.getJSONObject(j);
+                        JSONArray definitionsArray = meaningsObject.getJSONArray(DEFINITIONS);
+                        for (int k = 0; k < definitionsArray.length(); k++) {
+                            JSONObject definitionObject = definitionsArray.getJSONObject(k);
+                            String definition = definitionObject.getString(DEFINITION);
+                            definitions.add(new Definition(word, definition));
                         }
                     }
-                    updateRecyclerView(definitions);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                updateRecyclerView(definitions);
+            } catch (JSONException e) {
+                Log.e(TAG, "searchDefinitionOnline: ", e);
+                Toast.makeText(DictionaryResultActivity.this, getString(R.string.search_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Handle error
-            }
+        }, error -> {
+            Toast.makeText(DictionaryResultActivity.this, getString(R.string.search_failed, error.getMessage()), Toast.LENGTH_SHORT).show();
         });
 
         queue.add(jsonArrayRequest);
     }
 
+    private void searchDefinitionFromDataBase(String word) {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            definitions = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word);
+            runOnUiThread(() -> updateRecyclerView(definitions));
+        });
+    }
+
     private void updateRecyclerView(List<Definition> wordDefinitions) {
-        WordDefinitionAdapter adapter = new WordDefinitionAdapter(wordDefinitions);
+        DefinitionAdapter adapter = new DefinitionAdapter(wordDefinitions);
         binding.definitionRecyclerView.setAdapter(adapter);
         binding.definitionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    static class WordDefinitionAdapter extends RecyclerView.Adapter<WordDefinitionViewHolder> {
+    static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionViewHolder> {
         private final List<Definition> definitions;
 
-        public WordDefinitionAdapter(List<Definition> definitions) {
+        public DefinitionAdapter(List<Definition> definitions) {
             this.definitions = definitions;
         }
 
         @NonNull
         @Override
-        public WordDefinitionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_word_definition, parent, false);
-            return new WordDefinitionViewHolder(view);
+        public DefinitionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_definition, parent, false);
+            return new DefinitionViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull WordDefinitionViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull DefinitionViewHolder holder, int position) {
             Definition definition = definitions.get(position);
             holder.bind(definition);
         }
@@ -182,12 +207,12 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
     }
 
-    static class WordDefinitionViewHolder extends RecyclerView.ViewHolder {
+    static class DefinitionViewHolder extends RecyclerView.ViewHolder {
         private final TextView wordTextView;
 
-        public WordDefinitionViewHolder(@NonNull View itemView) {
+        public DefinitionViewHolder(@NonNull View itemView) {
             super(itemView);
-            wordTextView = itemView.findViewById(R.id.wordTextView);
+            wordTextView = itemView.findViewById(R.id.definition_text_view);
         }
 
         public void bind(Definition definition) {

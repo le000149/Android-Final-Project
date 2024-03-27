@@ -1,4 +1,4 @@
-package org.algonquin.cst2355.finalproject.dictionary;
+package org.algonquin.cst2355.finalproject.dictionary.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
