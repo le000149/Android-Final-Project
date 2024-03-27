@@ -45,6 +45,7 @@ public class SongSearchActivity extends AppCompatActivity {
     private List<Song> songList;
     private SongAdapter songAdapter;
     private RequestQueue requestQueue;
+    private SongDAO songDAO;
 
     private static final String DEEZER_API_URL = "https://api.deezer.com/search/artist/?q=";
 
@@ -66,15 +67,24 @@ public class SongSearchActivity extends AppCompatActivity {
 
         // Initialize Volley RequestQueue
         requestQueue = Volley.newRequestQueue(this);
+        // Initialize Room database
+        //songDatabase = Room.databaseBuilder(getApplicationContext(), SongSearchDatabase.class, SongSearchDatabase.NAME)
+        //        .build();
+        //songDAO = songDatabase.SongDao(); // Get DAO instance
+
 
         // Set click listener for the search button
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 searchArtist(artistNameEditText.getText().toString());
+
             }
         });
     }
+
+
 
     private void searchArtist(String artistName) {
         String url = DEEZER_API_URL + artistName;
@@ -87,31 +97,24 @@ public class SongSearchActivity extends AppCompatActivity {
                         try {
                             // Clear previous search results
                             songList.clear();
-                            //songList =new ArrayList<>();
 
-                            // Parse response and extract song details
+                            // Parse response and extract artist details
                             JSONArray data = response.getJSONArray("data");
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject artistObject = data.getJSONObject(i);
-                                String artistName = artistObject.getString("name");
-
-                                String artistId = artistObject.getString("id");
                                 String tracklistUrl = artistObject.getString("tracklist");
-                                String artistPic = artistObject.getString("picture_medium");
-                                // You may fetch additional details of the artist if needed
-                                // For example, you can fetch the artist's top tracks using another API call
 
-                                // Create a Song object and add it to the list
+                                // Create a Song object and add tracklist URL
                                 Song song = new Song();
-                                song.setTitle(artistName);
-                                song.setId(Integer.parseInt(artistId));
-                                song.setPicture(artistPic);
-                                //song.setTracklistUrl(tracklistUrl);
+                                song.setTrackList(tracklistUrl);
                                 songList.add(song);
                             }
 
                             // Notify adapter of changes
                             songAdapter.notifyDataSetChanged();
+
+                            // Call searchAlbum after retrieving tracklist URL
+                            searchAlbum();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -123,12 +126,66 @@ public class SongSearchActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Toast.makeText(SongSearchActivity.this, "Error fetching data from API", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SongSearchActivity.this, "Error fetching data from API1", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        // Add the request to the RequestQueue.
+        // Add the request to the RequestQueue
         requestQueue.add(jsonObjectRequest);
+    }
+    private void searchAlbum() {
+        // Get the tracklist URL from the first song in the list
+        if (!songList.isEmpty()) {
+            String tracklistUrl = songList.get(0).getTrackList();
+
+
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, tracklistUrl, null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Album JSON Response", response.toString()); // Log the JSON response for debuggingA
+                            try {
+                                // Clear previous search results
+                                songList.clear();
+
+                                // Parse response and extract album details
+                                JSONArray data = response.getJSONArray("data");
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject trackObject  = data.getJSONObject(i);
+                                    JSONObject albumObject = trackObject.getJSONObject("album");
+                                    String albumTitle = albumObject.getString("title");
+                                    String albumCover = albumObject.getString("cover_medium");
+
+                                    // Create a Song object and add album details
+                                    Song song = new Song();
+                                    song.setTitle(albumTitle);
+                                    song.setPicture(albumCover);
+                                    songList.add(song);
+                                }
+
+                                // Notify adapter of changes
+                                songAdapter.notifyDataSetChanged();
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(SongSearchActivity.this, "Error parsing JSON response2", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Toast.makeText(SongSearchActivity.this, "Error fetching data from API2", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            // Add the request to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
+        }
     }
 
     public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
@@ -165,13 +222,13 @@ public class SongSearchActivity extends AppCompatActivity {
             public SongViewHolder(@NonNull View itemView) {
                 super(itemView);
                 titleTextView = itemView.findViewById(R.id.artistTextView);
-                id=itemView.findViewById(R.id.artistIDTextView);
+                //id=itemView.findViewById(R.id.artistIDTextView);
                 artistImageView = itemView.findViewById(R.id.artistImageView);
             }
 
             public void bind(Song song) {
                 titleTextView.setText(song.getTitle());
-                id.setText(String.valueOf(song.getId())); // Set text instead of setting ID
+                //id.setText(String.valueOf(song.getId())); // Set text instead of setting ID
                 String imageUrl = song.getPicture();
                 Picasso.get().load(imageUrl).into(artistImageView);
             }

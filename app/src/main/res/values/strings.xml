@@ -7,4 +7,5 @@
     <string name="welcome">Welcome to CST2355 FinalProject</string>
     <string name="help">Help</string>
     <string name="ok">OK</string>
+    <string name="title_activity_song_result">SongResultActivity</string>
 </resources>

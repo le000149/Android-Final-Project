@@ -24,6 +24,8 @@
         private String albumCover;
         @ColumnInfo(name="picture")
         private String picture;
+        @ColumnInfo(name="trackList")
+        private String trackList;
 
         private String Song;
 
@@ -90,6 +92,14 @@
 
         public void setPicture(String picture){
             this.picture=picture;
+        }
+
+        public String getTrackList(){
+            return trackList;
+        }
+
+        public void setTrackList(String trackList){
+            this.trackList=trackList;
         }
 
 
