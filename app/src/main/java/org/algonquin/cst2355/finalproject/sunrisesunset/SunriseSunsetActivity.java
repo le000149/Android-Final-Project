@@ -3,7 +3,6 @@ package org.algonquin.cst2355.finalproject.sunrisesunset;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -141,7 +139,7 @@ public class SunriseSunsetActivity extends AppCompatActivity {
             public LocationViewHolder(View itemView) {
                 super(itemView);
                 typeTextView = itemView.findViewById(R.id.typeTextView);
-                timeTextView =itemView.findViewById(R.id.timeTextView);
+                timeTextView =itemView.findViewById(R.id.wordTextView);
             }
 
             public void bind(String type,String times) {

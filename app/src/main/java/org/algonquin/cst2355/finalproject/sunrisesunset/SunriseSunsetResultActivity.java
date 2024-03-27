@@ -172,7 +172,7 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 sunriseTextView = view.findViewById(R.id.typeTextView);
-               sunsetTextView = view.findViewById(R.id.timeTextView);
+               sunsetTextView = view.findViewById(R.id.wordTextView);
             }
         }
     }

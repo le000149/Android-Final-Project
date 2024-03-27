@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/timeTextView"
+            android:id="@+id/wordTextView"
             android:layout_width="235dp"
             android:layout_height="62dp"
             android:layout_marginStart="88dp"
