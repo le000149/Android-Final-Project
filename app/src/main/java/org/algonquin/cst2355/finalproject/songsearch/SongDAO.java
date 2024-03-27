@@ -10,16 +10,16 @@ import org.algonquin.cst2355.finalproject.songsearch.Song;
 @Dao
 public interface SongDAO {
 
-    @Query("SELECT * FROM Song WHERE id IN (SELECT MIN(id) FROM Song GROUP BY word) ORDER BY id DESC")
+    @Query("SELECT * FROM Song")
     List<Song> getAllSongDistinct();
 
-    @Query("select * from Song where word = :word")
-    List<Song> getSong(String word);
+    @Query("select * from Song where artist = :artist")
+    List<Song> getSong(String artist);
 
     @Insert
     void saveSong(List<Song> songs);
 
-    @Query("delete from Song where word = :word")
-    void deleteSong(String word);
+    @Query("delete from Song where artist = :artist")
+    void deleteSong(String artist);
 
 }
