@@ -32,7 +32,7 @@
             android:label="@string/sunrise_sunset">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -65,7 +65,11 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".sunrisesunset.SunriseSunsetResultActivity"
+            android:exported="true" />
+        <activity android:name=".sunrisesunset.SavedLocationsActivity"
+            android:exported="true"/>
         <activity
             android:name=".dictionary.DictionaryResultActivity"
             android:exported="false" />
