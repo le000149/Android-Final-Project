@@ -63,7 +63,7 @@ public class SavedLocationsActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Location location = locations.get(position);
-            holder.locationTextView.setText("Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
+            holder.locationTextView.setText(getString(R.string.latitude)+location.getLatitude()+"   " +getString(R.string.longitude)+ location.getLongitude());
         }
 
         @Override
@@ -79,17 +79,18 @@ public class SavedLocationsActivity extends AppCompatActivity {
                 locationTextView = itemView.findViewById(R.id.textViewLocation);
                 itemView.setOnClickListener(clk -> {
                     int position = getAdapterPosition();
+                    String message = getString(R.string.question_sun) + " " + locationTextView.getText();
                     AlertDialog.Builder builder = new AlertDialog.Builder(SavedLocationsActivity.this);
-                    builder.setMessage("Do you want to load this location again: " + locationTextView.getText());
+                    builder.setMessage(message);
                     builder.setTitle("Question");
-                    builder.setPositiveButton("Yes", (dialog, cl) -> {
+                    builder.setPositiveButton(R.string.yes, (dialog, cl) -> {
                                 if (position != RecyclerView.NO_POSITION) {
                                     Location location = locations.get(position);
 
                                     SunriseSunsetResultActivity.launch(SavedLocationsActivity.this,location.getLatitude(), location.getLongitude());
                                 }
                             })
-                            .setNegativeButton("No", (dialog, cl) -> {
+                            .setNegativeButton(R.string.no, (dialog, cl) -> {
 
                             }).create().show();
                 });

@@ -66,9 +66,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="@string/sunrise_sunset"
             android:name=".sunrisesunset.SunriseSunsetResultActivity"
             android:exported="true" />
-        <activity android:name=".sunrisesunset.SavedLocationsActivity"
+        <activity
+            android:label="@string/sunrise_sunset"
+            android:name=".sunrisesunset.SavedLocationsActivity"
             android:exported="true"/>
         <activity
             android:name=".dictionary.DictionaryResultActivity"

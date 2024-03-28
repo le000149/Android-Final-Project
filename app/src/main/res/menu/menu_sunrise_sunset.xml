@@ -5,11 +5,11 @@
     <item
         android:id="@+id/AboutSun"
         android:icon="@drawable/help"
-        android:title="About"
+        android:title="@string/help"
         app:showAsAction="always" />
     <item
         android:id="@+id/lovation_favourite_item"
         android:icon="@android:drawable/btn_star"
-        android:title="Item"
+        android:title="@string/add_to_bookmarks"
         app:showAsAction="always" />
 </menu>

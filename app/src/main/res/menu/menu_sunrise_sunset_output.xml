@@ -5,6 +5,6 @@
     <item
         android:id="@+id/add_item"
         android:icon="@drawable/bookmark_add"
-        android:title="Item"
+        android:title="@string/add_to_bookmarks"
         app:showAsAction="always" />
 </menu>
