@@ -19,7 +19,7 @@
         <activity
             android:name=".songsearch.SongResultActivity"
             android:exported="false"
-            android:label="@string/title_activity_song_result"
+            android:label="string/song_search"
             android:theme="@style/Theme.FinalProject" />
         <activity
             android:name=".MainActivity"
