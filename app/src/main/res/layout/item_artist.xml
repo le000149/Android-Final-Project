@@ -20,7 +20,7 @@
         android:id="@+id/artistTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="13dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,8 +29,8 @@
 
     <ImageView
         android:id="@+id/artistImageView"
-        android:layout_width="113dp"
-        android:layout_height="126dp"
+        android:layout_width="139dp"
+        android:layout_height="152dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,9 +45,11 @@ public class SongSearchActivity extends AppCompatActivity  {
     private SongAdapter songAdapter;
     private RequestQueue requestQueue;
     private SongDAO songDAO;
+    private SharedPreferences sharedPreferences;
 
     private static final String DEEZER_API_URL = "https://api.deezer.com/search/artist/?q=";
-
+    private static final String PREFS_NAME = "SongSearchPrefs";
+    private static final String ARTIST_NAME_KEY = "artistName";
 
 
 
@@ -54,6 +57,9 @@ public class SongSearchActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_search);
+
+        // Initialize SharedPreferences
+         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         // Bind views
         artistNameEditText = findViewById(R.id.artistName);
@@ -73,16 +79,25 @@ public class SongSearchActivity extends AppCompatActivity  {
         //        .build();
         //songDAO = songDatabase.SongDao(); // Get DAO instance
 
-
+        artistNameEditText.setText(sharedPreferences.getString(ARTIST_NAME_KEY, ""));
         // Set click listener for the search button
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                searchArtist(artistNameEditText.getText().toString());
+                //searchArtist(artistNameEditText.getText().toString());
+                String artistName = artistNameEditText.getText().toString();
+                saveArtistName(artistName);
+
+                searchArtist(artistName);
 
             }
         });
+    }
+    private void saveArtistName(String artistName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ARTIST_NAME_KEY, artistName);
+        editor.apply();
     }
 
 
