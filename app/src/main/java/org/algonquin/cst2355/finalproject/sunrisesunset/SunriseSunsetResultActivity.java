@@ -93,7 +93,7 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
                     Executors.newSingleThreadExecutor().execute(() -> {
                         lDAO.saveLocations(location);
                         // Always make UI changes on the main thread
-                        runOnUiThread(() -> Toast.makeText(this, "Location saved", Toast.LENGTH_SHORT).show());
+                        runOnUiThread(() -> Toast.makeText(this, R.string.location_saved, Toast.LENGTH_SHORT).show());
                     });
                 } else {
                     Toast.makeText(this, "Database error", Toast.LENGTH_SHORT).show();

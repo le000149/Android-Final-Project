@@ -49,7 +49,7 @@ public class SunriseSunsetActivity extends AppCompatActivity {
             String latitude = binding.editTextLatitude.getText().toString();
             String longitude = binding.editTextLongitude.getText().toString();
             if (latitude.isEmpty() || longitude.isEmpty()) {
-                Toast.makeText(this, "Please enter both latitude and longitude", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,R.string.enter_location_to_search, Toast.LENGTH_SHORT).show();
             } else {
                 sharedPreferences.edit()
                         .putString(SP_KEY_LAST_LATITUDE, latitude)
@@ -91,8 +91,8 @@ public class SunriseSunsetActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.AboutSun) {
             //show help alert dialog
             new AlertDialog.Builder(this)
-                    .setTitle("About")
-                    .setMessage("This is a Sunrise Sunset app. You can search for a combine of latitude, longtitude and get the sunrise and sunset time.")
+                    .setTitle(R.string.help)
+                    .setMessage(R.string.sunrise_sunset_help)
                     .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
         } else if(item.getItemId() == R.id.lovation_favourite_item){

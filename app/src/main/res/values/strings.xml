@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FinalProject</string>
     <string name="sunrise_sunset">Sunrise Sunset</string>
     <string name="recipe_search">Recipe Search</string>
@@ -19,4 +19,14 @@
     <string name="search">Search</string>
     <string name="search_failed">Search failed %s</string>
     <string name="add_to_bookmarks">Add to bookmarks</string>
+    <string name="enter_latitue">Enter the latitue</string>
+    <string name="enter_longitude">Enter the longitude</string>
+    <string name="result_name">SUNRISE AND SUNSET</string>
+    <string name="list_locations">List Favourite Locations</string>
+    <string name="enter_location_to_search">Please enter both latitude and longitude</string>
+    <string name="sunrise_sunset_help">This is a Sunrise Sunset app. You can search for a combine of latitude, longtitude and get the sunrise and sunset time.</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude</string>
+    <string name="location_saved">Location Saved</string>
+    <string name="question_sun">Do you want to load this location again:</string>
 </resources>

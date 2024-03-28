@@ -45,7 +45,7 @@
         android:layout_marginStart="137dp"
         android:layout_marginTop="66dp"
         android:layout_marginEnd="137dp"
-        android:text="SUNRISE AND SUNSET"
+        android:text="@string/result_name"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
