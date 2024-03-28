@@ -6,4 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".sunrisesunset.SunriseSunsetActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_sun"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLongitude" />
+
+    <EditText
+        android:id="@+id/editTextLatitude"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="Latitude"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_sun" />
+
+    <EditText
+        android:id="@+id/editTextLongitude"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="Longitude"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLatitude" />
+
+    <Button
+        android:id="@+id/search_sun_button"
+        android:layout_width="198dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="3dp"
+        android:text="@string/search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextLatitude"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_sun" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_sun"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
