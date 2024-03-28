@@ -17,6 +17,11 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".songsearch.SongResultActivity"
+            android:exported="false"
+            android:label="@string/title_activity_song_result"
+            android:theme="@style/Theme.FinalProject" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +27,6 @@ import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import org.algonquin.cst2355.finalproject.R;
-import org.algonquin.cst2355.finalproject.databinding.ActivitySongSearchBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,17 +34,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongSearchActivity extends AppCompatActivity {
+public class SongSearchActivity extends AppCompatActivity  {
 
     private EditText artistNameEditText;
     private Button searchButton;
     private RecyclerView recyclerView;
     private List<Song> songList;
+    private List<Song> songList2;
     private SongAdapter songAdapter;
     private RequestQueue requestQueue;
     private SongDAO songDAO;
 
     private static final String DEEZER_API_URL = "https://api.deezer.com/search/artist/?q=";
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 JSONObject artistObject = data.getJSONObject(i);
                                 String tracklistUrl = artistObject.getString("tracklist");
 
+
                                 // Create a Song object and add tracklist URL
                                 Song song = new Song();
                                 song.setTrackList(tracklistUrl);
@@ -133,41 +135,36 @@ public class SongSearchActivity extends AppCompatActivity {
         // Add the request to the RequestQueue
         requestQueue.add(jsonObjectRequest);
     }
+
+
     private void searchAlbum() {
-        // Get the tracklist URL from the first song in the list
         if (!songList.isEmpty()) {
-            String tracklistUrl = songList.get(0).getTrackList();
-
-
+            String albumTracklistUrl = songList.get(0).getTrackList();
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.GET, tracklistUrl, null, new Response.Listener<JSONObject>() {
+                    (Request.Method.GET, albumTracklistUrl, null, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.d("Album JSON Response", response.toString()); // Log the JSON response for debuggingA
+                            Log.d("Album JSON Response", response.toString());
                             try {
-                                // Clear previous search results
-                                songList.clear();
-
-                                // Parse response and extract album details
+                                // Extract song details from the album's tracklist
                                 JSONArray data = response.getJSONArray("data");
+                                List<String> songTracklistUrls = new ArrayList<>();
                                 for (int i = 0; i < data.length(); i++) {
-                                    JSONObject trackObject  = data.getJSONObject(i);
+                                    JSONObject trackObject = data.getJSONObject(i);
                                     JSONObject albumObject = trackObject.getJSONObject("album");
-                                    String albumTitle = albumObject.getString("title");
-                                    String albumCover = albumObject.getString("cover_medium");
+                                    String songTracklistUrl = albumObject.getString("tracklist");
 
-                                    // Create a Song object and add album details
-                                    Song song = new Song();
-                                    song.setTitle(albumTitle);
-                                    song.setPicture(albumCover);
-                                    songList.add(song);
+                                    songTracklistUrls.add(songTracklistUrl);
+
+
+
                                 }
 
-                                // Notify adapter of changes
-                                songAdapter.notifyDataSetChanged();
 
+                                // Call searchSong with the list of song tracklist URLs
+                                searchSong(songTracklistUrls);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -179,7 +176,59 @@ public class SongSearchActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Toast.makeText(SongSearchActivity.this, "Error fetching data from API2", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SongSearchActivity.this, "Error fetching album data from API", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            // Add the request to the RequestQueue
+            requestQueue.add(jsonObjectRequest);
+        }
+    }
+
+    private void searchSong(List<String> songTracklistUrls) {
+        // Get the tracklist URL from the first song in the list
+        songList.clear();
+
+        // Fetch songs from each song tracklist URL
+        for (String songTracklistUrl : songTracklistUrls) {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, songTracklistUrl, null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                // Parse response and extract song details
+                                JSONArray data = response.getJSONArray("data");
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject songObject = data.getJSONObject(i);
+                                    String songTitle = songObject.getString("title");
+                                    String md5Hash = songObject.getString("md5_image");
+
+                                    Log.d("Song Title", songTitle);
+                                    Log.d("MD5 Hash", md5Hash);
+                                            // Create a Song object and add song details
+                                    Song song = new Song();
+                                    song.setTitle(songTitle);
+                                    song.setPicture(md5Hash);
+
+
+                                    songList.add(song);
+                                }
+
+                                // Notify adapter of changes after adding all songs from this tracklist
+                                songAdapter.notifyDataSetChanged();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                //Toast.makeText(SongSearchActivity.this, "Error parsing JSON response3", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Toast.makeText(SongSearchActivity.this, "Error fetching song data from API", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -192,8 +241,14 @@ public class SongSearchActivity extends AppCompatActivity {
 
         private List<Song> songList;
 
+
+        public interface OnItemClickListener {
+            void onItemClick(Song song);
+        }
         public SongAdapter(List<Song> songList) {
+
             this.songList = songList;
+
         }
 
         @NonNull
@@ -224,13 +279,23 @@ public class SongSearchActivity extends AppCompatActivity {
                 titleTextView = itemView.findViewById(R.id.artistTextView);
                 //id=itemView.findViewById(R.id.artistIDTextView);
                 artistImageView = itemView.findViewById(R.id.artistImageView);
+
             }
 
             public void bind(Song song) {
                 titleTextView.setText(song.getTitle());
                 //id.setText(String.valueOf(song.getId())); // Set text instead of setting ID
-                String imageUrl = song.getPicture();
+                String imageUrl = "https://e-cdns-images.dzcdn.net/images/cover/"+song.getPicture()+"/1000x1000-000000-80-0-0.jpg";
                 Picasso.get().load(imageUrl).into(artistImageView);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Launch SongResultActivity with necessary data
+                        Intent intent = new Intent(v.getContext(), SongResultActivity.class);
+                        //intent.putExtra("song", song); // Pass the selected song object
+                        v.getContext().startActivity(intent);
+                    }
+                });
             }
         }
     }
