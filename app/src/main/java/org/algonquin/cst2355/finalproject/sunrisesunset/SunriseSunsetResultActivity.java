@@ -35,19 +35,29 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
-
+/**
+ * Activity for displaying sunrise and sunset times for a given location.
+ * Users can save the current location to a database or view the times fetched from an external API.
+ */
 public class SunriseSunsetResultActivity extends AppCompatActivity {
+    // Field descriptions
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     private static final String TAG = "SunriseSunsetResult";
-
+    // Binding and data fields
     ActivitySunriseSunsetOutputBinding binding;
     private ArrayList<Location> locations;
     private LocationDAO lDAO;
     private boolean locationSaved = true;
     private String latitude;
     private String longitude;
-
+    /**
+     * Static method to launch this activity with latitude and longitude parameters.
+     *
+     * @param activity The parent activity from which this activity is being launched.
+     * @param latitude The latitude of the location for which to display sunrise and sunset times.
+     * @param longitude The longitude of the location for which to display sunrise and sunset times.
+     */
     public static void launch(Activity activity, String latitude, String longitude) {
         Intent intent = new Intent(activity, SunriseSunsetResultActivity.class);
         intent.putExtra(LATITUDE, latitude);
@@ -105,7 +115,12 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    /**
+     * Fetches sunrise and sunset times for the specified location from an external API and updates the UI.
+     *
+     * @param lat The latitude of the location.
+     * @param lng The longitude of the location.
+     */
     private void searchSunriseSunsetTimes(String lat,String lng) {
        Log.d(TAG, "searchForLocation: " + lat +lng);
         String url = "https://api.sunrise-sunset.org/json?lat=" + lat + "&lng=" + lng + "&date=today";
@@ -129,16 +144,23 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
 
             queue.add(jsonObjectRequest);
         }
-
+    /**
+     * Updates the UI to display the sunrise and sunset times.
+     *
+     * @param sunrise The sunrise time to display.
+     * @param sunset The sunset time to display.
+     */
         private void updateUI(String sunrise, String sunset) {
             List<SunriseSunset> sunriseSunsetList = new ArrayList<>();
-            sunriseSunsetList.add(new SunriseSunset(sunrise, sunset)); // Tạo danh sách mới với kết quả
+            sunriseSunsetList.add(new SunriseSunset(sunrise, sunset));
 
             SunriseSunsetAdapter adapter = new SunriseSunsetAdapter(sunriseSunsetList);
             binding.recyclerSunTime.setLayoutManager(new LinearLayoutManager(this));
             binding.recyclerSunTime.setAdapter(adapter);
     }
-
+    /**
+     * Adapter class for displaying sunrise and sunset times in a RecyclerView.
+     */
     public class SunriseSunsetAdapter extends RecyclerView.Adapter<SunriseSunsetAdapter.ViewHolder> {
         private List<SunriseSunset> data;
 
