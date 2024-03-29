@@ -29,4 +29,5 @@
     <string name="longitude">Longitude</string>
     <string name="location_saved">Location Saved</string>
     <string name="question_sun">Do you want to load this location again:</string>
+    <string name="SongSaved">Saved Songs List</string>
 </resources>

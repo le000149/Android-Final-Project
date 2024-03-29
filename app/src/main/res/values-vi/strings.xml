@@ -29,5 +29,6 @@
     <string name="longitude">Kinh độ:</string>
     <string name="location_saved">Đã lưu địa điểm</string>
     <string name="question_sun">Xem lại thời gian cho địa điểm này:</string>
+    <string name="SongSaved">Danh Sách Nhạc</string>
 
 </resources>

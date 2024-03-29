@@ -1,18 +1,26 @@
 package org.algonquin.cst2355.finalproject.songsearch;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import org.algonquin.cst2355.finalproject.R;
@@ -27,9 +35,72 @@ public class SavedSongActivity extends AppCompatActivity {
     private SongDAO songDAO;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_saved_song, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_delete_all) {
+            deleteAllSavedSongs();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAllSavedSongs() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to delete all saved songs?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Get the count of saved songs before deletion
+                        int itemCountBeforeDeletion = songAdapter.getItemCount();
+
+                        // User clicked OK button, delete all saved songs
+                        Executors.newSingleThreadExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Delete all saved songs from the database
+                                songDAO.deleteAll();
+
+                                // Refresh the RecyclerView to reflect the changes
+                                List<Song> savedSongs = songDAO.getAllSongDistinct();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        songAdapter.setSongs(savedSongs);
+
+                                        // Calculate the count of deleted items
+                                        int deletedItemCount = itemCountBeforeDeletion - savedSongs.size();
+
+                                        // Show a Snackbar indicating the number of items deleted
+                                        Snackbar.make(findViewById(android.R.id.content),
+                                                String.format("%d songs deleted", deletedItemCount),
+                                                Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog, do nothing
+                    }
+                });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_song);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.saved_song_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -83,7 +154,7 @@ public class SavedSongActivity extends AppCompatActivity {
 
             //holder.artistTextView.setText(song.getArtist());
             //holder.albumTextView.setText(song.getAlbumName());
-            //holder.durationTextView.setText(song.getDuration());
+            String duration = song.getSongDuration();
             // Add more bindings as needed
         }
 
@@ -111,6 +182,25 @@ public class SavedSongActivity extends AppCompatActivity {
                 //albumTextView = itemView.findViewById(R.id.albumTextView);
                 //durationTextView = itemView.findViewById(R.id.durationTextView);
                 artistImageView = itemView.findViewById(R.id.artistImageView);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            Song song = songs.get(position);
+                            // Launch SongResultActivity with necessary data
+                            Intent intent = new Intent(v.getContext(), SongResultActivity.class);
+                            intent.putExtra("title", song.getTitle());
+                            intent.putExtra("albumName", song.getAlbumName());
+                            intent.putExtra("songDuration", song.getDuration());
+                            intent.putExtra("albumCover", song.getAlbumCover());
+                            intent.putExtra("artistName", song.getArtist());
+                            intent.putExtra("SongPic", song.getPicture());
+                            v.getContext().startActivity(intent);
+                        }
+                    }
+                });
             }
         }
     }

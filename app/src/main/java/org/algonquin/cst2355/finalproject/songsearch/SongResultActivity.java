@@ -1,8 +1,8 @@
 package org.algonquin.cst2355.finalproject.songsearch;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+//import androidx.recyclerview.widget.LinearLayoutManager;
+//import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
 
@@ -17,22 +17,22 @@ import android.widget.Toast;
 import java.util.concurrent.Executors;
 
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+//import com.android.volley.Request;
+//import com.android.volley.Response;
+//import com.android.volley.VolleyError;
+//import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
 import org.algonquin.cst2355.finalproject.R;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONArray;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 public class SongResultActivity extends AppCompatActivity {
-    private List<Song> songList;
+    //private List<Song> songList;
 
     private TextView titleTextView;
     private TextView albumNameTextView;
@@ -67,6 +67,7 @@ public class SongResultActivity extends AppCompatActivity {
             String artistName = intent.getStringExtra("artistName");
             String SongPic = intent.getStringExtra("SongPic");
 
+
             if (songDAO == null) {
                 Toast.makeText(this, "Failed to save song: DAO is null", Toast.LENGTH_SHORT).show();
                 return;
@@ -97,6 +98,7 @@ public class SongResultActivity extends AppCompatActivity {
                         song.setAlbumCover(albumCover);
                         song.setArtist(artistName);
                         song.setPicture(SongPic);
+                        song.setDuration(duration);
 
                         songDAO.saveSong(song);
 
