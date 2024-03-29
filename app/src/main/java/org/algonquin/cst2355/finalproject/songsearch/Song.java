@@ -30,6 +30,9 @@
         @ColumnInfo(name="SongTrackList")
         private String SongTrackList;
 
+        @ColumnInfo(name="SongDuration")
+        private String SongDuration;
+
         private String Song;
 
 
@@ -112,4 +115,12 @@
         public void setSongTrackList(String songTrackList) {
             SongTrackList = songTrackList;
         }
+
+        public String getSongDuration() {
+            return SongDuration;
+        }
+        public void setSongDuration(String songDuration) {
+            SongDuration = songDuration;
+        }
+
     }

@@ -16,10 +16,15 @@ public interface SongDAO {
     @Query("select * from Song where artist = :artist")
     List<Song> getSong(String artist);
 
+    @Query("SELECT * FROM Song WHERE title = :title")
+    Song getSongByTitle(String title);
+
+
     @Insert
-    void saveSong(List<Song> songs);
+    void saveSong(Song song);
 
     @Query("delete from Song where artist = :artist")
     void deleteSong(String artist);
-
+    @Query("DELETE FROM Song")
+    void deleteAll();
 }

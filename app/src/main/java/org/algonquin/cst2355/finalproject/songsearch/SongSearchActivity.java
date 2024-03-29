@@ -2,6 +2,7 @@ package org.algonquin.cst2355.finalproject.songsearch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -51,15 +55,34 @@ public class SongSearchActivity extends AppCompatActivity  {
     private static final String PREFS_NAME = "SongSearchPrefs";
     private static final String ARTIST_NAME_KEY = "artistName";
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_song_search, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_songList) {
+            Intent intent = new Intent(this, SavedSongActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_search);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Initialize SharedPreferences
-         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         // Bind views
         artistNameEditText = findViewById(R.id.artistName);
@@ -120,7 +143,6 @@ public class SongSearchActivity extends AppCompatActivity  {
                                 JSONObject artistObject = data.getJSONObject(i);
                                 String tracklistUrl = artistObject.getString("tracklist");
 
-
                                 // Create a Song object and add tracklist URL
                                 Song song = new Song();
                                 song.setTrackList(tracklistUrl);
@@ -130,9 +152,8 @@ public class SongSearchActivity extends AppCompatActivity  {
                             // Notify adapter of changes
                             songAdapter.notifyDataSetChanged();
 
-                            // Call searchAlbum after retrieving tracklist URL
-                            searchAlbum();
-
+                            // Call searchSong after retrieving tracklist URL
+                            searchSong();
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(SongSearchActivity.this, "Error parsing JSON response", Toast.LENGTH_SHORT).show();
@@ -152,7 +173,7 @@ public class SongSearchActivity extends AppCompatActivity  {
     }
 
 
-    private void searchAlbum() {
+    private void searchSong() {
         if (!songList.isEmpty()) {
             String albumTracklistUrl = songList.get(0).getTrackList();
 
@@ -163,23 +184,36 @@ public class SongSearchActivity extends AppCompatActivity  {
                         public void onResponse(JSONObject response) {
                             Log.d("Album JSON Response", response.toString());
                             try {
+                                songList.clear();
                                 // Extract song details from the album's tracklist
                                 JSONArray data = response.getJSONArray("data");
                                 List<String> songTracklistUrls = new ArrayList<>();
                                 for (int i = 0; i < data.length(); i++) {
                                     JSONObject trackObject = data.getJSONObject(i);
+                                    String songTitle = trackObject.getString("title");
+                                    String md5Hash = trackObject.getString("md5_image");
+                                    String songDuration = trackObject.getString("duration");
+
                                     JSONObject albumObject = trackObject.getJSONObject("album");
-                                    String songTracklistUrl = albumObject.getString("tracklist");
+                                    String AlbumName = albumObject.getString("title");
+                                    String AlbumCover=albumObject.getString("cover_xl");
 
-                                    songTracklistUrls.add(songTracklistUrl);
+                                    JSONObject artistObject = trackObject.getJSONObject("artist");
+                                    String artistName = artistObject.getString("name");
 
-
-
+                                    // Create a new Song object and add it to the songList
+                                    Song song = new Song();
+                                    song.setTitle(songTitle);
+                                    song.setPicture(md5Hash);
+                                    song.setAlbumName(AlbumName);
+                                    song.setSongDuration(songDuration);
+                                    song.setAlbumCover(AlbumCover);
+                                    song.setArtist(artistName);
+                                    songList.add(song); // Add the song to the list
                                 }
 
-
-                                // Call searchSong with the list of song tracklist URLs
-                                searchSong(songTracklistUrls);
+                                // Notify the adapter of changes
+                                songAdapter.notifyDataSetChanged();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -200,57 +234,7 @@ public class SongSearchActivity extends AppCompatActivity  {
         }
     }
 
-    private void searchSong(List<String> songTracklistUrls) {
-        // Get the tracklist URL from the first song in the list
-        songList.clear();
 
-        // Fetch songs from each song tracklist URL
-        for (String songTracklistUrl : songTracklistUrls) {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.GET, songTracklistUrl, null, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                // Parse response and extract song details
-                                JSONArray data = response.getJSONArray("data");
-                                for (int i = 0; i < data.length(); i++) {
-                                    JSONObject songObject = data.getJSONObject(i);
-                                    String songTitle = songObject.getString("title");
-                                    String md5Hash = songObject.getString("md5_image");
-
-                                    Log.d("Song Title", songTitle);
-                                    Log.d("MD5 Hash", md5Hash);
-                                            // Create a Song object and add song details
-                                    Song song = new Song();
-                                    song.setTitle(songTitle);
-                                    song.setPicture(md5Hash);
-
-
-                                    songList.add(song);
-                                }
-
-                                // Notify adapter of changes after adding all songs from this tracklist
-                                songAdapter.notifyDataSetChanged();
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                //Toast.makeText(SongSearchActivity.this, "Error parsing JSON response3", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Toast.makeText(SongSearchActivity.this, "Error fetching song data from API", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-            // Add the request to the RequestQueue
-            requestQueue.add(jsonObjectRequest);
-        }
-    }
 
     public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
 
@@ -299,7 +283,7 @@ public class SongSearchActivity extends AppCompatActivity  {
 
             public void bind(Song song) {
                 titleTextView.setText(song.getTitle());
-                //id.setText(String.valueOf(song.getId())); // Set text instead of setting ID
+                //id.setText(String.valueOf(song.getAlbumName())); // Set text instead of setting ID
                 String imageUrl = "https://e-cdns-images.dzcdn.net/images/cover/"+song.getPicture()+"/1000x1000-000000-80-0-0.jpg";
                 Picasso.get().load(imageUrl).into(artistImageView);
                 itemView.setOnClickListener(new View.OnClickListener() {
@@ -308,6 +292,12 @@ public class SongSearchActivity extends AppCompatActivity  {
                         // Launch SongResultActivity with necessary data
                         Intent intent = new Intent(v.getContext(), SongResultActivity.class);
                         //intent.putExtra("song", song); // Pass the selected song object
+                        intent.putExtra("title", song.getTitle());
+                        intent.putExtra("albumName", song.getAlbumName());
+                        intent.putExtra("songDuration", song.getSongDuration());
+                        intent.putExtra("albumCover", song.getAlbumCover());
+                        intent.putExtra("artistName", song.getArtist());
+                        intent.putExtra("SongPic", song.getPicture());
                         v.getContext().startActivity(intent);
                     }
                 });
