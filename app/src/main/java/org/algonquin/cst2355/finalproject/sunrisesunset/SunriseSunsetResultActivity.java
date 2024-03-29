@@ -24,6 +24,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.algonquin.cst2355.finalproject.MainApplication;
 import org.algonquin.cst2355.finalproject.R;
@@ -32,8 +33,15 @@ import org.algonquin.cst2355.finalproject.sunrisesunset.accesslayer.LocationDAO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 /**
  * Activity for displaying sunrise and sunset times for a given location.
@@ -68,6 +76,7 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         Log.d(TAG, "onCreate: ");
         binding = ActivitySunriseSunsetOutputBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -135,7 +144,9 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
                    String sunriseUTC = results.getString("sunrise");
                     String sunsetUTC = results.getString("sunset");
 
-                   updateUI(sunriseUTC, sunsetUTC);
+                    String sunriseLocal = convertTimeToLocalTimeZone(sunriseUTC);
+                    String sunsetLocal = convertTimeToLocalTimeZone(sunsetUTC);
+                   updateUI(sunriseLocal, sunsetLocal);
                } catch (JSONException e) {
                     e.printStackTrace();
                }
@@ -144,6 +155,37 @@ public class SunriseSunsetResultActivity extends AppCompatActivity {
 
             queue.add(jsonObjectRequest);
         }
+    /**
+     * Converts a time string from UTC to the local timezone and formats it for display.
+     * This method assumes the time provided is for the current date in UTC and converts it
+     * to the system's default timezone, formatting the output to a more readable form without seconds.
+     *
+     * @param utcTime The time string in UTC to be converted. Expected format is "hh:mm:ss a"
+     * @return A string representing the converted time in the system's default timezone, formatted as "hh:mm a" (e.g., "10:59 AM"),
+     *         using the US locale. Returns the original UTC time string if parsing fails.
+     * @throws DateTimeParseException if the utcTime string cannot be parsed into a valid time.
+     *                                This exception is caught within the method and logged, and the original
+     *                                utcTime string is returned in such cases.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String convertTimeToLocalTimeZone(String utcTime) {
+        try {
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.US);
+            LocalTime time = LocalTime.parse(utcTime, inputFormatter);
+            // Assuming today's date for the conversion (UTC)
+            LocalDate today = LocalDate.now(ZoneId.of("UTC"));
+            // Combine local time and date, and specify the initial timezone as UTC
+            ZonedDateTime utcDateTime = ZonedDateTime.of(today, time, ZoneId.of("UTC"));
+            // Convert UTC DateTime to the system's default timezone
+            ZonedDateTime localDateTime = utcDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            // Output format (e.g., "hh:mm a" for "10:59 AM")
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.US);
+            return outputFormatter.format(localDateTime);
+        } catch (DateTimeParseException e) {
+            Log.e(TAG, "Error parsing time: " + utcTime, e);
+            return utcTime; // Return the original time if there's a parsing error
+        }
+    }
     /**
      * Updates the UI to display the sunrise and sunset times.
      *
