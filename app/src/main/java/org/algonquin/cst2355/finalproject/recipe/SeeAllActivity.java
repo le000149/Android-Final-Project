@@ -89,7 +89,7 @@ public class SeeAllActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery("select * from repair", null);
         if (cursor.getCount() != 0) {// Check if the result set has data
             // Query successful
-            Toast.makeText(SeeAllActivity.this, "query was successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SeeAllActivity.this, "Successful", Toast.LENGTH_SHORT).show();
 
             // Iterate through the result set, retrieve data, and display it
             cursor.moveToFirst();

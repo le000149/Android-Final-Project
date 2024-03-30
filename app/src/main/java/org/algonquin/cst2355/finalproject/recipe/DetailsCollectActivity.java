@@ -71,7 +71,7 @@ public class DetailsCollectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder normalDialog=new AlertDialog.Builder(DetailsCollectActivity.this);
-                normalDialog.setTitle("prompt");
+                normalDialog.setTitle("Caution!");
                 normalDialog.setMessage("Are you sure to delete this collection？");
                 normalDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override

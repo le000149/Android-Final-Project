@@ -75,7 +75,24 @@ public class DetailsActivity extends AppCompatActivity {
                 values.put("region",id);
                 values.put("url",Image);
                 db.insert("repair",null,values);
-                Snackbar.make(view, "Collection successful!", Snackbar.LENGTH_SHORT).show();
+                long insertedRowId = db.insert("repair", null, values);
+
+                if (insertedRowId != -1) {
+                    // Show Snackbar with action to undo
+                    Snackbar snackbar = Snackbar.make(view, "Collected successful!", Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Handle undo action here
+                            // Delete the inserted data from the database
+                            db.delete("repair", "name = ? AND region = ? AND url = ?", new String[]{Title, String.valueOf(id), Image});
+                            Snackbar.make(view, "Undo successful!", Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
+                    snackbar.show();
+                } else {
+                    Snackbar.make(view, "Failed to collect!", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
         // Get data from the intent
