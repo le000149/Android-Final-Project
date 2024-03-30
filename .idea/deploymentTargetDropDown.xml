@@ -17,7 +17,19 @@
       <entry key="SunriseSunsetResultActivity">
         <State />
       </entry>
+      <entry key="SunriseSunsetActivityTest">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="helpActivityTest()">
+        <State />
+      </entry>
+      <entry key="searchActivityTest()">
+        <State />
+      </entry>
+      <entry key="sunriseSunsetActivityTest()">
         <State />
       </entry>
     </value>

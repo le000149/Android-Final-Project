@@ -25,7 +25,11 @@ import org.algonquin.cst2355.finalproject.sunrisesunset.accesslayer.LocationDAO;
 
 import java.util.List;
 import java.util.concurrent.Executors;
-
+/**
+ * An activity that allows users to search for sunrise and sunset times based on latitude and longitude.
+ * It also displays a list of previously searched locations, allowing users to select a location to view its
+ * sunrise and sunset times. The activity saves the last searched location in SharedPreferences.
+ */
 public class SunriseSunsetActivity extends AppCompatActivity {
     private static final String SP_KEY_LAST_LATITUDE = "last_latitude";
     private static final String SP_KEY_LAST_LONGITUDE = "last_longitude";
@@ -33,7 +37,15 @@ public class SunriseSunsetActivity extends AppCompatActivity {
     private LocationDAO lDAO;
 
     private ActivitySunriseSunsetBinding binding;
-
+    /**
+     * Initializes the activity, its views, and sets up the interaction logic.
+     * Loads the last searched location from SharedPreferences and displays it in the input fields.
+     * Sets up a RecyclerView to display previously searched locations.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     *                           Note: Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +74,10 @@ public class SunriseSunsetActivity extends AppCompatActivity {
 
         showSavedLocations();
     }
+    /**
+     * Displays previously searched locations by fetching distinct latitude and longitude values from the database.
+     * This method asynchronously queries the database and updates the RecyclerView on the UI thread.
+     */
     private void showSavedLocations() {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
@@ -101,8 +117,9 @@ public class SunriseSunsetActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
+    /**
+     * An adapter class for the RecyclerView that displays latitude and longitude pairs of saved locations.
+     */
     public static class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
         private  final List<String> types;
         private final List<String> times;
