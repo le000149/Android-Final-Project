@@ -24,8 +24,9 @@
         <activity
             android:name=".songsearch.SongResultActivity"
             android:exported="true"
-            android:label="@string/song_search"
-            android:theme="@style/Theme.FinalProject" />
+            android:label="@string/song_result"
+            android:theme="@style/Theme.FinalProject"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -45,14 +45,32 @@ public class SavedSongActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_delete_all) {
             deleteAllSavedSongs();
             return true;
+        }else if(item.getItemId() == R.id.AboutSongSavePage){
+            showHelp();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void showHelp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.songSaveList));
+        builder.setMessage(getString(R.string.songSaveListD));
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void deleteAllSavedSongs() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to delete all saved songs?")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.songDelete))
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Get the count of saved songs before deletion
                         int itemCountBeforeDeletion = songAdapter.getItemCount();
@@ -76,7 +94,7 @@ public class SavedSongActivity extends AppCompatActivity {
 
                                         // Show a Snackbar indicating the number of items deleted
                                         Snackbar.make(findViewById(android.R.id.content),
-                                                String.format("%d songs deleted", deletedItemCount),
+                                                String.format("%d "+getString(R.string.songDeletemsg), deletedItemCount),
                                                 Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
@@ -84,7 +102,7 @@ public class SavedSongActivity extends AppCompatActivity {
                         });
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog, do nothing
                     }
@@ -128,7 +146,7 @@ public class SavedSongActivity extends AppCompatActivity {
         });
     }
 
-    public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
+    public  class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
         private List<Song> songs;
 
         public void setSongs(List<Song> songs) {
@@ -199,6 +217,46 @@ public class SavedSongActivity extends AppCompatActivity {
                             intent.putExtra("SongPic", song.getPicture());
                             v.getContext().startActivity(intent);
                         }
+                    }
+                });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            // Get the song at the clicked position
+                            Song song = songs.get(position);
+
+                            // Show an AlertDialog to confirm song deletion
+                            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+                            builder.setMessage(getString(R.string.songDelete2))
+                                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Delete the song from the database
+                                            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    songDAO.delete(song);
+
+                                                    // Refresh the RecyclerView to reflect the changes
+                                                    List<Song> updatedSongs = songDAO.getAllSongDistinct();
+                                                    ((SavedSongActivity) itemView.getContext()).runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            songAdapter.setSongs(updatedSongs);
+                                                            // Show a Snackbar to indicate song deletion
+                                                            Snackbar.make(itemView, getString(R.string.songDeletemsg), Snackbar.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    })
+                                    .setNegativeButton(getString(R.string.no), null)
+                                    .show();
+                        }
+                        return true;
                     }
                 });
             }

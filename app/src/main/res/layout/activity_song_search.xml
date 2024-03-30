@@ -23,7 +23,7 @@
         android:id="@+id/artistName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter artist name"
+        android:hint="@string/SongText"
         app:layout_constraintEnd_toStartOf="@id/buttonSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -33,7 +33,7 @@
         android:id="@+id/buttonSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
+        android:text="@string/SongSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 

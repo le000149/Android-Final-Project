@@ -1,11 +1,13 @@
 package org.algonquin.cst2355.finalproject.songsearch;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -45,10 +47,10 @@ public class SongSearchActivity extends AppCompatActivity  {
     private Button searchButton;
     private RecyclerView recyclerView;
     private List<Song> songList;
-    private List<Song> songList2;
+
     private SongAdapter songAdapter;
     private RequestQueue requestQueue;
-    private SongDAO songDAO;
+
     private SharedPreferences sharedPreferences;
 
     private static final String DEEZER_API_URL = "https://api.deezer.com/search/artist/?q=";
@@ -69,9 +71,27 @@ public class SongSearchActivity extends AppCompatActivity  {
             Intent intent = new Intent(this, SavedSongActivity.class);
             startActivity(intent);
             return true;
-        } else {
+        } else if(id == R.id.AboutSongSearch){
+            showHelp();
+            return true;
+        }else {
             return super.onOptionsItemSelected(item);
         }
+
+    }
+    private void showHelp() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.songhelp));
+        builder.setMessage(getString(R.string.songhelpdetail));
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Dismiss the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -156,7 +176,7 @@ public class SongSearchActivity extends AppCompatActivity  {
                             searchSong();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(SongSearchActivity.this, "Error parsing JSON response", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SongSearchActivity.this, getString(R.string.Textmsg), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -271,7 +291,7 @@ public class SongSearchActivity extends AppCompatActivity  {
         static class SongViewHolder extends RecyclerView.ViewHolder {
 
             TextView titleTextView;
-            TextView id;
+
             ImageView artistImageView;
             public SongViewHolder(@NonNull View itemView) {
                 super(itemView);

@@ -2,10 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:id="@+id/action_delete_all"
         android:icon="@drawable/song_delete"
-        android:title="Save"
+        android:title="@string/songDeletemsg2"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/AboutSongSavePage"
+        android:icon="@drawable/help"
+        android:title="@string/help"
+        app:showAsAction="always" />
 </menu>
