@@ -44,7 +44,7 @@ public class DetailsCollectActivity extends AppCompatActivity {
 
     private Button mbtn;
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
-    private static final String API_KEY = "fbaec43935c24daba666c7b3b6afd0c3";
+    private static final String API_KEY = "8c1cbcf7e6db4a71b7ac99a6f0f9ec76";
     private static final String RECIPE_ID = "511728";
 
     private MyDBOpenHelper mhelper;

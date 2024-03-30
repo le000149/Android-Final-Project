@@ -42,7 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private Button mbtn;
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
-    private static final String API_KEY = "fbaec43935c24daba666c7b3b6afd0c3";
+    private static final String API_KEY = "8c1cbcf7e6db4a71b7ac99a6f0f9ec76";
     private static final String RECIPE_ID = "511728"; // this could be replaced with another id
 
     private MyDBOpenHelper mhelper;
@@ -74,7 +74,7 @@ public class DetailsActivity extends AppCompatActivity {
                 values.put("name",Title);
                 values.put("region",id);
                 values.put("url",Image);
-                db.insert("repair",null,values);
+
                 long insertedRowId = db.insert("repair", null, values);
 
                 if (insertedRowId != -1) {
@@ -138,7 +138,8 @@ public class DetailsActivity extends AppCompatActivity {
                 loadingLinearLayout.setVisibility(View.GONE);
 
                 // Display recipe details
-                mdetails_Summary.setText(model.getSummary());
+                mdetails_Summary.setText(model.getSummary().replaceAll("<b>", " ").replaceAll("</b>", " "));
+
                 mdetails_Spoonacular_Source_Url.setText(model.getSpoonacularSourceUrl());
                 Glide.with(DetailsActivity.this).load(model.getImage()).into(imageView);
 
