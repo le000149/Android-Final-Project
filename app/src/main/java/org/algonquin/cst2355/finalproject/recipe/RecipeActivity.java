@@ -187,7 +187,14 @@ public class RecipeActivity extends AppCompatActivity {
         if (id == R.id.action_about) {
             AlertDialog.Builder normalDialog=new AlertDialog.Builder(RecipeActivity.this);
             normalDialog.setTitle("About Us");
-            normalDialog.setMessage("This is a text introduction about us");
+            normalDialog.setMessage("Instructions:" +
+                    "1. Enter a recipe name in the search field." +
+                    "2. Tap the search button to get matching recipes." +
+                    "3. Select a recipe to view details." +
+                    "4. Use the save button to add a recipe to your favorites." +
+                    "5. View saved recipes by tapping 'View Saved Recipes'." +
+                    "6. Tap on a saved recipe to view its details." +
+                    "7. Tap the remove button to delete a saved recipe.");
             normalDialog.setNegativeButton("back", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

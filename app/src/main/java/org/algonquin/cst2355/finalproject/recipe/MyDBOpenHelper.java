@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDBOpenHelper extends SQLiteOpenHelper {
-    //定义数据库名和版本号
+
     private static final String DBNAME="recipe.db";
     private static final int VERSION=1;
     public MyDBOpenHelper(Context context) {

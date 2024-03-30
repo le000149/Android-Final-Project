@@ -14,7 +14,7 @@ import org.algonquin.cst2355.finalproject.R;
 
 @SuppressLint("AppCompatCustomView")
 public class LoadingView extends ImageView {
-    //旋转的角度
+
     private int rotateDegree = 0;
     private  boolean mNeedRotate = false;
 
