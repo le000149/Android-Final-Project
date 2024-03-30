@@ -1,11 +1,5 @@
 package org.algonquin.cst2355.finalproject.recipe;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
@@ -61,10 +61,10 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recipe);
         // 设置Toolbar为ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         loadingLinearLayout = findViewById(R.id.line_loading_view);
         mLoadingView =findViewById(R.id.line_chart_loading);
         mNoDataView =findViewById(R.id.line_chart_no_data);
@@ -113,20 +113,20 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private void GetData() {
-        //        RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-        //        StringRequest stringRequest_get = new StringRequest("https://api.spoonacular.com/recipes/complexSearch?query=pasta&apiKey=fbaec43935c24daba666c7b3b6afd0c3",
-        //                new Response.Listener<String>() {
-        //                    @Override
-        //                    public void onResponse(String response) {
-        //                        Log.e("TAG", response);
-        //                    }
-        //                }, new Response.ErrorListener() {
-        //            @Override
-        //            public void onErrorResponse(VolleyError error) {
-        //                Log.e("TAG", error.getMessage(), error);
-        //            }
-        //        });
-        //        mQueue.add(stringRequest_get);
+//        RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
+//        StringRequest stringRequest_get = new StringRequest("https://api.spoonacular.com/recipes/complexSearch?query=pasta&apiKey=fbaec43935c24daba666c7b3b6afd0c3",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("TAG", response);
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("TAG", error.getMessage(), error);
+//            }
+//        });
+//        mQueue.add(stringRequest_get);
 
         // 创建请求队列
         loadingLinearLayout.setVisibility(View.VISIBLE);
@@ -191,7 +191,7 @@ public class RecipeActivity extends AppCompatActivity {
             normalDialog.setNegativeButton("cancellation", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //                    finish();
+//                    finish();
                 }
             });
             normalDialog.show();
@@ -200,5 +200,6 @@ public class RecipeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

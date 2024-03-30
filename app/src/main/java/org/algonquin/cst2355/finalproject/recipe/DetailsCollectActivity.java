@@ -1,7 +1,8 @@
 package org.algonquin.cst2355.finalproject.recipe;
 
+
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
@@ -27,11 +30,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.algonquin.cst2355.finalproject.R;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsCollectActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView mdetails_Summary,mdetails_Spoonacular_Source_Url;
@@ -48,58 +50,56 @@ public class DetailsActivity extends AppCompatActivity {
     private MyDBOpenHelper mhelper;//定义数据库帮助类对象
     private SQLiteDatabase db;//定义一个可以操作的数据库对象
 
-    private String url;
-    private String Image,Title;
+    private String url,Title;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-        mhelper=new MyDBOpenHelper(DetailsActivity.this);//实例化数据库帮助类
+        setContentView(R.layout.activity_details_collect);
+        mhelper=new MyDBOpenHelper(DetailsCollectActivity.this);//实例化数据库帮助类
         db=mhelper.getWritableDatabase();//创建数据库，获取数据库的读写权限
-        loadingLinearLayout = findViewById(R.id.line_loading_view);
-        mLoadingView =findViewById(R.id.line_chart_loading);
-        mNoDataView =findViewById(R.id.line_chart_no_data);
-        imageView=findViewById(R.id.details_image);
-        mdetails_Summary=findViewById(R.id.details_Summary);
-        mdetails_Spoonacular_Source_Url=findViewById(R.id.details_Spoonacular_Source_Url);
-        mbtn=findViewById(R.id.details_btn);
+        loadingLinearLayout = findViewById(R.id.line_loading_view2);
+        mLoadingView =findViewById(R.id.line_chart_loading2);
+        mNoDataView =findViewById(R.id.line_chart_no_data2);
+        imageView=findViewById(R.id.details_image2);
+        mdetails_Summary=findViewById(R.id.details_Summary2);
+        mdetails_Spoonacular_Source_Url=findViewById(R.id.details_Spoonacular_Source_Url2);
+        mbtn=findViewById(R.id.details_btn2);
         mbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContentValues values=new ContentValues();
-                values.put("name",Title);
-                values.put("region",id);
-                values.put("url",Image);
-                db.insert("repair",null,values);
-                Snackbar.make(view, "Collection successful!", Snackbar.LENGTH_SHORT).show();
+                AlertDialog.Builder normalDialog=new AlertDialog.Builder(DetailsCollectActivity.this);
+                normalDialog.setTitle("prompt");
+                normalDialog.setMessage("Are you sure to delete this collection？");
+                normalDialog.setPositiveButton("determine", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //怎么样删除呢？参数：（表名，删除的条件，条件的参数）
+                        db.delete("repair","name=?",new String[]{Title});
+                        Toast.makeText(DetailsCollectActivity.this,"Delete successful",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+                normalDialog.setNegativeButton("cancellation", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(DetailsCollectActivity.this,"Canceled",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                normalDialog.show();
             }
         });
         //使用Intent对象得到FirstActivity传递来的参数
         Intent intent = getIntent();
-        id = intent.getIntExtra("ID",0);
-        Image = intent.getStringExtra("Image");
+        id = Integer.valueOf(intent.getStringExtra("ID"));
         Title = intent.getStringExtra("Title");
         GetData();
     }
 
     private void GetData() {
-//        RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-//        StringRequest stringRequest_get = new StringRequest("https://api.spoonacular.com/recipes/complexSearch?query=pasta&apiKey=fbaec43935c24daba666c7b3b6afd0c3",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.e("TAG", response);
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("TAG", error.getMessage(), error);
-//            }
-//        });
-//        mQueue.add(stringRequest_get);
-
         // 创建请求队列
         loadingLinearLayout.setVisibility(View.VISIBLE);
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
@@ -109,14 +109,14 @@ public class DetailsActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, finalUrl,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //    Log.e("leo", "Response: " + response);
+                Log.e("leo", "Response: " + response);
                 // 处理响应数据
                 details_model model = JSON.parseObject(response,details_model.class);
                 url= model.getImage();
                 loadingLinearLayout.setVisibility(View.GONE);
                 mdetails_Summary.setText(model.getSummary());
                 mdetails_Spoonacular_Source_Url.setText(model.getSpoonacularSourceUrl());
-                Glide.with(DetailsActivity.this).load(model.getImage()).into(imageView);
+                Glide.with(DetailsCollectActivity.this).load(model.getImage()).into(imageView);
 
             }
         }, new Response.ErrorListener() {

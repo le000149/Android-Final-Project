@@ -1,5 +1,5 @@
 <resources>
-    <style name="MainTitleStyle">
+    <style name="MainTitleStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@drawable/main_btn_text_style</item>

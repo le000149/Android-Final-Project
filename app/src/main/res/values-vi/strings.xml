@@ -8,9 +8,4 @@
     <string name="welcome">Chào mừng đến với Dự án cuối cùng của CST2355</string>
     <string name="search_hint">Tìm kiếm công thức ở đây..</string>
     <string name="search">Tìm kiếm</string>
-    <string name="strawberry_cake">Bánh dâu tây</string>
-    <string name="chocolate_cake">Bánh sô-cô-la</string>
-    <string name="tiramisu">Tiramisu</string>
-    <string name="salad">Xa lát</string>
-    <string name="you_may_want_to">Có thể bạn muốn tìm kiếm:</string>
 </resources>
