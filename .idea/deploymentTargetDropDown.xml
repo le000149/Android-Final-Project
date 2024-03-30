@@ -2,13 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="SavedSongActivity">
-        <State />
-      </entry>
       <entry key="SongResultActivity">
         <State />
       </entry>
       <entry key="SongSearchActivity">
+        <State />
+      </entry>
+      <entry key="SongSearchActivityTest">
         <State />
       </entry>
       <entry key="SunriseSunsetActivity">
@@ -17,19 +17,7 @@
       <entry key="SunriseSunsetResultActivity">
         <State />
       </entry>
-      <entry key="SunriseSunsetActivityTest">
-        <State />
-      </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="helpActivityTest()">
-        <State />
-      </entry>
-      <entry key="searchActivityTest()">
-        <State />
-      </entry>
-      <entry key="sunriseSunsetActivityTest()">
         <State />
       </entry>
     </value>
