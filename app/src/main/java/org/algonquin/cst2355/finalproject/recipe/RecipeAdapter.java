@@ -52,13 +52,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.InnerHolde
         return mModelList.size();
     }
 
-    //设置数据
+
     public void setData(List<model.ResultsDTO> rTInfoModelList) {
         mModelList.clear();
         if (rTInfoModelList != null) {
             mModelList.addAll(rTInfoModelList);
         }
-        //更新一下UI
+
         notifyDataSetChanged();
     }
 
@@ -78,7 +78,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.InnerHolde
             model.ResultsDTO model = mModelList.get(position);
             label1.setText(model.getTitle());
             // label3.setText(""+model.getAppMenuName());
-            Glide.with(mContext) // this 通常是一个 Activity 或 Fragment 的上下文
+            Glide.with(mContext)
                     .load(model.getImage())
                     .into(label3);
             //  label4.setText(""+model.getNumber());

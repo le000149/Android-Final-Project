@@ -26,8 +26,8 @@ public class SeeAllActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private HomeWarningdapter mListAdapter;
     List<CollectModel> list = new ArrayList<>();
-    MyDBOpenHelper mhelper;//定义一个数据库帮助类对象
-    SQLiteDatabase db;//定义一个操作的数据库的类对象
+    MyDBOpenHelper mhelper;
+    SQLiteDatabase db;
     private TextView title;
     private ImageButton backward;
 
@@ -46,12 +46,12 @@ public class SeeAllActivity extends AppCompatActivity {
         //                .button_backward);
         //        backward.setVisibility(View.VISIBLE);
         //        title.setText("My Collection");
-        mhelper = new MyDBOpenHelper(SeeAllActivity.this);//实例化数据库帮助类对象
-        db = mhelper.getWritableDatabase();//获取数据库的读写权限
+        mhelper = new MyDBOpenHelper(SeeAllActivity.this);
+        db = mhelper.getWritableDatabase();
         mRecyclerView = findViewById(R.id.common_recycleView);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(manager);
-        //设置偏移量
+
         mListAdapter = new HomeWarningdapter(this);
 
         mListAdapter.setOnRecommendItemListener(new HomeWarningdapter.OnRecommendItemClickListener() {
@@ -67,7 +67,7 @@ public class SeeAllActivity extends AppCompatActivity {
 
         });
 
-        //设置偏移量
+
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
@@ -82,14 +82,16 @@ public class SeeAllActivity extends AppCompatActivity {
     }
 
     private void selectall() {
+        // Notify the adapter that the data set has changed
         mListAdapter.notifyDataSetChanged();
         list.clear();
-        //开始查询 参数：（实现查询的 sql 语句，条件参数）
+        // Start query with SQL statement and parameters
         Cursor cursor = db.rawQuery("select * from repair", null);
-        if (cursor.getCount() != 0) {//判断结果集中是否有数据，有：查询成功；无：查询失败
+        if (cursor.getCount() != 0) {// Check if the result set has data
+            // Query successful
             Toast.makeText(SeeAllActivity.this, "query was successful", Toast.LENGTH_SHORT).show();
-            //循环遍历结果集，取出数据，显示出来
-            //移动到首位
+
+            // Iterate through the result set, retrieve data, and display it
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
                 @SuppressLint("Range") String mname = cursor.getString(cursor.getColumnIndex("name"));
@@ -100,14 +102,14 @@ public class SeeAllActivity extends AppCompatActivity {
                 model.setRegion(mregion);
                 model.setUrl(mproblem);
                 list.add(model);
-                //移动到下一位
                 cursor.moveToNext();
             }
+            // Update the adapter data and notify the change
             mListAdapter.setData(list);
             mListAdapter.notifyDataSetChanged();
             cursor.close();
         } else {
-            Toast.makeText(SeeAllActivity.this, "No favorite information found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SeeAllActivity.this, "You do not have any favorite in the list.", Toast.LENGTH_SHORT).show();
         }
 
     }

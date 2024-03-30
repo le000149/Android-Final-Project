@@ -11,12 +11,12 @@ public class MyDBOpenHelper extends SQLiteOpenHelper {
     public MyDBOpenHelper(Context context) {
         super(context, DBNAME, null, VERSION);
     }
-    //创建数据库
+    //create database
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table repair(id INTEGER primary key autoincrement,name varchar(10),region varchar(10),url varchar(20))");
     }
-    //升级数据库
+    //update database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {

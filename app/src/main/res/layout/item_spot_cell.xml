@@ -39,7 +39,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="15dp"
-                    android:text="学号:10000"
+                    android:text="default:pizza"
                     />
             </LinearLayout>
 

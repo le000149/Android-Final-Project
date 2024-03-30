@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="5dp">
         <TextView
-            android:text="实时数据"
+            android:text="Dynamic data"
             android:id="@+id/nav_title"
             android:textSize="15sp"
             android:textColor="#fff"

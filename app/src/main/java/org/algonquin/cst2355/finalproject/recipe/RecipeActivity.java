@@ -53,7 +53,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     private ImageView mwd;
 
-    // 定义API常量
+    // setup API
     public static final String SPOONACULAR_API_URL = "https://api.spoonacular.com/recipes/complexSearch";
     public static final String SPOONACULAR_API_KEY = "fbaec43935c24daba666c7b3b6afd0c3";
 
@@ -62,15 +62,15 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        // 设置Toolbar为ActionBar
+        // Set the Toolbar as the ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         loadingLinearLayout = findViewById(R.id.line_loading_view);
         mLoadingView =findViewById(R.id.line_chart_loading);
         mNoDataView =findViewById(R.id.line_chart_no_data);
         SharedPreferences sp = getSharedPreferences("SpQing", Context.MODE_PRIVATE);
-        //第2个参数:表示如果第一个参数的key获取到的值是null,就用第2个参数的值代替
-        String value = sp.getString("搜索词", "");
+        // The second parameter: if the value obtained by the first parameter key is null, the value of the second parameter is used instead
+        String value = sp.getString("key", "");
         medit=findViewById(R.id.edit);
         if (value != null && !value.isEmpty()) {
             medit.setText(value);
@@ -84,10 +84,10 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
         mRecyclerView=findViewById(R.id.commonRecycleView);
-        //2 设置布局管理器
+        // Set layout manager
         LinearLayoutManager manager = new LinearLayoutManager(RecipeActivity.this);
         mRecyclerView.setLayoutManager(manager);
-        //设置偏移量
+        // Set offset
         mListAdapter = new RecipeAdapter(RecipeActivity.this);
 
         mListAdapter.setOnRecommendItemListener(new RecipeAdapter.OnRecommendItemClickListener() {
@@ -106,7 +106,7 @@ public class RecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences sp = getSharedPreferences("SpQing", Context.MODE_PRIVATE);
-                sp.edit().putString("搜索词",medit.getText().toString()).apply();
+                sp.edit().putString("key",medit.getText().toString()).apply();
                 GetData();
             }
         });
@@ -128,20 +128,20 @@ public class RecipeActivity extends AppCompatActivity {
 //        });
 //        mQueue.add(stringRequest_get);
 
-        // 创建请求队列
+        // Create a request queue
         loadingLinearLayout.setVisibility(View.VISIBLE);
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-        // 构建查询参数
+        // Construct query parameters
         StringBuilder sb = new StringBuilder(SPOONACULAR_API_URL);
         sb.append("?query=").append(medit.getText().toString());
         sb.append("&apiKey=").append(SPOONACULAR_API_KEY);
         String finalUrl = sb.toString();
-        // 创建StringRequest
+        // Create StringRequest
         StringRequest stringRequest = new StringRequest(Request.Method.GET, finalUrl,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //    Log.e("leo", "Response: " + response);
-                // 处理响应数据
+
                 model model = JSON.parseObject(response,model.class);
                 List<model.ResultsDTO> list= model.getResults();
                 if(list.size() <=0){
@@ -158,15 +158,15 @@ public class RecipeActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e("SpoonacularAPI", "Error: " + error.getMessage(), error);
                 if (error instanceof NetworkError) {
-                    // 处理网络错误
+
                 } else if (error instanceof ServerError) {
-                    // 处理服务器错误
+
                 } else if (error instanceof TimeoutError) {
-                    // 处理超时错误
+
                 } else if (error instanceof NoConnectionError) {
-                    // 处理无连接错误
+
                 } else if (error instanceof AuthFailureError) {
-                    // 处理认证失败错误
+
                 }
             }
         });
@@ -176,7 +176,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // 加载toolbar_menu.xml菜单文件
+        // Load toolbar_menu.xml menu file
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
@@ -188,7 +188,7 @@ public class RecipeActivity extends AppCompatActivity {
             AlertDialog.Builder normalDialog=new AlertDialog.Builder(RecipeActivity.this);
             normalDialog.setTitle("About Us");
             normalDialog.setMessage("This is a text introduction about us");
-            normalDialog.setNegativeButton("cancellation", new DialogInterface.OnClickListener() {
+            normalDialog.setNegativeButton("back", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 //                    finish();

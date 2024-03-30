@@ -28,22 +28,22 @@ public class LoadingView extends ImageView {
 
     public LoadingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        //设置图标
+        //set loading picture
         setImageResource(R.mipmap.loading);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //绑定到window时
+        //binding to window
         mNeedRotate = true;
         post(new Runnable() {
             @Override
             public void run() {
                 rotateDegree +=30;
                 rotateDegree = rotateDegree <= 360 ? rotateDegree:0;
-                invalidate();//该操作调用ondraw
-                //是否继续旋转
+                invalidate();//invoke onDraw
+                //continue rotate
                 if (mNeedRotate) {
                     postDelayed(this,50);
                 }
@@ -55,17 +55,12 @@ public class LoadingView extends ImageView {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        //从window解绑时
+        //de binding window
         mNeedRotate = false;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        /**
-         * 第一个参数旋转角度
-         * 第二个参数旋转x坐标
-         * 第三个参数旋转的y坐标
-         */
 
         canvas.rotate(rotateDegree,getWidth()/2,getHeight()/2);
         super.onDraw(canvas);

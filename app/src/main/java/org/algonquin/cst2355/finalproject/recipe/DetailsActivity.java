@@ -43,10 +43,10 @@ public class DetailsActivity extends AppCompatActivity {
     private Button mbtn;
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
     private static final String API_KEY = "fbaec43935c24daba666c7b3b6afd0c3";
-    private static final String RECIPE_ID = "511728"; // 这个是可以替换的食谱ID
+    private static final String RECIPE_ID = "511728"; // this could be replaced with another id
 
-    private MyDBOpenHelper mhelper;//定义数据库帮助类对象
-    private SQLiteDatabase db;//定义一个可以操作的数据库对象
+    private MyDBOpenHelper mhelper;
+    private SQLiteDatabase db;
 
     private String url;
     private String Image,Title;
@@ -56,8 +56,9 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        mhelper=new MyDBOpenHelper(DetailsActivity.this);//实例化数据库帮助类
-        db=mhelper.getWritableDatabase();//创建数据库，获取数据库的读写权限
+        mhelper=new MyDBOpenHelper(DetailsActivity.this);// Instantiate the database helper class
+        db=mhelper.getWritableDatabase();// Create the database and get the read/write permission
+        // Initialize views
         loadingLinearLayout = findViewById(R.id.line_loading_view);
         mLoadingView =findViewById(R.id.line_chart_loading);
         mNoDataView =findViewById(R.id.line_chart_no_data);
@@ -68,6 +69,7 @@ public class DetailsActivity extends AppCompatActivity {
         mbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Insert data into the database table when the button is clicked
                 ContentValues values=new ContentValues();
                 values.put("name",Title);
                 values.put("region",id);
@@ -76,11 +78,12 @@ public class DetailsActivity extends AppCompatActivity {
                 Snackbar.make(view, "Collection successful!", Snackbar.LENGTH_SHORT).show();
             }
         });
-        //使用Intent对象得到FirstActivity传递来的参数
+        // Get data from the intent
         Intent intent = getIntent();
         id = intent.getIntExtra("ID",0);
         Image = intent.getStringExtra("Image");
         Title = intent.getStringExtra("Title");
+        // Fetch recipe details from the API
         GetData();
     }
 
@@ -100,20 +103,24 @@ public class DetailsActivity extends AppCompatActivity {
 //        });
 //        mQueue.add(stringRequest_get);
 
-        // 创建请求队列
+        // Show loading indicator
         loadingLinearLayout.setVisibility(View.VISIBLE);
         RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-        // 构建查询参数
+        // Construct the API URL
         String finalUrl = BASE_URL + id + "/information?apiKey=" + API_KEY;
-        // 创建StringRequest
+        // Create a new StringRequest
         StringRequest stringRequest = new StringRequest(Request.Method.GET, finalUrl,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //    Log.e("leo", "Response: " + response);
-                // 处理响应数据
+                // Parse the JSON response
                 details_model model = JSON.parseObject(response,details_model.class);
                 url= model.getImage();
+
+                // Hide loading indicator
                 loadingLinearLayout.setVisibility(View.GONE);
+
+                // Display recipe details
                 mdetails_Summary.setText(model.getSummary());
                 mdetails_Spoonacular_Source_Url.setText(model.getSpoonacularSourceUrl());
                 Glide.with(DetailsActivity.this).load(model.getImage()).into(imageView);
@@ -122,20 +129,22 @@ public class DetailsActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // Handle different types of Volley errors
                 Log.e("SpoonacularAPI", "Error: " + error.getMessage(), error);
                 if (error instanceof NetworkError) {
-                    // 处理网络错误
+                    // Handle network error
                 } else if (error instanceof ServerError) {
-                    // 处理服务器错误
+                    // Handle server error
                 } else if (error instanceof TimeoutError) {
-                    // 处理超时错误
+                    // Handle timeout error
                 } else if (error instanceof NoConnectionError) {
-                    // 处理无连接错误
+                    // Handle no connection error
                 } else if (error instanceof AuthFailureError) {
-                    // 处理认证失败错误
+                    // Handle authentication failure error
                 }
             }
         });
+        // Add the request to the queue
         mQueue.add(stringRequest);
     }
 }

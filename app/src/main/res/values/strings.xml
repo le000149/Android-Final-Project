@@ -7,4 +7,9 @@
     <string name="welcome">Welcome to CST2355 FinalProject</string>
     <string name="search_hint">Search the recipe here..</string>
     <string name="search">Search</string>
+    <string name="collect">Collect</string>
+    <string name="no_result">No matching result</string>
+    <string name="delete">Delete</string>
+    <string name="enter">Enter</string>
+    <string name="my_collection">My Collection</string>
 </resources>

@@ -24,8 +24,8 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
     private List<CollectModel> mData = new ArrayList<>();
     private OnRecommendItemClickListener mOnRecommendItemClickListener;
     private Context mContext;
-    private MyDBOpenHelper mhelper;//定义数据库帮助类对象
-    private SQLiteDatabase db;//定义一个可以操作的数据库对象
+    private MyDBOpenHelper mhelper;
+    private SQLiteDatabase db;
     public HomeWarningdapter(Context context){
         mContext=context;
     }
@@ -58,13 +58,13 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
         return 0;
     }
 
-    //设置数据
+    //set data
     public void setData(List<CollectModel> list) {
         if (list != null) {
             mData.clear();
             mData.addAll(list);
         }
-        //更新一下UI
+        //update UI
         notifyDataSetChanged();
     }
 

@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="收藏"/>
+                android:text="@string/collect"/>
         </LinearLayout>
 
 
@@ -61,7 +61,7 @@
 
             style="@style/MainTitleStyle"
             android:gravity="center"
-            android:text="没有满足条件数据"
+            android:text="@string/no_result"
             android:visibility="gone"/>
 
     </LinearLayout>

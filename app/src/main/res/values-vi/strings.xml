@@ -8,4 +8,9 @@
     <string name="welcome">Chào mừng đến với Dự án cuối cùng của CST2355</string>
     <string name="search_hint">Tìm kiếm công thức ở đây..</string>
     <string name="search">Tìm kiếm</string>
+    <string name="collect">sưu tầm</string>
+    <string name="no_result">không có kết quả phù hợp</string>
+    <string name="delete">Xóa bỏ</string>
+    <string name="enter">Đi vào</string>
+    <string name="my_collection">Bộ sưu tập của tôi</string>
 </resources>
