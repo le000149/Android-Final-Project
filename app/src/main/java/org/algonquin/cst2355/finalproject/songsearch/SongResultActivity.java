@@ -27,7 +27,9 @@ import com.squareup.picasso.Picasso;
 
 import org.algonquin.cst2355.finalproject.R;
 
-
+/**
+ * This activity displays details of a selected song and allows the user to save the song to a database.
+ */
 public class SongResultActivity extends AppCompatActivity {
     //private List<Song> songList;
 
@@ -37,13 +39,23 @@ public class SongResultActivity extends AppCompatActivity {
     private ImageView albumCover;
     private TextView Artist;
     private SongDAO songDAO;
+
+    /**
+     * Overrides the onCreateOptionsMenu method to inflate the menu resource file.
+     * @param menu The menu to be displayed in the Toolbar.
+     * @return true if the menu is inflated successfully, false otherwise.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_song_result, menu);
         return true;
     }
-
+    /**
+     * Overrides the onOptionsItemSelected method to handle menu item clicks.
+     * @param item The menu item that was clicked.
+     * @return true if the menu item click is handled, false otherwise.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save) {
@@ -56,6 +68,10 @@ public class SongResultActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Displays a help dialog explaining the functionality of the activity.
+     */
     private void showHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.SongSavePD));
@@ -70,7 +86,9 @@ public class SongResultActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    /**
+     * Saves the selected music item to the database.
+     */
     private void saveMusicItem() {
         Intent intent = getIntent();
         if (intent != null) {
@@ -135,6 +153,11 @@ public class SongResultActivity extends AppCompatActivity {
             });
         }
     }
+
+    /**
+     * Overrides the onCreate method to initialize the activity.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -40,7 +40,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This activity allows users to search for songs by an artist using the Deezer API.
+ * It displays the search results in a RecyclerView and allows users to click on a song
+ * to view its details.
+ */
 public class SongSearchActivity extends AppCompatActivity  {
 
     private EditText artistNameEditText;
@@ -57,13 +61,23 @@ public class SongSearchActivity extends AppCompatActivity  {
     private static final String PREFS_NAME = "SongSearchPrefs";
     private static final String ARTIST_NAME_KEY = "artistName";
 
+
+    /**
+     * Overrides the onCreateOptionsMenu method to inflate the menu resource file.
+     * @param menu The menu to be displayed in the Toolbar.
+     * @return true if the menu is inflated successfully, false otherwise.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_song_search, menu);
         return true;
     }
-
+    /**
+     * Overrides the onOptionsItemSelected method to handle menu item clicks.
+     * @param item The menu item that was clicked.
+     * @return true if the menu item click is handled, false otherwise.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -79,6 +93,10 @@ public class SongSearchActivity extends AppCompatActivity  {
         }
 
     }
+
+    /**
+     * Displays a help dialog explaining the functionality of the activity.
+     */
     private void showHelp() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.songhelp));
@@ -93,7 +111,10 @@ public class SongSearchActivity extends AppCompatActivity  {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
+    /**
+     * Overrides the onCreate method to initialize the activity.
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +158,10 @@ public class SongSearchActivity extends AppCompatActivity  {
             }
         });
     }
+    /**
+     * Saves the artist name entered by the user in SharedPreferences.
+     * @param artistName The name of the artist entered by the user.
+     */
     private void saveArtistName(String artistName) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(ARTIST_NAME_KEY, artistName);
@@ -144,7 +169,10 @@ public class SongSearchActivity extends AppCompatActivity  {
     }
 
 
-
+    /**
+     * Searches for the artist using the Deezer API.
+     * @param artistName The name of the artist to search for.
+     */
     private void searchArtist(String artistName) {
         String url = DEEZER_API_URL + artistName;
 
@@ -192,7 +220,9 @@ public class SongSearchActivity extends AppCompatActivity  {
         requestQueue.add(jsonObjectRequest);
     }
 
-
+    /**
+     * Searches for songs by the artist using the Deezer API.
+     */
     private void searchSong() {
         if (!songList.isEmpty()) {
             String albumTracklistUrl = songList.get(0).getTrackList();
@@ -255,7 +285,9 @@ public class SongSearchActivity extends AppCompatActivity  {
     }
 
 
-
+    /**
+     * This RecyclerView adapter class binds song data to the RecyclerView.
+     */
     public static class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
 
         private List<Song> songList;
@@ -264,35 +296,58 @@ public class SongSearchActivity extends AppCompatActivity  {
         public interface OnItemClickListener {
             void onItemClick(Song song);
         }
+
+        /**
+         * Constructor for the SongAdapter class.
+         * @param songList The list of songs to be displayed.
+         */
         public SongAdapter(List<Song> songList) {
 
             this.songList = songList;
 
         }
-
+        /**
+         * Creates ViewHolders for the RecyclerView items.
+         * @param parent The parent ViewGroup.
+         * @param viewType The type of view.
+         * @return A new SongViewHolder instance.
+         */
         @NonNull
         @Override
         public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_artist, parent, false);
             return new SongViewHolder(view);
         }
-
+        /**
+         * Binds song data to the RecyclerView items.
+         * @param holder The ViewHolder.
+         * @param position The position of the item in the list.
+         */
         @Override
         public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
             Song song = songList.get(position);
             holder.bind(song);
         }
-
+        /**
+         * Gets the total number of items in the list.
+         * @return The total number of items in the list.
+         */
         @Override
         public int getItemCount() {
             return songList.size();
         }
-
+        /**
+         * This ViewHolder class represents individual items in the RecyclerView.
+         */
         static class SongViewHolder extends RecyclerView.ViewHolder {
 
             TextView titleTextView;
 
             ImageView artistImageView;
+            /**
+             * Constructor for the SongViewHolder class.
+             * @param itemView The item view.
+             */
             public SongViewHolder(@NonNull View itemView) {
                 super(itemView);
                 titleTextView = itemView.findViewById(R.id.artistTextView);
@@ -300,7 +355,10 @@ public class SongSearchActivity extends AppCompatActivity  {
                 artistImageView = itemView.findViewById(R.id.artistImageView);
 
             }
-
+            /**
+             * Binds song data to the ViewHolder.
+             * @param song The song object.
+             */
             public void bind(Song song) {
                 titleTextView.setText(song.getTitle());
                 //id.setText(String.valueOf(song.getAlbumName())); // Set text instead of setting ID
