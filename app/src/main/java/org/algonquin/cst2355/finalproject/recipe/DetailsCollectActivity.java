@@ -32,7 +32,9 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import org.algonquin.cst2355.finalproject.R;
-
+/**
+ * This activity displays the details of a collected recipe and provides an option to delete it.
+ */
 public class DetailsCollectActivity extends AppCompatActivity {
 
     private ImageView imageView;
@@ -98,7 +100,9 @@ public class DetailsCollectActivity extends AppCompatActivity {
         Title = intent.getStringExtra("Title");
         GetData();
     }
-
+    /**
+     * Fetches recipe details from the API and updates the UI accordingly.
+     */
     private void GetData() {
 
         loadingLinearLayout.setVisibility(View.VISIBLE);

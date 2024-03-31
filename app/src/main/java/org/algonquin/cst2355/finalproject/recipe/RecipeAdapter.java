@@ -18,6 +18,9 @@ import org.algonquin.cst2355.finalproject.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter class for displaying recipes in a RecyclerView.
+ */
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.InnerHolder> {
 
     private Context mContext;

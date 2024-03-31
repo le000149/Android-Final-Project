@@ -30,7 +30,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.algonquin.cst2355.finalproject.R;
-
+/**
+ * @author Yanan Wu
+ * Student Id: 040817691
+ * This activity displays the details of a recipe.
+ */
 public class DetailsActivity extends AppCompatActivity {
 
     private ImageView imageView;
@@ -41,6 +45,9 @@ public class DetailsActivity extends AppCompatActivity {
     private Integer id;
 
     private Button mbtn;
+    /**
+     * API URL and Key
+     */
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
     private static final String API_KEY = "e9b57f24693544368d42b9b79bb5f1ed";
     private static final String RECIPE_ID = "511728"; // this could be replaced with another id

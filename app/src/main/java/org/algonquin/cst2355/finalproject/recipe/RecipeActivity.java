@@ -52,11 +52,18 @@ public class RecipeActivity extends AppCompatActivity {
     private TextView mNoDataView;
 
     private ImageView mwd;
-
+    /**
+     * Activity class for searching and displaying recipes.
+     */
     // setup API
     public static final String SPOONACULAR_API_URL = "https://api.spoonacular.com/recipes/complexSearch";
     public static final String SPOONACULAR_API_KEY = "e9b57f24693544368d42b9b79bb5f1ed";
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down, this Bundle contains the data it most recently supplied.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

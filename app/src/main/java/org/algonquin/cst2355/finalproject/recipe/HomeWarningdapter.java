@@ -18,6 +18,9 @@ import org.algonquin.cst2355.finalproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Adapter class for the RecyclerView used in the home screen to display collected recipes.
+ */
 
 public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.InnerHolder> {
 
@@ -26,6 +29,11 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
     private Context mContext;
     private MyDBOpenHelper mhelper;
     private SQLiteDatabase db;
+    /**
+     * Constructor for the HomeWarningdapter class.
+     *
+     * @param context The context in which the adapter will be used.
+     */
     public HomeWarningdapter(Context context){
         mContext=context;
     }
@@ -58,7 +66,11 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
         return 0;
     }
 
-    //set data
+    /**
+     * Sets the data for the adapter.
+     *
+     * @param list The list of collected recipes to be displayed.
+     */
     public void setData(List<CollectModel> list) {
         if (list != null) {
             mData.clear();
@@ -68,12 +80,18 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
         notifyDataSetChanged();
     }
 
-
+    /**
+     * Inner class representing the ViewHolder for the RecyclerView.
+     */
     public class InnerHolder extends RecyclerView.ViewHolder {
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
         }
-
+        /**
+         * Sets the data for the ViewHolder.
+         *
+         * @param position The position of the item in the RecyclerView.
+         */
         public void setData(int position) {
             TextView t_sno=itemView.findViewById(R.id.sno);
             ImageView imageView=itemView.findViewById(R.id.im);
@@ -90,6 +108,12 @@ public class HomeWarningdapter extends RecyclerView.Adapter<HomeWarningdapter.In
     }
 
     public interface OnRecommendItemClickListener{
+        /**
+         * Called when an item in the RecyclerView is clicked.
+         *
+         * @param p   The position of the clicked item.
+         * @param testmodel  The data associated with the clicked item.
+         */
         void onItemClick(int p, CollectModel testmodel);
     }
 }

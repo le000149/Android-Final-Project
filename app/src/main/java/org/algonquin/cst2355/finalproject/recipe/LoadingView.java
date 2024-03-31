@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 
 import org.algonquin.cst2355.finalproject.R;
 
-
+/**
+ * Custom ImageView subclass to display a rotating loading indicator.
+ */
 @SuppressLint("AppCompatCustomView")
 public class LoadingView extends ImageView {
 

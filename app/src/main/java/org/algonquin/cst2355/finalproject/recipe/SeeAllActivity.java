@@ -20,7 +20,9 @@ import org.algonquin.cst2355.finalproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for displaying all saved recipes.
+ */
 public class SeeAllActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
