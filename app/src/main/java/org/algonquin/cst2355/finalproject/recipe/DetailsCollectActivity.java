@@ -118,7 +118,10 @@ public class DetailsCollectActivity extends AppCompatActivity {
                 details_model model = JSON.parseObject(response,details_model.class);
                 url= model.getImage();
                 loadingLinearLayout.setVisibility(View.GONE);
-                mdetails_Summary.setText(model.getSummary());
+                //delete<b></b>....
+                String summaryWithoutTags = model.getSummary().replaceAll("<[^>]*>", "");
+                mdetails_Summary.setText(summaryWithoutTags);
+
                 mdetails_Spoonacular_Source_Url.setText(model.getSpoonacularSourceUrl());
                 Glide.with(DetailsCollectActivity.this).load(model.getImage()).into(imageView);
 
