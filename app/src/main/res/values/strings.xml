@@ -53,4 +53,10 @@
     <string name="songDelete2">Are you sure you want to delete this song?</string>
     <string name="SongSavePage">This page displays additional information about the music you selected, such as the album, duration, and artist of the song. You can add a song to your playlist by clicking the Save symbol in the toolbar.</string>
     <string name="songhelpdetail">This app lets you search for artists and then displays a list of their songs. To learn more about the song, simply click on it. You can access the list on the toolbar by clicking on it; the list displays all of the songs you have saved.</string>
+    <string name="search_hint">Search the recipe here..</string>
+    <string name="collect">Collect</string>
+    <string name="no_result">No matching result</string>
+    <string name="delete">Delete</string>
+    <string name="enter">Enter</string>
+    <string name="my_collection">My Collection</string>
 </resources>

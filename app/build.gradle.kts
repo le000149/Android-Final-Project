@@ -62,4 +62,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha03")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha03")
+    implementation ("com.alibaba:fastjson:1.1.55.android")
+
+    //images from web
+    implementation ("com.github.bumptech.glide:glide:4.10.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.10.0")
+    //indictor
+    implementation ("com.github.bumptech.glide:glide:3.7.0")
 }

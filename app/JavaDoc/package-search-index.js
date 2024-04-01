@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.algonquin.cst2355.finalproject"},{"l":"org.algonquin.cst2355.finalproject.dictionary"},{"l":"org.algonquin.cst2355.finalproject.recipe"},{"l":"org.algonquin.cst2355.finalproject.songsearch"},{"l":"org.algonquin.cst2355.finalproject.sunrisesunset"}];updateSearchResults();
