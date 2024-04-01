@@ -122,6 +122,17 @@ public class DictionaryActivity extends AppCompatActivity {
                 DictionaryResultActivity.launch(this, word, true);
             }
         });
+
+        binding.toggleSavedDefinitions.setOnClickListener(v -> {
+            if (binding.savedDefinitionRecyclerView.getVisibility() == View.VISIBLE) {
+                binding.savedDefinitionRecyclerView.setVisibility(View.GONE);
+                binding.toggleSavedDefinitions.setText(R.string.show_saved_definitions);
+            } else {
+                binding.savedDefinitionRecyclerView.setVisibility(View.VISIBLE);
+                binding.toggleSavedDefinitions.setText(R.string.hide_saved_definitions);
+            }
+        });
+
         showSavedDefinitionList();
     }
 

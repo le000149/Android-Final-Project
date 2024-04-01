@@ -62,4 +62,6 @@
     <string name="error_fetching_data_from_api">Lỗi tìm nạp dữ liệu từ API</string>
     <string name="error_parsing_json_response">Lỗi phân tích cú pháp phản hồi JSON</string>
     <string name="error_fetching_album_data_from_api">Lỗi tìm nạp dữ liệu album từ API</string>
+    <string name="show_saved_definitions">Hiển thị Định nghĩa Đã Lưu</string>
+    <string name="hide_saved_definitions">Ẩn Định nghĩa Đã Lưu</string>
 </resources>
