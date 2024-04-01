@@ -1,5 +1,12 @@
 package org.algonquin.cst2355.finalproject.dictionary;
 
+/**
+ * This is for the CST2355 Final Project - Dictionary Topic
+ * Author: Yeqing Xia
+ * Lab Section: CST2335 013
+ * Creation Date: 2024/03/31
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,13 +41,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-
+/**
+ * This class displays dictionary search results.
+ * It can do online search or fetch from local database
+ * and save or delete definitions
+ */
 public class DictionaryResultActivity extends AppCompatActivity {
+
+    /**
+     * Key used in the Intent to store the searched word
+     */
     public static final String WORD = "word";
+
+    /**
+     * key used in the Intent to indicate if the search should be done online
+     */
     public static final String ONLINE_SEARCH = "online_search";
+
+    /**
+     * Base URL for the onlineDictionary API
+     */
     public static final String BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+
+    /**
+     * Key in JSON response for the meanings section.
+     */
     public static final String MEANINGS = "meanings";
+
+    /**
+     * Key in the JSON response for the definitions within the meanings
+     */
     public static final String DEFINITIONS = "definitions";
+
+    /**
+     * Key in the JSON response for a single definition
+     */
     public static final String DEFINITION = "definition";
     private static final String TAG = "DictionaryResult";
     ActivityDictionaryResultBinding binding;
@@ -49,6 +84,12 @@ public class DictionaryResultActivity extends AppCompatActivity {
     private String word;
     private boolean definitionSaved = false;
 
+    /**
+     * To launch the DictionaryResultActivity
+     * @param context the context from where the activity is launched
+     * @param word the word to search definitions for
+     * @param onlineSearch flag indicating if the search should be done online
+     */
     public static void launch(Context context, String word, boolean onlineSearch) {
         Intent intent = new Intent(context, DictionaryResultActivity.class);
         intent.putExtra(WORD, word);
@@ -56,13 +97,20 @@ public class DictionaryResultActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
+    /**
+     * Called when the activity is starting. Initializes the activity, inflates its UI
+     * and triggers the definition search process
+     * @param savedInstanceState If the activity is being re-initialized after previously being
+     *                           shut down then this Bundle contains the data it most recently
+     *                           supplied, Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: ");
-
+        super.onCreate(savedInstanceState);
         binding = ActivityDictionaryResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -81,14 +129,25 @@ public class DictionaryResultActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initialize the menu with the save or delete option
+     * @param menu The options menu which will be populated.
+     * @return Return true for the menu to be displayed; if return false it will not be shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dictionary_result, menu);
         MenuItem item = menu.findItem(R.id.save_or_delete_definition);
-        item.setIcon(definitionSaved ? R.drawable.delete : R.drawable.bookmark_add);
+        item.setIcon(definitionSaved ? R.drawable.delete : R.drawable.bookmark_add); //Changes the icon depending on whether the word is saved or not
         return true;
     }
 
+
+    /**
+     * This method is called whenever an item in options menu is selected.
+     * @param item The menu item that was selected.
+     * @return Returns true to consume it here, false to pass it on.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.save_or_delete_definition) {
@@ -107,15 +166,24 @@ public class DictionaryResultActivity extends AppCompatActivity {
             }
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is called when the user requests that the Activity navigate up, here is the place to go back
+     * @return Returns true to indicate that the event has been handled.
+     */
     @Override
     public boolean onSupportNavigateUp() {
         getOnBackPressedDispatcher().onBackPressed();
         return true;
     }
 
+    /**
+     * This method updates the save or delete icon depending on whether the definition
+     * is saved in the database or not
+     */
     private void updateSaveOrDeleteIcon() {
         Executors.newSingleThreadExecutor().execute(() -> {
             definitionSaved = !MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word).isEmpty();
@@ -125,17 +193,31 @@ public class DictionaryResultActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * To delete the saved definitions of a word from the database
+     * @param word The word to be deleted.
+     */
     private void deleteDefinitions(String word) {
         Executors.newSingleThreadExecutor().execute(() -> MainApplication.getDictionaryDB().DefinitionDao().deleteDefinition(word));
     }
 
+    /**
+     * To save the definitions of a word into the database
+     * @param definitions The list of definitions to be saved.
+     */
     private void saveDefinitions(List<Definition> definitions) {
         Log.d(TAG, "saveDefinitions: ");
         Executors.newSingleThreadExecutor().execute(() -> MainApplication.getDictionaryDB().DefinitionDao().saveDefinitions(definitions));
     }
 
+
+    /**
+     * search for the word on the internet
+     * @param word
+     */
     private void searchDefinitionOnline(String word) {
-        Log.d(TAG, "searchForTerm: " + word);
+        Log.d(TAG, "searchDefinitionOnline: " + word);
+        Log.d(TAG, "searchForTerm: " + word); //for debug purposes
         String url = BASE_URL + word;
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -167,39 +249,78 @@ public class DictionaryResultActivity extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
+    /**
+     * search for the word in the database
+     * @param word
+     */
     private void searchDefinitionFromDataBase(String word) {
+        Log.d(TAG, "searchDefinitionFromDataBase: " + word);
         Executors.newSingleThreadExecutor().execute(() -> {
             definitions = MainApplication.getDictionaryDB().DefinitionDao().getDefinitions(word);
             runOnUiThread(() -> updateRecyclerView(definitions));
         });
     }
 
+    /**
+     * update the recycler view
+     * @param wordDefinitions
+     */
     private void updateRecyclerView(List<Definition> wordDefinitions) {
         DefinitionAdapter adapter = new DefinitionAdapter(wordDefinitions);
         binding.definitionRecyclerView.setAdapter(adapter);
         binding.definitionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * This is a adapter class for the RecyclerView that displays a list of definitions
+     */
     static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionViewHolder> {
+        /**
+         * a list of definition objects to be displayed
+         */
         private final List<Definition> definitions;
 
+        /**
+         * constructor for DefinitionAdapter
+         * @param definitions
+         */
         public DefinitionAdapter(List<Definition> definitions) {
+            Log.d(TAG, "DefinitionAdapter: ");
             this.definitions = definitions;
         }
 
+
+        /**
+         * Create and return a new ViewHolder instance
+         * @param parent The ViewGroup inflating the view
+         * @param viewType The view type of the new View.
+         * @return A new DefinitionViewHolder instance
+         */
         @NonNull
         @Override
         public DefinitionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            Log.d(TAG, "onCreateViewHolder: ");
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_definition, parent, false);
             return new DefinitionViewHolder(view);
         }
 
+        /**
+         * Binds data from a Definition object to the DefinitionViewHolder at a given position.
+         * @param holder The ViewHolder which should be updated to represent the contents of the
+         *        item at the given position in the data set.
+         * @param position The position of the item within the adapter's data set.
+         */
         @Override
         public void onBindViewHolder(@NonNull DefinitionViewHolder holder, int position) {
+            Log.d(TAG, "onBindViewHolder: " + position);
             Definition definition = definitions.get(position);
             holder.bind(definition);
         }
 
+        /**
+         * Returns the total number of items in the adapter
+         * @return size of definitions
+         */
         @Override
         public int getItemCount() {
             return definitions.size();
@@ -207,14 +328,28 @@ public class DictionaryResultActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This is a ViewHolder class for the RecyclerView that displays a list of definitions
+     */
     static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * TextView that displays the definition text
+         */
         private final TextView wordTextView;
 
+        /**
+         * Constructor for DefinitionViewHolder
+         * @param itemView The view representing a single definition item
+         */
         public DefinitionViewHolder(@NonNull View itemView) {
             super(itemView);
             wordTextView = itemView.findViewById(R.id.definition_text_view);
         }
 
+        /**
+         * Binds the data from a Definition object to the DefinitionViewHolder
+         * @param definition The Definition object containing the definition text
+         */
         public void bind(Definition definition) {
             wordTextView.setText(definition.getDefinition());
         }
