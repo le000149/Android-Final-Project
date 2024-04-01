@@ -59,4 +59,7 @@
     <string name="delete">Xóa bỏ</string>
     <string name="enter">Đi vào</string>
     <string name="my_collection">Bộ sưu tập của tôi</string>
+    <string name="error_fetching_data_from_api">Lỗi tìm nạp dữ liệu từ API</string>
+    <string name="error_parsing_json_response">Lỗi phân tích cú pháp phản hồi JSON</string>
+    <string name="error_fetching_album_data_from_api">Lỗi tìm nạp dữ liệu album từ API</string>
 </resources>

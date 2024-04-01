@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * This interface defines data access methods for interacting with the Song table in the Room database.
+ * Author: Hoang Anh Nguyen - 041099695
  */
 @Dao
 public interface SongDAO {

@@ -59,4 +59,8 @@
     <string name="delete">Delete</string>
     <string name="enter">Enter</string>
     <string name="my_collection">My Collection</string>
+    <string name="error_fetching_data_from_api">Error fetching data from API</string>
+    <string name="error_parsing_json_response">Error parsing JSON response</string>
+    <string name="error_fetching_album_data_from_api">Error fetching album data from API</string>
+
 </resources>
