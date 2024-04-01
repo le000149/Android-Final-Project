@@ -23,7 +23,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         // Create room database
-        dictionaryDB = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, DictionaryDatabase.NAME).build();
+        dictionaryDB = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, DictionaryDatabase.NAME).fallbackToDestructiveMigration().build();
         locationDB= Room.databaseBuilder(getApplicationContext(),LocationDatabase.class,LocationDatabase.NAME).build();
     }
 
