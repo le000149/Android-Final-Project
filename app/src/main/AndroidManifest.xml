@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -16,6 +15,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,33 +25,43 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
+        <activity
+            android:name=".songsearch.SavedSongActivity"
+            android:label="@string/SongSaved"
+            android:exported="true" />
 
+        <activity
+            android:name=".songsearch.SongResultActivity"
+            android:exported="true"
+            android:label="@string/song_result"
+            android:theme="@style/Theme.FinalProject"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".sunrisesunset.SunriseSunsetActivity"
             android:exported="true"
             android:label="@string/sunrise_sunset">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".songsearch.SongSearchActivity"
             android:exported="true"
             android:label="@string/song_search">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
 
@@ -70,19 +80,29 @@
             android:label="@string/recipe_search">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
-
         <activity
             android:name=".dictionary.DictionaryActivity"
             android:exported="true"
             android:label="@string/dictionary">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
+        <activity
+            android:name=".sunrisesunset.SunriseSunsetResultActivity"
+            android:exported="true"
+            android:label="@string/sunrise_sunset" />
+        <activity
+            android:name=".sunrisesunset.SavedLocationsActivity"
+            android:exported="true"
+            android:label="@string/sunrise_sunset" />
+        <activity
+            android:name=".dictionary.DictionaryResultActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
