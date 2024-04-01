@@ -6,8 +6,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -34,19 +32,19 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RecipeTest4_check_collection_list {
+public class RecipeTest3_no_result_test {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void recipeTest4_check_collection_list() {
+    public void recipeTest3_no_result_test() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.recipe), withContentDescription("Recipe Search"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
+                                        withId(R.id.toolbar),
                                         1),
                                 1),
                         isDisplayed()));
@@ -72,9 +70,9 @@ public class RecipeTest4_check_collection_list {
                                         2),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("chicken"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("dahsdhai\n"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton = onView(
+        ViewInteraction materialButton = onView(
                 allOf(withId(R.id.btn), withText("Search"),
                         childAtPosition(
                                 childAtPosition(
@@ -82,35 +80,7 @@ public class RecipeTest4_check_collection_list {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.commonRecycleView),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                3)));
-        recyclerView.perform(actionOnItemAtPosition(0, click()));
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.details_btn), withText("Collect"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        appCompatButton2.perform(scrollTo(), click());
-
-        pressBack();
-
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.wd),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
+        materialButton.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

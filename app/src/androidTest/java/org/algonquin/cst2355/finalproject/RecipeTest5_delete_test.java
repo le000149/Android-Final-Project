@@ -2,17 +2,16 @@ package org.algonquin.cst2355.finalproject;
 
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -29,26 +28,25 @@ import androidx.test.filters.LargeTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RecipeSearchTest3_collect_and_UNDO {
+public class RecipeTest5_delete_test {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void recipeSearchTest3_collect_and_UNDO() {
+    public void recipeTest5_delete_test() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.recipe), withContentDescription("Recipe Search"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
+                                        withId(R.id.toolbar),
                                         1),
                                 1),
                         isDisplayed()));
@@ -62,9 +60,9 @@ public class RecipeSearchTest3_collect_and_UNDO {
                                         2),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("pasta"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("beef\n"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton = onView(
+        ViewInteraction materialButton = onView(
                 allOf(withId(R.id.btn), withText("Search"),
                         childAtPosition(
                                 childAtPosition(
@@ -72,38 +70,60 @@ public class RecipeSearchTest3_collect_and_UNDO {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        materialButton.perform(click());
 
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.commonRecycleView),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 3)));
-        recyclerView.perform(actionOnItemAtPosition(1, click()));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
 
-        ViewInteraction appCompatButton2 = onView(
+        ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.details_btn), withText("Collect"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        appCompatButton2.perform(scrollTo(), click());
+        materialButton2.perform(scrollTo(), click());
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(com.google.android.material.R.id.snackbar_action), withText("Undo"),
+        pressBack();
+
+        ViewInteraction appCompatImageView = onView(
+                allOf(withId(R.id.wd),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("com.google.android.material.snackbar.Snackbar$SnackbarLayout")),
-                                        0),
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
                                 1),
                         isDisplayed()));
-        appCompatButton3.perform(click());
+        appCompatImageView.perform(click());
 
-        ViewInteraction linearLayout = onView(
-                allOf(withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class))),
-                        isDisplayed()));
-        linearLayout.check(matches(isDisplayed()));
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.common_recycleView),
+                        childAtPosition(
+                                withClassName(is("android.widget.LinearLayout")),
+                                1)));
+        recyclerView2.perform(actionOnItemAtPosition(0, click()));
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.details_btn2), withText("Delete"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton3.perform(scrollTo(), click());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(android.R.id.button1), withText("Confirm"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(com.google.android.material.R.id.buttonPanel),
+                                        0),
+                                3)));
+        materialButton4.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(

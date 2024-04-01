@@ -3,13 +3,14 @@ package org.algonquin.cst2355.finalproject;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -33,35 +34,25 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RecipeSearchTest1_search_function {
+public class RecipeTest2_collect_function {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void recipeSearchTest1_search_function() {
+    public void recipeTest2_collect_function() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.recipe), withContentDescription("Recipe Search"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
+                                        withId(R.id.toolbar),
                                         1),
                                 1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.edit),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                0),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("soup"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
+        ViewInteraction materialButton = onView(
                 allOf(withId(R.id.btn), withText("Search"),
                         childAtPosition(
                                 childAtPosition(
@@ -69,11 +60,35 @@ public class RecipeSearchTest1_search_function {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        materialButton.perform(click());
 
-        ViewInteraction frameLayout = onView(
-                allOf(IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class), isDisplayed()));
-        frameLayout.check(matches(isDisplayed()));
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.commonRecycleView),
+                        childAtPosition(
+                                withClassName(is("android.widget.LinearLayout")),
+                                3)));
+        recyclerView.perform(actionOnItemAtPosition(1, click()));
+
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.details_btn), withText("Collect"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton2.perform(scrollTo(), click());
+
+        ViewInteraction linearLayout = onView(
+                allOf(withId(com.google.android.material.R.id.action_bar_root),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class))),
+                        isDisplayed()));
+        linearLayout.check(matches(isDisplayed()));
+
+        ViewInteraction linearLayout2 = onView(
+                allOf(withId(com.google.android.material.R.id.action_bar_root),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class))),
+                        isDisplayed()));
+        linearLayout2.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
