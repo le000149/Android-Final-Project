@@ -16,7 +16,7 @@ import org.algonquin.cst2355.finalproject.dictionary.model.Definition;
 /**
  * abstract class for dictionary databases
  */
-@Database(entities = {Definition.class}, version = 1)
+@Database(entities = {Definition.class}, version = 3)
 public abstract class DictionaryDatabase extends RoomDatabase {
 
     /**

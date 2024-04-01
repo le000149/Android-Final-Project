@@ -35,13 +35,33 @@ public class Definition {
     private String definition;
 
     /**
-     * This constructor is used to create a new Definition instance.
-     * @param word
-     * @param definition
+     * represents the phonetic
      */
-    public Definition(String word, String definition) {
+    private String phonetic;
+    /**
+     * represents the audio of phonetic
+     */
+    private String audio;
+
+    /**
+     * represents the part of speech
+     */
+    private String partOfSpeech;
+
+    /**
+     * This constructor is used to create a new Definition instance.
+     *
+     * @param word word to be searched
+     * @param definition definition of the word
+     * @param phonetic phonetic of the word
+     * @param partOfSpeech part of speech of the word
+     */
+    public Definition(String word, String definition, String phonetic, String audio, String partOfSpeech) {
         this.word = word;
         this.definition = definition;
+        this.phonetic = phonetic;
+        this.audio = audio;
+        this.partOfSpeech = partOfSpeech;
     }
 
     /**
@@ -92,4 +112,28 @@ public class Definition {
         this.definition = definition;
     }
 
+
+    public String getPhonetic() {
+        return phonetic;
+    }
+
+    public void setPhonetic(String phonetic) {
+        this.phonetic = phonetic;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+
+    public String getPartOfSpeech() {
+        return partOfSpeech;
+    }
+
+    public void setPartOfSpeech(String partOfSpeech) {
+        this.partOfSpeech = partOfSpeech;
+    }
 }

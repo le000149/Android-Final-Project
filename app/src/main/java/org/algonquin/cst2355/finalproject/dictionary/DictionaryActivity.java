@@ -265,7 +265,7 @@ public class DictionaryActivity extends AppCompatActivity {
         @NonNull
         @Override
         public DefinitionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_word, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_saved_word, parent, false);
             return new DefinitionViewHolder(view);
         }
 

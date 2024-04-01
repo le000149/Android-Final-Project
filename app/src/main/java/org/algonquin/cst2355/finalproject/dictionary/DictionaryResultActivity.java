@@ -9,6 +9,7 @@ package org.algonquin.cst2355.finalproject.dictionary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -226,14 +228,24 @@ public class DictionaryResultActivity extends AppCompatActivity {
                 definitions = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject wordObject = response.getJSONObject(i);
+                    JSONArray phonetics = wordObject.getJSONArray("phonetics");
+                    for (int k = 0; k < phonetics.length(); k++) {
+                        JSONObject phonetic = phonetics.getJSONObject(k);
+                        if (phonetic.has("text") && phonetic.has("audio")) {
+                            definitions.add(new Definition(word, null, phonetic.getString("text"), phonetic.getString("audio"), null));
+                        }
+                    }
                     JSONArray meaningsArray = wordObject.getJSONArray(MEANINGS);
                     for (int j = 0; j < meaningsArray.length(); j++) {
                         JSONObject meaningsObject = meaningsArray.getJSONObject(j);
+                        if (meaningsObject.has("partOfSpeech")) {
+                            definitions.add(new Definition(word, null, null, null, meaningsObject.getString("partOfSpeech")));
+                        }
                         JSONArray definitionsArray = meaningsObject.getJSONArray(DEFINITIONS);
                         for (int k = 0; k < definitionsArray.length(); k++) {
                             JSONObject definitionObject = definitionsArray.getJSONObject(k);
                             String definition = definitionObject.getString(DEFINITION);
-                            definitions.add(new Definition(word, definition));
+                            definitions.add(new Definition(word, definition, null, null, null));
                         }
                     }
                 }
@@ -274,7 +286,7 @@ public class DictionaryResultActivity extends AppCompatActivity {
     /**
      * This is a adapter class for the RecyclerView that displays a list of definitions
      */
-    static class DefinitionAdapter extends RecyclerView.Adapter<DefinitionViewHolder> {
+    class DefinitionAdapter extends RecyclerView.Adapter<DefinitionViewHolder> {
         /**
          * a list of definition objects to be displayed
          */
@@ -300,7 +312,14 @@ public class DictionaryResultActivity extends AppCompatActivity {
         @Override
         public DefinitionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             Log.d(TAG, "onCreateViewHolder: ");
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dict_definition, parent, false);
+            View view;
+            int layoutId = R.layout.item_dict_definition;
+            if (viewType == 1) {
+                layoutId = R.layout.item_dict_audio;
+            } else if (viewType == 2) {
+                layoutId = R.layout.item_dict_pos;
+            }
+            view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
             return new DefinitionViewHolder(view);
         }
 
@@ -326,16 +345,29 @@ public class DictionaryResultActivity extends AppCompatActivity {
             return definitions.size();
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            Definition definition = definitions.get(position);
+            if (definition.getAudio() != null) {
+                return 1;
+            } else if (definition.getPartOfSpeech() != null) {
+                return 2;
+            } else {
+                return 0;
+            }
+        }
     }
 
     /**
      * This is a ViewHolder class for the RecyclerView that displays a list of definitions
      */
-    static class DefinitionViewHolder extends RecyclerView.ViewHolder {
+    class DefinitionViewHolder extends RecyclerView.ViewHolder {
         /**
          * TextView that displays the definition text
          */
         private final TextView wordTextView;
+        private final TextView wordAudio;
+        private final View iconSpeak;
 
         /**
          * Constructor for DefinitionViewHolder
@@ -344,6 +376,8 @@ public class DictionaryResultActivity extends AppCompatActivity {
         public DefinitionViewHolder(@NonNull View itemView) {
             super(itemView);
             wordTextView = itemView.findViewById(R.id.definition_text_view);
+            wordAudio = itemView.findViewById(R.id.definition_audio);
+            iconSpeak = itemView.findViewById(R.id.speak);
         }
 
         /**
@@ -351,7 +385,34 @@ public class DictionaryResultActivity extends AppCompatActivity {
          * @param definition The Definition object containing the definition text
          */
         public void bind(Definition definition) {
-            wordTextView.setText(definition.getDefinition());
+            if (definition.getDefinition() != null) {
+                wordTextView.setText(definition.getDefinition());
+            }
+
+            if (definition.getPartOfSpeech() != null) {
+                wordTextView.setText(definition.getPartOfSpeech());
+            }
+
+            if (definition.getPhonetic() != null) {
+                wordAudio.setText(definition.getPhonetic());
+                if (definition.getAudio() != null && !definition.getAudio().isEmpty()) {
+                    itemView.setOnClickListener(v -> {
+                        try {
+                            Log.d(TAG, "play audio: " + definition.getAudio());
+                            MediaPlayer mediaPlayer = new MediaPlayer();
+                            mediaPlayer.setDataSource(definition.getAudio());
+                            mediaPlayer.prepareAsync();
+                            mediaPlayer.setOnPreparedListener(mp -> {
+                                mp.start();
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    iconSpeak.setVisibility(View.GONE);
+                }
+            }
         }
     }
 

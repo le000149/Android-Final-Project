@@ -24,7 +24,7 @@ public interface DefinitionDao {
     /**
      *Retrieve list of words definitions sorted by id
      */
-    @Query("SELECT * FROM Definition WHERE id IN (SELECT MIN(id) FROM Definition GROUP BY word) ORDER BY id DESC")
+    @Query("SELECT * FROM Definition WHERE id IN (SELECT MIN(id) FROM Definition WHERE definition IS NOT NULL GROUP BY word) ORDER BY id DESC")
     List<Definition> getAllDefinitionDistinct();
 
     /**
