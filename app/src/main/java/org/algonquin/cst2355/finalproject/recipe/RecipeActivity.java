@@ -71,7 +71,7 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
         // Set the Toolbar as the ActionBar
         Toolbar toolbar = findViewById(R.id.toolbar);
-
+        setSupportActionBar(toolbar);
         loadingLinearLayout = findViewById(R.id.line_loading_view);
         mLoadingView =findViewById(R.id.line_chart_loading);
         mNoDataView =findViewById(R.id.line_chart_no_data);
