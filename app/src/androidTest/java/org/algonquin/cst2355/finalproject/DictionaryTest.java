@@ -22,26 +22,29 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 @LargeTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
-public class DictionaryActivityTest {
+public class DictionaryTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void dictionaryActivityLaunchTest() {
+    public void dict1ActivityLaunchTest() {
         onView(withId(R.id.dictionary)).perform(click());
         ViewInteraction textView = onView(withText("Dictionary"));
         textView.check(matches(withText("Dictionary")));
     }
 
     @Test
-    public void saveDefinition() throws InterruptedException {
+    public void dict2SaveDefinition() throws InterruptedException {
         ViewInteraction actionMenuItemView = onView(withId(R.id.dictionary));
         actionMenuItemView.perform(click());
 
@@ -66,8 +69,8 @@ public class DictionaryActivityTest {
     }
 
     @Test
-    public void searchFromDB() throws InterruptedException {
-        saveDefinition();
+    public void dict3SearchFromDB() throws InterruptedException {
+        onView(withId(R.id.dictionary)).perform(click());
 
         ViewInteraction recyclerView = onView(withId(R.id.saved_definition_recycler_view));
         recyclerView.perform(actionOnItemAtPosition(0, click()));
@@ -79,22 +82,9 @@ public class DictionaryActivityTest {
     }
 
     @Test
-    public void deleteDefinition() throws InterruptedException {
+    public void dict4DeleteDefinition() throws InterruptedException {
         ViewInteraction actionMenuItemView = onView(withId(R.id.dictionary));
         actionMenuItemView.perform(click());
-        //
-        //ViewInteraction appCompatEditText = onView(withId(R.id.search_edit_text));
-        //appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
-        //
-        //ViewInteraction materialButton = onView(withId(R.id.search_button));
-        //materialButton.perform(click());
-        //
-        //Thread.sleep(1000);
-        //
-        //ViewInteraction actionMenuItemView2 = onView(withId(R.id.save_or_delete_definition));
-        //actionMenuItemView2.perform(click());
-        //
-        //pressBack();
 
         ViewInteraction appCompatEditText = onView(withId(R.id.search_edit_text));
         appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
@@ -114,9 +104,22 @@ public class DictionaryActivityTest {
     }
 
     @Test
-    public void longPressDelete() throws InterruptedException {
+    public void dict5LongPressDelete() throws InterruptedException {
         ViewInteraction actionMenuItemView = onView(withId(R.id.dictionary));
         actionMenuItemView.perform(click());
+
+        ViewInteraction appCompatEditText = onView(withId(R.id.search_edit_text));
+        appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
+
+        ViewInteraction materialButton = onView(withId(R.id.search_button));
+        materialButton.perform(click());
+
+        Thread.sleep(1000);
+
+        ViewInteraction actionMenuItemView2 = onView(withId(R.id.save_or_delete_definition));
+        actionMenuItemView2.perform(click());
+
+        pressBack();
 
         ViewInteraction recyclerView = onView(withId(R.id.saved_definition_recycler_view));
         recyclerView.perform(actionOnItemAtPosition(0, longClick()));
@@ -125,6 +128,23 @@ public class DictionaryActivityTest {
         materialButton2.perform(scrollTo(), click());
 
         recyclerView.check(matches(hasChildCount(0)));
+    }
+
+    @Test
+    public void dict6ResultActivityTest() throws InterruptedException {
+        ViewInteraction actionMenuItemView = onView(withId(R.id.dictionary));
+        actionMenuItemView.perform(click());
+
+        ViewInteraction appCompatEditText = onView(withId(R.id.search_edit_text));
+        appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
+
+        ViewInteraction materialButton = onView(withId(R.id.search_button));
+        materialButton.perform(click());
+
+        Thread.sleep(1000);
+
+        ViewInteraction textView = onView(withText("\"Hello!\" or an equivalent greeting."));
+        textView.check(matches(withText("\"Hello!\" or an equivalent greeting.")));
     }
 
 }
