@@ -30,6 +30,7 @@ import java.util.concurrent.Executors;
 
 /**
  * This activity displays a list of saved songs and allows the user to delete individual songs or all saved songs.
+ * Author: Hoang Anh Nguyen - 041099695
  */
 public class SavedSongActivity extends AppCompatActivity {
 

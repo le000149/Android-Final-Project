@@ -4,7 +4,8 @@
     import androidx.room.Entity;
     import androidx.room.PrimaryKey;
     /**
-     * This class represents a song entity in the Room database.
+     * This class represents a song entity in the Room database
+     * Author: Hoang Anh Nguyen - 041099695
      */
     @Entity
     public class Song {

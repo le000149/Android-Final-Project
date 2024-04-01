@@ -44,6 +44,7 @@ import java.util.List;
  * This activity allows users to search for songs by an artist using the Deezer API.
  * It displays the search results in a RecyclerView and allows users to click on a song
  * to view its details.
+ * Author: Hoang Anh Nguyen - 041099695
  */
 public class SongSearchActivity extends AppCompatActivity  {
 
@@ -212,7 +213,7 @@ public class SongSearchActivity extends AppCompatActivity  {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Toast.makeText(SongSearchActivity.this, "Error fetching data from API1", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SongSearchActivity.this, R.string.error_fetching_data_from_api, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -267,7 +268,7 @@ public class SongSearchActivity extends AppCompatActivity  {
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(SongSearchActivity.this, "Error parsing JSON response2", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SongSearchActivity.this, R.string.error_parsing_json_response, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -275,7 +276,7 @@ public class SongSearchActivity extends AppCompatActivity  {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Toast.makeText(SongSearchActivity.this, "Error fetching album data from API", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SongSearchActivity.this, R.string.error_fetching_album_data_from_api, Toast.LENGTH_SHORT).show();
                         }
                     });
 
