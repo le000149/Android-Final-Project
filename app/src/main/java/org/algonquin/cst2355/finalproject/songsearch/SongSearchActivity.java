@@ -45,6 +45,7 @@ import java.util.List;
  * It displays the search results in a RecyclerView and allows users to click on a song
  * to view its details.
  * Author: Hoang Anh Nguyen - 041099695
+ * Lab Section - 013
  */
 public class SongSearchActivity extends AppCompatActivity  {
 

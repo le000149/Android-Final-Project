@@ -6,6 +6,7 @@ import org.algonquin.cst2355.finalproject.songsearch.SongDAO;
 /**
  * This class represents the Room database for storing song data.
  * Author: Hoang Anh Nguyen - 041099695
+ * Lab Section - 013
  */
 @Database(entities = {Song.class}, version = 1)
 public abstract class SongSearchDatabase extends RoomDatabase {

@@ -30,6 +30,7 @@ import org.algonquin.cst2355.finalproject.R;
 /**
  * This activity displays details of a selected song and allows the user to save the song to a database.
  * Author: Hoang Anh Nguyen - 041099695
+ * Lab Section - 013
  */
 public class SongResultActivity extends AppCompatActivity {
     //private List<Song> songList;
