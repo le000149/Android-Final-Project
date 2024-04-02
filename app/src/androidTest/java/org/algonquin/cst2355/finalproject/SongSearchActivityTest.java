@@ -23,6 +23,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * This class contains Espresso UI tests for the SongSearchActivity.
+ * Author: Hoang Anh Nguyen - 041099695
+ * Lab Section - 013
  */
 @RunWith(AndroidJUnit4.class)
 public class SongSearchActivityTest {
