@@ -49,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
      * API URL and Key
      */
     private static final String BASE_URL = "https://api.spoonacular.com/recipes/";
-    private static final String API_KEY = "8c1cbcf7e6db4a71b7ac99a6f0f9ec76";
+    private static final String API_KEY = "3db883fb7d4f4dcfadbeca2505f7128e";
     private static final String RECIPE_ID = "511728"; // this could be replaced with another id
 
     private MyDBOpenHelper mhelper;
