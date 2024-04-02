@@ -42,108 +42,13 @@ public class SunriseSunsetActivityTest {
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
-
-    /**
-     * Testing search to get the same result with different time
-     */
     @Test
-    public void searchActivityTest() {
+    public void saveSunriseSunsetActivityTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(5560);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.sunrise_sunset), withContentDescription("Sunrise Sunset"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.toolbar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.editTextLatitude),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("1234"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.editTextLongitude),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("4321"), closeSoftKeyboard());
-
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.search_sun_button), withText("Search"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        materialButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.typeTextView), withText("6:07:04 AM"),
-                        withParent(withParent(withId(R.id.recycler_sun_time))),
-                        isDisplayed()));
-        textView.check(matches(withText("6:07:04 AM")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.wordTextView), withText("6:01:19 PM"),
-                        withParent(withParent(withId(R.id.recycler_sun_time))),
-                        isDisplayed()));
-        textView2.check(matches(withText("6:01:19 PM")));
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.wordTextView), withText("6:01:19 PM"),
-                        withParent(withParent(withId(R.id.recycler_sun_time))),
-                        isDisplayed()));
-        textView3.check(matches(withText("6:01:19 PM")));
-    }
-
-    /**
-     * Testing to check the save is working or not
-     */
-    @Test
-    public void saveActivityTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(5315);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -246,20 +151,26 @@ public class SunriseSunsetActivityTest {
             e.printStackTrace();
         }
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.textViewLocation), withText("Latitude:1234   Longitude4321"),
-                        withParent(withParent(withId(R.id.recyclerViewSavedLocations))),
-                        isDisplayed()));
-        textView.check(matches(withText("Latitude:1234   Longitude4321")));
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.recyclerViewSavedLocations),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(0, click()));
 
+        ViewInteraction textView = onView(
+                allOf(withId(android.R.id.message), withText("Do you want to load this location again: Latitude:1234   Longitude4321"),
+                        withParent(withParent(withId(androidx.test.espresso.contrib.R.id.scrollView))),
+                        isDisplayed()));
+        textView.check(matches(withText("Do you want to load this location again: Latitude:1234   Longitude4321")));
     }
     @Test
-    public void reload() {
+    public void searchActivityTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(5554);
+            Thread.sleep(5230);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -291,7 +202,7 @@ public class SunriseSunsetActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("5678"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("1234"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.editTextLongitude),
@@ -301,7 +212,88 @@ public class SunriseSunsetActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("8765"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("4321"), closeSoftKeyboard());
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.search_sun_button), withText("Search"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.typeTextView), withText("6:08:58 AM"),
+                        withParent(withParent(withId(R.id.recycler_sun_time))),
+                        isDisplayed()));
+        textView.check(matches(withText("6:08:58 AM")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.wordTextView), withText("5:57:03 PM"),
+                        withParent(withParent(withId(R.id.recycler_sun_time))),
+                        isDisplayed()));
+        textView2.check(matches(withText("5:57:03 PM")));
+    }
+    @Test
+    public void reloadActivityTest() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(5964);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction actionMenuItemView = onView(
+                allOf(withId(R.id.sunrise_sunset), withContentDescription("Sunrise Sunset"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.toolbar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.editTextLatitude),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText.perform(replaceText("1234"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.editTextLongitude),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("4321"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.search_sun_button), withText("Search"),
@@ -373,7 +365,7 @@ public class SunriseSunsetActivityTest {
                 allOf(withId(android.R.id.button1), withText("Load"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(com.google.android.material.R.id.buttonPanel),
+                                        withId(androidx.test.espresso.contrib.R.id.buttonPanel),
                                         0),
                                 3)));
         materialButton2.perform(scrollTo(), click());
@@ -388,22 +380,16 @@ public class SunriseSunsetActivityTest {
         }
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.typeTextView), withText("5:48:35 PM"),
+                allOf(withId(R.id.typeTextView), withText("6:08:58 AM"),
                         withParent(withParent(withId(R.id.recycler_sun_time))),
                         isDisplayed()));
-        textView.check(matches(withText("5:48:35 PM")));
+        textView.check(matches(withText("6:08:58 AM")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.wordTextView), withText("1:54:16 PM"),
+                allOf(withId(R.id.wordTextView), withText("5:57:03 PM"),
                         withParent(withParent(withId(R.id.recycler_sun_time))),
                         isDisplayed()));
-        textView2.check(matches(withText("1:54:16 PM")));
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.wordTextView), withText("1:54:16 PM"),
-                        withParent(withParent(withId(R.id.recycler_sun_time))),
-                        isDisplayed()));
-        textView3.check(matches(withText("1:54:16 PM")));
+        textView2.check(matches(withText("5:57:03 PM")));
     }
     @Test
     public void helpActivityTest() {
