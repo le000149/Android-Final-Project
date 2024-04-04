@@ -89,6 +89,10 @@ public class DictionaryActivity extends AppCompatActivity {
         thread.execute(() -> {
             long messageId = dDAO.insertMessage(newMessage);
             newMessage.setId((int) messageId);
+
+            runOnUiThread(() -> {
+                Toast.makeText(DictionaryActivity.this, "Word and definition saved!", Toast.LENGTH_SHORT).show();
+            });
         });
     }
 
