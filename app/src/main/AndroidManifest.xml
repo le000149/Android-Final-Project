@@ -62,6 +62,17 @@
         </activity>
 
 
+        <activity android:name=".recipe.DetailsCollectActivity">
+
+        </activity>
+        <activity android:name=".recipe.SeeAllActivity">
+
+        </activity>
+
+        <activity android:name=".recipe.DetailsActivity">
+
+        </activity>
+
 
 
 
