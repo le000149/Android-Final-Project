@@ -3,11 +3,14 @@ package algonquin.cst2335.finalproject.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +48,8 @@ public class DictionaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.myToolbar);
 
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
         dDAO = db.dmDAO();
@@ -183,7 +188,18 @@ public class DictionaryActivity extends AppCompatActivity {
                 definitionTextView = itemView.findViewById(R.id.definition_text);
             }
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.mymenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
 
