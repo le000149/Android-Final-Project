@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import org.algonquin.cst2355.finalproject.databinding.ActivityMainBinding;
 import org.algonquin.cst2355.finalproject.dictionary.DictionaryActivity;
 import org.algonquin.cst2355.finalproject.recipe.RecipeActivity;
-import org.algonquin.cst2355.finalproject.songsearch.SongSearchActivity;
 import org.algonquin.cst2355.finalproject.sunrisesunset.SunriseSunsetActivity;
+import org.algonquin.cst2355.finalproject.songsearch.SongActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.dictionary) {
             intent = new Intent(MainActivity.this, DictionaryActivity.class);
         } else if (id == R.id.song_search) {
-            intent = new Intent(MainActivity.this, SongSearchActivity.class);
+            intent = new Intent(MainActivity.this, SongActivity.class);
         }
         if (intent != null) {
             startActivity(intent);
