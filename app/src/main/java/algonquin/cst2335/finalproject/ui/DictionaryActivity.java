@@ -1,7 +1,9 @@
 package algonquin.cst2335.finalproject.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +44,7 @@ public class DictionaryActivity extends AppCompatActivity {
     private List<DictionaryEntry> definitions;
     private RequestQueue requestQueue;
     private DefinitionMessageDAO dDAO;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class DictionaryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.myToolbar);
+
+        // Initialize SharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
         dDAO = db.dmDAO();
@@ -61,11 +67,21 @@ public class DictionaryActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
+        // Retrieve the last searched word from SharedPreferences
+        String lastSearchedWord = sharedPreferences.getString("last_searched_word", "");
+        if (!lastSearchedWord.isEmpty()) {
+            // Set the last searched word in EditText
+            binding.addword.setText(lastSearchedWord);
+            fetchDefinitions(lastSearchedWord);
+        }
+
         binding.search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = binding.addword.getText().toString().trim();
                 if (!word.isEmpty()) {
+                    // Save the last searched word to SharedPreferences
+                    sharedPreferences.edit().putString("last_searched_word", word).apply();
                     fetchDefinitions(word);
                 }
             }
