@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/sunrise_sunset"
-        android:icon="@drawable/routine"
+        android:icon="@drawable/sun"
         android:title="@string/sunrise_sunset"
         app:showAsAction="always" />
 
@@ -21,7 +21,7 @@
 
     <item
         android:id="@+id/song_search"
-        android:icon="@drawable/music_note"
+        android:icon="@drawable/music"
         android:title="@string/song_search"
         app:showAsAction="always" />
 

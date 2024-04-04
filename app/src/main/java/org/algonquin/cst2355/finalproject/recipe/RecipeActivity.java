@@ -57,7 +57,7 @@ public class RecipeActivity extends AppCompatActivity {
      */
     // setup API
     public static final String SPOONACULAR_API_URL = "https://api.spoonacular.com/recipes/complexSearch";
-    public static final String SPOONACULAR_API_KEY = "3db883fb7d4f4dcfadbeca2505f7128e";
+    public static final String SPOONACULAR_API_KEY = "8c1cbcf7e6db4a71b7ac99a6f0f9ec76";
 
     /**
      * Called when the activity is starting.
