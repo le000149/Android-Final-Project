@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2335.finalproject.databinding.ActivityDictionaryBinding;
 import algonquin.cst2335.finalproject.R;
@@ -35,12 +38,16 @@ public class DictionaryActivity extends AppCompatActivity {
     private DefinitionAdapter definitionAdapter;
     private List<DictionaryEntry> definitions;
     private RequestQueue requestQueue;
+    private DefinitionMessageDAO dDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
+        dDAO = db.dmDAO();
 
         definitions = new ArrayList<>();
         definitionAdapter = new DefinitionAdapter(definitions);
@@ -58,7 +65,33 @@ public class DictionaryActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get the currently displayed item position in the RecyclerView
+                int position = ((LinearLayoutManager) binding.recycleView.getLayoutManager()).findFirstVisibleItemPosition();
+                // Retrieve the word and definition from the RecyclerView
+                String word = definitions.get(position).getWord();
+                String definition = definitions.get(position).getDefinitions().toString();
+                // Call the addMessage method to save the word and definition to the database
+                addMessage(word, definition);
+            }
+        });
     }
+
+    private void addMessage(String word, String definition) {
+        // Create a new DefinitionMessage object
+        DefinitionMessage newMessage = new DefinitionMessage(word, definition);
+
+        // Insert the new message into the Room database and get its ID
+        Executor thread = Executors.newSingleThreadExecutor();
+        thread.execute(() -> {
+            long messageId = dDAO.insertMessage(newMessage);
+            newMessage.setId((int) messageId);
+        });
+    }
+
 
     private void fetchDefinitions(String word) {
         String url = String.format("https://api.dictionaryapi.dev/api/v2/entries/en/%s", word);
