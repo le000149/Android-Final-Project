@@ -2,6 +2,9 @@ package org.algonquin.cst2355.finalproject.recipe;
 
 import java.util.List;
 
+/**
+ * 19119
+ */
 public class details_model {
     private Boolean vegetarian;
 
