@@ -2,6 +2,7 @@ package algonquin.cst2335.finalproject.recipe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,26 +38,23 @@ public class DetailActivity extends AppCompatActivity {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
+                    Log.d("API Response", response.toString()); // Add this line to log the response
                     try {
-                        // Assuming response has the fields: title, image, summary, sourceUrl
                         String title = response.getString("title");
                         String image = response.getString("image");
                         String summary = response.getString("summary");
                         String sourceUrl = response.getString("sourceUrl");
 
-                        // Update UI on the main thread
                         runOnUiThread(() -> updateUI(title, image, summary, sourceUrl));
-                    } catch ( JSONException e) {
-                        e.printStackTrace();
-                        // Handle error
+                    } catch (JSONException e) {
+                        Log.e("JSON Parsing Error", e.getMessage()); // Improve error logging
                     }
                 },
-                error -> {
-                    // Handle error
-                    error.printStackTrace();
-                });
+                error -> Log.e("Volley Error", error.toString()) // Log errors
+        );
 
         MyApplication.getRequestQueue().add(jsonObjectRequest);
+
     }
 
     // Method to update UI with fetched recipe details
