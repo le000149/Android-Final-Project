@@ -80,7 +80,7 @@ public class RecipeActivity extends AppCompatActivity {
                 // Assuming summary and sourceUrl are fetched here or set as placeholders
                 String summary = "Summary not available"; // Placeholder value
                 String sourceUrl = "URL not available"; // Placeholder value
-                recipes.add(new Recipe(0,title, image, summary, sourceUrl));
+                recipes.add(new Recipe(title, image, summary, sourceUrl));
             }
         } catch ( JSONException e) {
             e.printStackTrace();

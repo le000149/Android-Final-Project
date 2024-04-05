@@ -1,17 +1,20 @@
 package algonquin.cst2335.finalproject.recipe;
 // RecipeAdapter.java
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import algonquin.cst2335.finalproject.R;
-
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> recipeList;
 
@@ -36,6 +39,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public int getItemCount() {
         return recipeList.size();
     }
+
     public void updateRecipes(List<Recipe> newRecipes) {
         recipeList.clear();
         recipeList.addAll(newRecipes);
@@ -44,15 +48,23 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewRecipeTitle;
+        private ImageView imageViewRecipeImage;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewRecipeTitle = itemView.findViewById(R.id.textView_recipe_title);
+            imageViewRecipeImage = itemView.findViewById(R.id.imageView_recipe_image);
         }
 
         public void bind(Recipe recipe) {
             textViewRecipeTitle.setText(recipe.getTitle());
-            // You can bind other data to views here
+            Glide.with(itemView.getContext()).load(recipe.getImage()).into(imageViewRecipeImage);
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(itemView.getContext(), DetailActivity.class);
+                intent.putExtra("recipeId", recipe.getId()); // Pass the recipe ID
+                itemView.getContext().startActivity(intent);
+            });
         }
+
     }
 }

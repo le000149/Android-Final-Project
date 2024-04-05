@@ -17,8 +17,8 @@
     <!-- Recipe Image (You can use ImageView here to display the recipe image) -->
     <ImageView
         android:id="@+id/imageView_recipe_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/default_recipe"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"

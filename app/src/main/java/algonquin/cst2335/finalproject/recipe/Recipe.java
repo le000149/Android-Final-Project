@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "recipes")
 public class Recipe {
     @PrimaryKey(autoGenerate = true)
-    public int id;
 
     @ColumnInfo(name = "title")
     public String title;
@@ -22,14 +21,13 @@ public class Recipe {
     public String sourceUrl;
 
     // Constructor
-    public Recipe(int id, String title, String image, String summary, String sourceUrl) {
-        this.id = id;
+    public Recipe(String title, String image, String summary, String sourceUrl) {
         this.title = title;
         this.image = image;
         this.summary = summary;
         this.sourceUrl = sourceUrl;
     }
-
+    private int id;
     // Getters and setters
     public int getId() {
         return id;

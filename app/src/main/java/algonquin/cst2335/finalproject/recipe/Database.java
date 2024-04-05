@@ -67,20 +67,30 @@ public class Database extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-                String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
-                String image = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE));
-                String summary = cursor.getString(cursor.getColumnIndex(COLUMN_SUMMARY));
-                String sourceUrl = cursor.getString(cursor.getColumnIndex(COLUMN_SOURCE_URL));
+                int idIndex = cursor.getColumnIndex(COLUMN_ID);
+                int titleIndex = cursor.getColumnIndex(COLUMN_TITLE);
+                int imageIndex = cursor.getColumnIndex(COLUMN_IMAGE);
+                int summaryIndex = cursor.getColumnIndex(COLUMN_SUMMARY);
+                int sourceUrlIndex = cursor.getColumnIndex(COLUMN_SOURCE_URL);
 
-                Recipe recipe = new Recipe(id, title, image, summary, sourceUrl); // Assuming a constructor that includes id
-                recipes.add(recipe);
+                if (idIndex != -1 && titleIndex != -1 && imageIndex != -1 && summaryIndex != -1 && sourceUrlIndex != -1) {
+                    int id = cursor.getInt(idIndex);
+                    String title = cursor.getString(titleIndex);
+                    String image = cursor.getString(imageIndex);
+                    String summary = cursor.getString(summaryIndex);
+                    String sourceUrl = cursor.getString(sourceUrlIndex);
+
+                    Recipe recipe = new Recipe(title, image, summary, sourceUrl);// Use the setter for the ID
+                    recipes.add(recipe);
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return recipes;
     }
+
+
 
 
     /**
