@@ -9,7 +9,7 @@
     <!-- Description: This menu file defines the options menu for the DictionaryActivity, which includes an item to display information about the application. -->
 
     <item
-        android:id="@+id/about"
+        android:id="@+id/aboutZL"
         android:title="Item"
         app:showAsAction="never" />
 </menu>

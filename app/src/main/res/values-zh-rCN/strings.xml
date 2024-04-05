@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">最终项目</string>
+    <string name="Dictionary">字典</string>
+    <string name="DictionaryInput">输入单词</string>
+    <string name="DictionarySearch">查询</string>
+    <string name="DictionarySave">保存</string>
+    <string name="DictionaryWord">单词</string>
+    <string name="DictionaryDefinitions">定义</string>
+</resources>

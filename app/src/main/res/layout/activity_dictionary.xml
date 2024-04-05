@@ -19,7 +19,7 @@
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/myToolbar"
+        android:id="@+id/dcmyToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/purple_200"
@@ -32,38 +32,38 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/Input"
+        android:hint="@string/DictionaryInput"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/dcmyToolbar" />
 
     <!-- Search Button -->
     <Button
-        android:id="@+id/search"
+        android:id="@+id/dcsearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Search"
+        android:text="@string/DictionarySearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addword" />
 
     <!-- Save Button -->
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/dcsaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Save"
+        android:text="@string/DictionarySave"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addword" />
 
     <!-- RecyclerView for displaying definitions -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+        android:id="@+id/dcrecycleView"
         android:layout_width="409dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
+        app:layout_constraintTop_toBottomOf="@+id/dcsearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

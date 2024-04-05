@@ -2,9 +2,9 @@
     <string name="app_name">Final Project</string>
     
     <string name="Dictionary">Dictionary</string>
-    <string name="Input">Input Your Word Here!</string>
-    <string name="Search">Search</string>
-    <string name="Save">Save</string>
-    <string name="Word">Word</string>
-    <string name="Definitions">Definitions</string>
+    <string name="DictionaryInput">Input Your Word Here!</string>
+    <string name="DictionarySearch">Search</string>
+    <string name="DictionarySave">Save</string>
+    <string name="DictionaryWord">Word</string>
+    <string name="DictionaryDefinitions">Definitions</string>
 </resources>

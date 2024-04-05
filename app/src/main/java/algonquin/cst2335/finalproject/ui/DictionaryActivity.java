@@ -63,7 +63,7 @@ public class DictionaryActivity extends AppCompatActivity {
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.myToolbar);
+        setSupportActionBar(binding.dcmyToolbar);
 
         // Initialize SharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -73,8 +73,8 @@ public class DictionaryActivity extends AppCompatActivity {
 
         definitions = new ArrayList<>();
         definitionAdapter = new DefinitionAdapter(definitions);
-        binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recycleView.setAdapter(definitionAdapter);
+        binding.dcrecycleView.setLayoutManager(new LinearLayoutManager(this));
+        binding.dcrecycleView.setAdapter(definitionAdapter);
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -86,7 +86,7 @@ public class DictionaryActivity extends AppCompatActivity {
             fetchDefinitions(lastSearchedWord);
         }
 
-        binding.search.setOnClickListener(new View.OnClickListener() {
+        binding.dcsearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = binding.addword.getText().toString().trim();
@@ -98,11 +98,11 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         });
 
-        binding.saveButton.setOnClickListener(new View.OnClickListener() {
+        binding.dcsaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the currently displayed item position in the RecyclerView
-                int position = ((LinearLayoutManager) binding.recycleView.getLayoutManager()).findFirstVisibleItemPosition();
+                int position = ((LinearLayoutManager) binding.dcrecycleView.getLayoutManager()).findFirstVisibleItemPosition();
                 // Retrieve the word and definition from the RecyclerView
                 String word = definitions.get(position).getWord();
                 String definition = definitions.get(position).getDefinitions().toString();
@@ -235,7 +235,7 @@ public class DictionaryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-     if (item.getItemId() == R.id.about) {
+     if (item.getItemId() == R.id.aboutZL) {
             // Show a toast with version information
             Toast.makeText(this, "Version 1.0, created by Zhenni Lu", Toast.LENGTH_SHORT).show();
             return true; // Return true to indicate that the event has been handled

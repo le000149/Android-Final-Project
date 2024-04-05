@@ -44,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         // Set up the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.dchttoolbar);
         setSupportActionBar(toolbar);
 
         // Initialize RecyclerView

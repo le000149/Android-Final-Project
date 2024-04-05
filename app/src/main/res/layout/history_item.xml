@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="@string/Word"/>
+        android:text="@string/DictionaryWord"/>
 
     <!-- TextView for displaying the definitions -->
     <TextView
@@ -37,6 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/word_text"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/Definitions"/>
+        android:text="@string/DictionaryDefinitions"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
