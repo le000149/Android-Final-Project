@@ -1,3 +1,13 @@
+/*
+ * File: DictionaryActivity.java
+ * Author: Zhenni Lu
+ * Lab Section: 032
+ * Creation Date: April 4, 2024
+ *
+ * Description:
+ * This activity allows users to search for word definitions using an online API and save them to a local database.
+ */
+
 package algonquin.cst2335.finalproject.ui;
 
 import android.content.Intent;

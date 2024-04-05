@@ -1,3 +1,13 @@
+/*
+ * File: HistoryActivity.java
+ * Author: Zhenni Lu
+ * Lab Section: 032
+ * Creation Date: April 4, 2024
+ *
+ * Description:
+ * This activity displays the history of word searches and their definitions.
+ */
+
 package algonquin.cst2335.finalproject.history;
 
 import android.content.Intent;
@@ -8,8 +18,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,14 +29,13 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-
 import algonquin.cst2335.finalproject.R;
 import algonquin.cst2335.finalproject.ui.DictionaryEntry;
 import algonquin.cst2335.finalproject.ui.MessageDatabase;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.room.Room;
-
+/**
+ * This activity displays the history of word searches and their definitions.
+ */
 public class HistoryActivity extends AppCompatActivity {
 
     @Override
@@ -56,7 +67,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.historymenu, menu);
         return true;
     }
@@ -72,6 +83,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Deletes the word and definition from the database.
+     */
     private void deleteWordAndDefinitionFromDatabase() {
         // Get the word and definition passed from DictionaryActivity
         Intent intent = getIntent();
@@ -97,6 +111,3 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 }
-
-
-

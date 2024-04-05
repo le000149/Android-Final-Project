@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ File: definition_item.xml;
+ Author: Zhenni Lu;
+ Lab Section: 032;
+ Creation Date: April 4, 2024;
+ Description: This layout file defines the item layout for displaying a single definition in a RecyclerView.
+-->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- TextView for displaying the definition -->
     <TextView
         android:id="@+id/definition_text"
         android:layout_width="match_parent"

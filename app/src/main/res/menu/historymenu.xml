@@ -2,6 +2,12 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- File: historymenu.xml -->
+    <!-- Author: Zhenni Lu -->
+    <!-- Lab Section: 032 -->
+    <!-- Creation Date: April 4, 2024 -->
+    <!-- Description: This menu file defines the options menu for the HistoryActivity, which includes an item to view history. -->
+
     <item
         android:id="@+id/viewHistory"
         android:icon="@drawable/save"

@@ -1,3 +1,13 @@
+/*
+ * File: HistoryAdapter.java
+ * Author: Zhenni Lu
+ * Lab Section: 032
+ * Creation Date: April 4, 2024
+ *
+ * Description:
+ * This adapter class is responsible for binding data to the RecyclerView in HistoryActivity.
+ */
+
 package algonquin.cst2335.finalproject.history;
 
 import android.view.LayoutInflater;
@@ -55,7 +65,3 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         }
     }
 }
-
-
-
-
