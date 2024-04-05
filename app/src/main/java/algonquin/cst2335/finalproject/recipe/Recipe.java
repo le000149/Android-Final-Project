@@ -22,7 +22,8 @@ public class Recipe {
     public String sourceUrl;
 
     // Constructor
-    public Recipe(String title, String image, String summary, String sourceUrl) {
+    public Recipe(int id, String title, String image, String summary, String sourceUrl) {
+        this.id = id;
         this.title = title;
         this.image = image;
         this.summary = summary;
