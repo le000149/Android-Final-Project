@@ -1,34 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:background="@drawable/sun"
+    tools:context=".MainActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/latitudeEditText"
+        style="@style/EditTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:hint="@string/latitude"
+        android:inputType="numberDecimal|numberSigned"
+        app:layout_constraintEnd_toStartOf="@+id/longitudeEditText"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView" />
+
+
+    <EditText
+        android:id="@+id/longitudeEditText"
+        style="@style/EditTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:hint="@string/longitude"
+        android:inputType="numberDecimal|numberSigned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/latitudeEditText"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView" />
 
     <Button
-        android:id="@+id/buttonApp1"
+        android:id="@+id/lookupButton"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App 1" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button_background"
+        android:text="@string/lookup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/longitudeEditText" />
 
-    <Button
-        android:id="@+id/buttonApp2"
+    <ImageView
+        android:id="@+id/sunriseImageView"
+        android:layout_width="75dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/sunrise_description"
+        android:src="@drawable/sunrise"
+        app:layout_constraintTop_toBottomOf="@+id/countryNameTextView"
+        tools:layout_editor_absoluteX="32dp" />
+
+    <TextView
+        android:id="@+id/sunriseTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App 2" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="78dp"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryNameTextView" />
 
-    <Button
-        android:id="@+id/buttonApp3"
+
+    <ImageView
+        android:id="@+id/sunsetImageView"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/sunset_description"
+        android:src="@drawable/sunset"
+        app:layout_constraintBottom_toTopOf="@+id/sunsetTimeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countryNameTextView" />
+
+    <TextView
+        android:id="@+id/sunsetTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App 3" />
+        android:layout_marginStart="-65dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="@id/sunsetImageView"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="@id/sunsetImageView"
+        app:layout_constraintTop_toBottomOf="@id/sunsetImageView" />
 
-    <Button
-        android:id="@+id/buttonApp4"
+
+    <TextView
+        android:id="@+id/cityNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App 4" />
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:text="City Name"
+        android:textColor="#A6000000"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.398"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/longitudeEditText" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/countryNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Country Name"
+        android:textColor="#A6000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/cityNameTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cityNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cityNameTextView" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoritesRecyclerView"
+        android:layout_width="379dp"
+        android:layout_height="319dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/sunriseImageView"
+        app:layout_constraintTop_toBottomOf="@+id/lookupButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
