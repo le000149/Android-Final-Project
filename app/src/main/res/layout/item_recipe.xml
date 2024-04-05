@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Recipe Title -->
+    <TextView
+        android:id="@+id/textView_recipe_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Recipe Image (You can use ImageView here to display the recipe image) -->
+    <ImageView
+        android:id="@+id/imageView_recipe_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/default_recipe"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Recipe Summary -->
+    <TextView
+        android:id="@+id/textView_recipe_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- Source URL -->
+    <TextView
+        android:id="@+id/textView_source_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>
