@@ -3,4 +3,6 @@
     <string name="sunrise_sunset">sunrise</string>
     <string name="recipe_search">recipe</string>
     <string name="dictionary">dictionary</string>
+    <string name="recipe_image">recipe_image</string>
+    <string name="save_to_favorites">save to favorite\n</string>
 </resources>

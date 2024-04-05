@@ -1,88 +1,101 @@
 package algonquin.cst2335.finalproject.recipe;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import java.util.List;
+
 import algonquin.cst2335.finalproject.R;
 
-/**
- * Adapter for displaying a list of recipes in a RecyclerView.
- */
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
-    private final List<Recipe> recipeList;
+import java.util.ArrayList;
+import java.util.List;
 
-    /**
-     * Constructs the RecipeAdapter with a list of recipes.
-     *
-     * @param recipeList List of Recipe objects to be displayed.
-     */
-    public RecipeAdapter(List<Recipe> recipeList) {
-        this.recipeList = recipeList;
+/**
+ * Adapter class for displaying recipes in a RecyclerView.
+ */
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.InnerHolder> {
+
+    private Context mContext;
+    private List<model.ResultsDTO> mModelList = new ArrayList<>();
+    private OnRecommendItemClickListener mOnRecommendItemClickListener;
+    public RecipeAdapter(Context context) {
+        mContext = context;
     }
 
     @NonNull
     @Override
-    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe, parent, false);
-        return new RecipeViewHolder(view);
+    public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.common_cell, parent, false);
+        final InnerHolder viewHolder = new InnerHolder(itemView);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe recipe = recipeList.get(position);
-        holder.bind(recipe);
+    public void onBindViewHolder(@NonNull InnerHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.itemView.setTag(position);
+        holder.setData(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view ) {
+                mOnRecommendItemClickListener.onItemClick(position,mModelList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return recipeList.size();
+        return mModelList.size();
     }
 
-    /**
-     * Updates the list of recipes in the adapter and refreshes the view.
-     *
-     * @param newRecipes New list of Recipe objects to display.
-     */
-    public void updateRecipes(List<Recipe> newRecipes) {
-        recipeList.clear();
-        recipeList.addAll(newRecipes);
+
+    public void setData(List<model.ResultsDTO> rTInfoModelList) {
+        mModelList.clear();
+        if (rTInfoModelList != null) {
+            mModelList.addAll(rTInfoModelList);
+        }
+
         notifyDataSetChanged();
     }
 
-    /**
-     * ViewHolder class for recipe items in the list.
-     */
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textViewRecipeTitle;
-        private final ImageView imageViewRecipeImage;
 
-        public RecipeViewHolder(@NonNull View itemView) {
+    public class InnerHolder extends RecyclerView.ViewHolder {
+        public InnerHolder(@NonNull View itemView) {
             super(itemView);
-            textViewRecipeTitle = itemView.findViewById(R.id.textView_recipe_title);
-            imageViewRecipeImage = itemView.findViewById(R.id.imageView_recipe_image);
+        }
+        @SuppressLint("ResourceAsColor")
+        public void setData(int position) {
+
+            TextView label1;
+            ImageView label3;
+            label1 = itemView.findViewById(R.id.label1);
+            label3 = itemView.findViewById(R.id.label3);
+
+            model.ResultsDTO model = mModelList.get(position);
+            label1.setText(model.getTitle());
+            // label3.setText(""+model.getAppMenuName());
+            Glide.with(mContext)
+                    .load(model.getImage())
+                    .into(label3);
+            //  label4.setText(""+model.getNumber());
+            //  label5.setText(""+model.getiPPort());
+
         }
 
-        /**
-         * Binds a Recipe object to the ViewHolder, setting up the displayed title and image, and handling click events.
-         *
-         * @param recipe The Recipe object to be displayed by this ViewHolder.
-         */
-        public void bind(Recipe recipe) {
-            textViewRecipeTitle.setText(recipe.getTitle());
-            Glide.with(itemView.getContext()).load(recipe.getImage()).into(imageViewRecipeImage);
-            itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(itemView.getContext(), DetailActivity.class);
-                // Ensure recipe.getId() is correctly returning an ID, not defaulting to 0
-                intent.putExtra("recipeId", recipe.getId());
-                itemView.getContext().startActivity(intent);
-            });
-        }
+    }
+
+    public void setOnRecommendItemListener(OnRecommendItemClickListener listener ){
+        mOnRecommendItemClickListener = listener;
+    }
+
+    public interface OnRecommendItemClickListener{
+        void onItemClick(int p, model.ResultsDTO testmodel);
     }
 }
