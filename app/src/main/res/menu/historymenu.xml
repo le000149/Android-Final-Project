@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/about"
+        android:id="@+id/viewHistory"
+        android:icon="@drawable/save"
         android:title="Item"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
+
 </menu>

@@ -12,6 +12,7 @@ public class DefinitionMessage {
 
     @ColumnInfo(name = "definition")
     protected String definition;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     protected long id;
@@ -23,5 +24,15 @@ public class DefinitionMessage {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+
+    public long getId(){return id;}
+    public String getWord() {
+        return word;
+    }
+
+    public String getDefinition() {
+        return definition;
     }
 }

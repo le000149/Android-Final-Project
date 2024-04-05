@@ -36,14 +36,15 @@ import java.util.concurrent.Executors;
 
 import algonquin.cst2335.finalproject.databinding.ActivityDictionaryBinding;
 import algonquin.cst2335.finalproject.R;
+import algonquin.cst2335.finalproject.history.HistoryActivity;
 
 public class DictionaryActivity extends AppCompatActivity {
 
-    private ActivityDictionaryBinding binding;
+    ActivityDictionaryBinding binding;
     private DefinitionAdapter definitionAdapter;
-    private List<DictionaryEntry> definitions;
+    List<DictionaryEntry> definitions;
     private RequestQueue requestQueue;
-    private DefinitionMessageDAO dDAO;
+    DefinitionMessageDAO dDAO;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -113,9 +114,17 @@ public class DictionaryActivity extends AppCompatActivity {
 
             runOnUiThread(() -> {
                 Toast.makeText(DictionaryActivity.this, "Word and definition saved!", Toast.LENGTH_SHORT).show();
+
+                // Pass the word and definition to HistoryActivity
+                Intent intent = new Intent(DictionaryActivity.this, HistoryActivity.class);
+                intent.putExtra("word", word);
+                intent.putExtra("definition", definition);
+                startActivity(intent);
             });
         });
     }
+
+
 
 
     private void fetchDefinitions(String word) {
@@ -215,7 +224,14 @@ public class DictionaryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
+
+     if (item.getItemId() == R.id.about) {
+            // Show a toast with version information
+            Toast.makeText(this, "Version 1.0, created by Zhenni Lu", Toast.LENGTH_SHORT).show();
+            return true; // Return true to indicate that the event has been handled
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
 

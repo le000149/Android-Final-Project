@@ -9,12 +9,12 @@ import java.util.List;
 @Dao
 public interface DefinitionMessageDAO {
     @Insert
-    public long insertMessage(DefinitionMessage d);
+    long insertMessage(DefinitionMessage d);
 
     @Query("Select * from DefinitionMessage")
     List<DefinitionMessage> getAllMessages();
 
-    @Delete
-    void deleteMessage(DefinitionMessage d);
+    @Query("DELETE FROM DefinitionMessage WHERE word = :word AND definition = :definition")
+    void deleteWordAndDefinition(String word, String definition);
 
 }
