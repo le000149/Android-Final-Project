@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Final Project</string>
     <string name="sunrise_sunset">sunrise</string>
     <string name="recipe_search">recipe</string>
     <string name="dictionary">dictionary</string>
