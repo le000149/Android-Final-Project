@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/imageView_recipe_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_launcher_background"
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
@@ -36,5 +36,12 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_marginTop="8dp"/>
+        <ImageButton
+            android:id="@+id/button_save_to_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favourite"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 </ScrollView>
