@@ -24,7 +24,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/purple_200"
         android:theme="?attr/actionBarTheme"
-        app:title="@string/Dictionary"/>
+        app:title="@string/Dictionary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- EditText for entering the word -->
     <EditText
