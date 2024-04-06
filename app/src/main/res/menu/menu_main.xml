@@ -1,0 +1,26 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/action_view_favorites"
+        android:title="View Favorites"
+        android:icon="@drawable/favorite"
+    app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_save_city"
+        android:title="Save City"
+        android:icon="@drawable/add"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/help_title"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about"
+        android:title="About"
+        app:showAsAction="never" />
+</menu>

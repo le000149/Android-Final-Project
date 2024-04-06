@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/delete_all"
+        android:icon="@drawable/cleaning"
+        android:title="Delete all messages"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@drawable/search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/help_title"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/about"
+        android:title="About"
+        app:showAsAction="never" />
+
+
+</menu>

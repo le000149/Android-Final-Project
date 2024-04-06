@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Chercheur de Soleil</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="lookup">Rechercher</string>
+    <string name="sunrise_time">Lever du soleil %1$s</string>
+    <string name="sunset_time">Coucher du soleil %1$s</string>
+    <string name="sunrise_description">Image du lever du soleil</string>
+    <string name="sunset_description">Image du coucher du soleil</string>
+    <string name="today_date">Date d\'aujourd\'hui</string>
+    <string name="city_name_placeholder">ville</string>
+    <string name="delete_all">Tout supprimer</string>
+    <string name="overflow_menu"></string>
+    <string name="delete">Supprimer</string>
+    <string name="ok">OK</string>
+    <string name="help_title">Aide</string>
+    <string name="save_city">Enregistrer la ville</string>
+    <string name="do_you_want_to_save_city">Voulez-vous enregistrer %1$s comme favori ?</string>
+    <string name="save">Enregistrer</string>
+    <string name="city_saved">Ville enregistrée avec succès.</string>
+    <string name="city_already_exists">La ville %1$s existe déjà dans les favoris.</string>
+    <string name="confirm_deletion">Confirmer la suppression</string>
+    <string name="are_you_sure_delete_all_favorite_cities">Êtes-vous sûr de vouloir supprimer toutes les villes favorites?</string>
+    <string name="are_you_sure_delete_city">Êtes-vous sûr de vouloir supprimer %1$s?</string>
+    <string name="all_cities_deleted">Toutes les villes ont été supprimées</string>
+    <string name="undo">Annuler</string>
+    <string name="delete_city">Supprimer la ville</string>
+    <string name="cancel">Annuler</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="favorites_title">Mes favoris</string>
+    <string name="city_deleted">Ville supprimée</string>
+    <string name="menu_delete_city">Supprimer la ville</string>
+    <string name="help_message">Entrez la latitude et la longitude puis \nAppuyez sur le bouton Rechercher</string>
+    <string name="about">Ceci est Sam, un étudiant en programmation informatique au Collège Algonquin</string>
+</resources>

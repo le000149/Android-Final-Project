@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,9 +14,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FinalProject"
+        android:theme="@style/Theme.TestSun"
         tools:targetApi="31">
 
+        <!-- FavoriteCities Activity -->
+        <activity android:name=".FavoriteCities" />
+
+        <!-- MainActivity -->
         <activity
             android:name=".history.HistoryActivity"/>
 
@@ -44,31 +39,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".sunrise.SunriseSunsetActivity"
-            android:exported="true"
-            android:label="@string/sunrise_sunset">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            </intent-filter>
-        </activity>
+        <activity android:name=".City"/>
 
-        <activity
-            android:name=".song.SongActivity"
-            android:exported="true">
 
-        </activity>
-
-        <activity
-            android:name=".recipe.RecipeActivity"
-            android:exported="true"
-            android:label="@string/recipe_search">
+        <activity android:name=".CityDao"/>
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,7 +63,11 @@
 
 
 
+        <activity android:name=".AppDatabase"/>
+        <activity android:name=".CityAdapter"/>
 
+        <activity android:name=".AstronomyData"/>
+        <activity android:name=".AstronomyApiService"/>
 
     </application>
 
