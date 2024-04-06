@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Final Project</string>
+    <string name="menu_favorites" />
+    <string name="delete" />
+    <string name="delete_this_item" />
+    <string name="confirm_deletion" />
+    <string name="are_you_sure_delete_all_favorite_songs" />
+    <string name="cancel" />
+    <string name="are_you_sure_delete_song" />
 </resources>
