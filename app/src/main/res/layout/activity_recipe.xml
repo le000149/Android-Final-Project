@@ -1,36 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".recipe.RecipeActivity">
 
-    <!-- EditText for entering the name of a recipe to search for -->
-    <EditText
-        android:id="@+id/editText_recipe_search"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:hint="Enter recipe name"
-        android:minHeight="48dp" />
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Button to send the query to the server -->
-    <Button
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:layout_below="@id/editText_recipe_search"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <!-- RecyclerView to display search results -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_recipes"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="22sp"
+                android:layout_margin="15dp"
+                android:text="@string/recipe_search"/>
+
+            <ImageView
+                android:id="@+id/wd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:src="@mipmap/saved"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColorHint="@color/maintextColor"
+                android:hint="Enter"/>
+            <Button
+                android:id="@+id/btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search"/>
+
+    </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commonRecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/button_search"
-        android:layout_marginTop="16dp"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        >
+        <org.algonquin.cst2355.finalproject.recipe.LoadingView
+            android:id="@+id/line_chart_loading"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            />
+        <TextView
+            android:id="@+id/line_chart_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
 
+            style="@style/MainTitleStyle"
+            android:gravity="center"
+            android:text="@string/no_result"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 </RelativeLayout>
