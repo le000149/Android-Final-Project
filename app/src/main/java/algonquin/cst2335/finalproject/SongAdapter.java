@@ -84,6 +84,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             textViewDuration = itemView.findViewById(R.id.textViewDuration);
             deleteButton = itemView.findViewById(R.id.deleteButton);
         }
+
     }
 
     public interface OnSongInteractionListener {
