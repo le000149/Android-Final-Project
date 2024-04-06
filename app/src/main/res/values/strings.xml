@@ -1,8 +1,26 @@
-<resources>
-    <string name="app_name">Final Project</string>
-    <string name="sunrise_sunset">sunrise</string>
-    <string name="recipe_search">recipe</string>
-    <string name="dictionary">dictionary</string>
-    <string name="recipe_image">recipe_image</string>
-    <string name="save_to_favorites">save to favorite\n</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">FinalProject</string>
+    <string name="sunrise_sunset">Sunrise Sunset</string>
+    <string name="recipe_search">Recipe Search</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="song_search">Song Search</string>
+    <string name="welcome">This is the final project produced by\nTianying Le, \n Zhenni Lu, \n Sukh， \n Sam</string>
+    <string name="help">Help</string>
+    <string name="ok">OK</string>
+
+
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+    <string name="search">Search</string>
+
+    <string name="search_hint">Search the recipe here..</string>
+    <string name="save">Save</string>
+    <string name="no_result">No matching result</string>
+    <string name="delete">Delete</string>
+    <string name="enter">Enter</string>
+    <string name="my_collection">My Collection</string>
+
 </resources>

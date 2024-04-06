@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".recipe.SeeAllActivity">
 
-    <!--    <include layout="@layout/layout_title"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:src="@mipmap/wd"/>
+            android:src="@mipmap/wid"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/common_recycleView"

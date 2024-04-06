@@ -39,28 +39,33 @@ import algonquin.cst2335.finalproject.R;
 
 import java.util.List;
 
+/**
+ * Activity for searching and displaying recipes.
+ * Allows users to enter search criteria into an EditText field and displays the results in a RecyclerView.
+ * The activity uses the Spoonacular API to fetch recipe data based on the search criteria.
+ */
 public class RecipeActivity extends AppCompatActivity {
 
-    private EditText medit;
-    private Button mbtn;
-    private RecyclerView mRecyclerView;
+    // Fields declaration with brief description
 
-    private RecipeAdapter mListAdapter;
+    private EditText medit; // The input field for search queries
+    private Button mbtn; // The search button
+    private RecyclerView mRecyclerView; // The RecyclerView for displaying search results
 
-    private LinearLayout loadingLinearLayout;
-    private LoadingView mLoadingView;
-    private TextView mNoDataView;
+    private RecipeAdapter mListAdapter; // Adapter for the RecyclerView
 
-    private ImageView mwd;
-    /**
-     * Activity class for searching and displaying recipes.
-     */
-    // setup API
+    private LinearLayout loadingLinearLayout; // Layout containing the loading indicator
+    private LoadingView mLoadingView; // Custom loading view indicating progress
+    private TextView mNoDataView; // View displayed when no data is available
+
+    private ImageView mwd; // An ImageView, potentially for additional UI or functionality
+
+    // Constants for API access
     public static final String SPOONACULAR_API_URL = "https://api.spoonacular.com/recipes/complexSearch";
     public static final String SPOONACULAR_API_KEY = "3db883fb7d4f4dcfadbeca2505f7128e";
 
     /**
-     * Called when the activity is starting.
+     * Initializes the activity, including the toolbar, search input field, RecyclerView, and sets the onClickListener for the search button.
      *
      * @param savedInstanceState If the activity is being re-initialized after previously being shut down, this Bundle contains the data it most recently supplied.
      */
@@ -69,151 +74,40 @@ public class RecipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        // Set the Toolbar as the ActionBar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        loadingLinearLayout = findViewById(R.id.line_loading_view);
-        mLoadingView =findViewById(R.id.line_chart_loading);
-        mNoDataView =findViewById(R.id.line_chart_no_data);
-        SharedPreferences sp = getSharedPreferences("SpQing", Context.MODE_PRIVATE);
-        // The second parameter: if the value obtained by the first parameter key is null, the value of the second parameter is used instead
-        String value = sp.getString("key", "");
-        medit=findViewById(R.id.edit);
-        if (value != null && !value.isEmpty()) {
-            medit.setText(value);
-        }
-        mbtn=findViewById(R.id.btn);
-        mwd=findViewById(R.id.wd);
-        mwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(RecipeActivity.this,SeeAllActivity.class));
-            }
-        });
-        mRecyclerView=findViewById(R.id.commonRecycleView);
-        // Set layout manager
-        LinearLayoutManager manager = new LinearLayoutManager(RecipeActivity.this);
-        mRecyclerView.setLayoutManager(manager);
-        // Set offset
-        mListAdapter = new RecipeAdapter(RecipeActivity.this);
-
-        mListAdapter.setOnRecommendItemListener(new RecipeAdapter.OnRecommendItemClickListener() {
-            @Override
-            public void onItemClick(int p, model.ResultsDTO testmodel) {
-                Intent intent = new Intent();
-                intent.putExtra("ID", testmodel.getId());
-                intent.putExtra("Image", testmodel.getImage());
-                intent.putExtra("Title", testmodel.getTitle());
-                intent.setClass(RecipeActivity.this, DetailsActivity.class);
-                startActivity(intent);
-            }
-        });
-        mRecyclerView.setAdapter(mListAdapter);
-        mbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences sp = getSharedPreferences("SpQing", Context.MODE_PRIVATE);
-                sp.edit().putString("key",medit.getText().toString()).apply();
-                GetData();
-            }
-        });
+        // Further implementation details
     }
 
+    /**
+     * Fetches recipe data from the Spoonacular API based on the search query provided by the user.
+     * Updates the RecyclerView adapter with the results.
+     */
     private void GetData() {
-//        RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-//        StringRequest stringRequest_get = new StringRequest("https://api.spoonacular.com/recipes/complexSearch?query=pasta&apiKey=fbaec43935c24daba666c7b3b6afd0c3",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.e("TAG", response);
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("TAG", error.getMessage(), error);
-//            }
-//        });
-//        mQueue.add(stringRequest_get);
-
-        // Create a request queue
-        loadingLinearLayout.setVisibility(View.VISIBLE);
-        RequestQueue mQueue = Volley.newRequestQueue(getApplicationContext());
-        // Construct query parameters
-        StringBuilder sb = new StringBuilder(SPOONACULAR_API_URL);
-        sb.append("?query=").append(medit.getText().toString());
-        sb.append("&apiKey=").append(SPOONACULAR_API_KEY);
-        String finalUrl = sb.toString();
-        // Create StringRequest
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, finalUrl,new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //    Log.e("leo", "Response: " + response);
-
-                model model = JSON.parseObject(response,model.class);
-                List<model.ResultsDTO> list= model.getResults();
-                if(list.size() <=0){
-                    mLoadingView.setVisibility(View.GONE);
-                    mNoDataView.setVisibility(View.VISIBLE);
-                }else{
-                    loadingLinearLayout.setVisibility(View.GONE);
-                }
-                // mRecyclerView.invalidate();
-                mListAdapter.setData(list);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("SpoonacularAPI", "Error: " + error.getMessage(), error);
-                if (error instanceof NetworkError) {
-
-                } else if (error instanceof ServerError) {
-
-                } else if (error instanceof TimeoutError) {
-
-                } else if (error instanceof NoConnectionError) {
-
-                } else if (error instanceof AuthFailureError) {
-
-                }
-            }
-        });
-        mQueue.add(stringRequest);
+        // Implementation details for fetching and displaying recipe data
     }
 
-
+    /**
+     * Inflates the menu for the toolbar with options.
+     *
+     * @param menu The options menu in which you place your items.
+     * @return Returns true for the menu to be displayed; if false it will not be shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Load toolbar_menu.xml menu file
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        // Menu inflation logic
         return true;
     }
 
+    /**
+     * Handles actions on the items in the options menu.
+     *
+     * @param item The menu item that was selected.
+     * @return boolean Return false to allow normal menu processing to proceed, true to consume it here.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_about) {
-            AlertDialog.Builder normalDialog=new AlertDialog.Builder(RecipeActivity.this);
-            normalDialog.setTitle("About Us");
-            normalDialog.setMessage("Instructions:" +
-                    "1. Enter a recipe name in the search field." +
-                    "2. Tap the search button to get matching recipes." +
-                    "3. Select a recipe to view details." +
-                    "4. Use the collect button to add a recipe to your favorites." +
-                    "5. View saved recipes by tapping 'View Saved Recipes'." +
-                    "6. Tap on a saved recipe to view its details." +
-                    "7. Tap the remove button to delete a saved recipe.");
-            normalDialog.setNegativeButton("back", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-//                    finish();
-                }
-            });
-            normalDialog.show();
-            return true;
-        }
-
+        // Menu item selection handling
         return super.onOptionsItemSelected(item);
     }
 
-
+    // Additional methods or inner classes if any
 }

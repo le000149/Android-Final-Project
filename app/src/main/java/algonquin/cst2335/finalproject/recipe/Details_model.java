@@ -2,7 +2,7 @@ package algonquin.cst2335.finalproject.recipe;
 
 import java.util.List;
 
-public class details_model {
+public class Details_model {
     private Boolean vegetarian;
 
     private Boolean vegan;

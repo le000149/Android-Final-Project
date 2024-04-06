@@ -60,7 +60,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_details);
         mhelper=new MyDBOpenHelper(DetailsActivity.this);// Instantiate the database helper class
         db=mhelper.getWritableDatabase();// Create the database and get the read/write permission
         // Initialize views
@@ -122,7 +122,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 //    Log.e("leo", "Response: " + response);
                 // Parse the JSON response
-                details_model model = JSON.parseObject(response,details_model.class);
+                Details_model model = JSON.parseObject(response,Details_model.class);
                 url= model.getImage();
 
                 // Hide loading indicator

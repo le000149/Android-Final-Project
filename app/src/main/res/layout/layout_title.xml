@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 首先定义标题栏 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="66dp"
@@ -20,44 +19,19 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"/>
-        <!--        <ImageView-->
-        <!--            android:layout_marginLeft="5dp"-->
-        <!--            android:layout_width="16dp"-->
-        <!--            android:layout_height="16dp"-->
-        <!--            android:layout_toRightOf="@id/nav_title"-->
-        <!--            android:layout_centerVertical="true"-->
-        <!--            android:src="@mipmap/arrow_down_white"-->
-        <!--            />-->
+
         <ImageButton
             android:id="@+id/button_backward"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/back_arrow"
+            android:src="@mipmap/back"
             android:layout_marginLeft="10dp"
             android:background="@null"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:visibility="visible"
             />
-        <!--        <Button-->
-        <!--            android:id="@+id/button_backward"-->
-        <!--            android:layout_width="80dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:drawableLeft="@mipmap/back_arrow"-->
-        <!--            android:drawablePadding="6dp"-->
-        <!--            android:background="@null"-->
-        <!--            android:ellipsize="end"-->
-        <!--            android:gravity="center"-->
-        <!--            android:onClick="onClick"-->
-        <!--            android:layout_centerVertical="true"-->
-        <!--            android:paddingLeft="5dp"-->
-        <!--            android:singleLine="true"-->
-        <!--            android:text="返回"-->
-        <!--            android:textColor="#ffffffff"-->
-        <!--            android:textSize="18dp"-->
-        <!--           />-->
-
     </RelativeLayout>
 
 </RelativeLayout>

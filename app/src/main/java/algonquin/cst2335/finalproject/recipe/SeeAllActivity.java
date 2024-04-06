@@ -43,11 +43,7 @@ public class SeeAllActivity extends AppCompatActivity {
 
 
     private void initView() {
-        //        title=findViewById(R.id.nav_title);
-        //        backward=findViewById(R.id
-        //                .button_backward);
-        //        backward.setVisibility(View.VISIBLE);
-        //        title.setText("My Collection");
+
         mhelper = new MyDBOpenHelper(SeeAllActivity.this);
         db = mhelper.getWritableDatabase();
         mRecyclerView = findViewById(R.id.common_recycleView);
@@ -74,10 +70,7 @@ public class SeeAllActivity extends AppCompatActivity {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                //                outRect.top= UIUtil.dip2px(view.getContext(),5);
-                //                outRect.bottom= UIUtil.dip2px(view.getContext(),5);
-                //   outRect.left = UIUtil.dip2px(view.getContext(),10);
-                //   outRect.right = UIUtil.dip2px(view.getContext(),10);
+
             }
         });
         mRecyclerView.setAdapter(mListAdapter);

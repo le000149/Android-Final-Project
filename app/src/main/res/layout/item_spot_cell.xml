@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:background="@drawable/shap_item_cellcolor_bg">
+    android:background="@color/coreGray">
 
     <LinearLayout
         android:layout_width="match_parent"
