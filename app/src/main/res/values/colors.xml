@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFF</color>
+
     <color name="green">#8BC34A</color>
     <color name="light_gray">#4D50DCD3</color>
     <color name="button_color">#03A9F4</color>
@@ -10,4 +10,20 @@
     <color name="pageBackground">#FFEBEE</color>
 
 
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="main_green">#5718C6</color>
+    <color name="secondary_green">#72E9ED</color>
+
+    <color name="purple_200">#9F70D8</color>
+    <color name="purple_500">#F197B5</color>
+    <color name="purple_700">#5917ED</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="maintextColor">#8d9dae</color>
+
+    <color name="tabbar_selected">#1296db</color>
+
+    <color name="coreGray">#EEEEEE</color>
 </resources>
