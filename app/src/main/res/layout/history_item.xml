@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ File: history_item.xml;
+ Author: Zhenni Lu;
+ Lab Section: 032;
+ Creation Date: April 4, 2024;
+ Description: This layout file defines the item layout for displaying a history entry in a RecyclerView.
+-->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- TextView for displaying the word -->
+    <TextView
+        android:id="@+id/word_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="@string/DictionaryWord"/>
+
+    <!-- TextView for displaying the definitions -->
+    <TextView
+        android:id="@+id/definitions_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/word_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/DictionaryDefinitions"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

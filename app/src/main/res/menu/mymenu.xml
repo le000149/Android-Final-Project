@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- File: mymenu.xml -->
+    <!-- Author: Zhenni Lu -->
+    <!-- Lab Section: 032 -->
+    <!-- Creation Date: April 4, 2024 -->
+    <!-- Description: This menu file defines the options menu for the DictionaryActivity, which includes an item to display information about the application. -->
+
+    <item
+        android:id="@+id/aboutZL"
+        android:title="Item"
+        app:showAsAction="never" />
+</menu>

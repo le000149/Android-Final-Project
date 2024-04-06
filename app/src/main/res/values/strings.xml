@@ -1,3 +1,14 @@
+
+<resources>
+    <string name="app_name">Final Project</string>
+    
+    <string name="Dictionary">Dictionary</string>
+    <string name="DictionaryInput">Input Your Word Here!</string>
+    <string name="DictionarySearch">Search</string>
+    <string name="DictionarySave">Save</string>
+    <string name="DictionaryWord">Word</string>
+    <string name="DictionaryDefinitions">Definitions</string>
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">FinalProject</string>
     <string name="sunrise_sunset">Sunrise Sunset</string>
@@ -22,5 +33,6 @@
     <string name="delete">Delete</string>
     <string name="enter">Enter</string>
     <string name="my_collection">My Collection</string>
+
 
 </resources>
