@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
     <style name="Theme.FinalProject" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,5 +13,14 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+
+    <style name="Base.Theme.FinalProject" parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/main_green</item>
+        <item name="colorPrimaryDark">@color/main_green</item>
+
     </style>
+
+    <style name="Theme.FinalProject" parent="Base.Theme.FinalProject" />
 </resources>
